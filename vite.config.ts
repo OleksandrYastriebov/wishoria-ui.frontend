@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://wishoria-8oyd.onrender.com',
+        target: 'https://notionary-8oyd.onrender.com',
         changeOrigin: true,
         secure: true,
         configure: (proxy) => {

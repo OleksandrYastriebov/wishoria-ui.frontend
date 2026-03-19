@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Globe, Package, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Globe, Lock, Package, ChevronRight } from 'lucide-react';
 import { usePublicProfile } from '../hooks/usePublicProfile';
 import { Layout } from '../components/layout/Layout';
 import { Avatar } from '../components/ui/Avatar';
@@ -57,10 +57,17 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
               />
             </h3>
             <div className="flex items-center gap-3 mt-1">
-              <span className="flex items-center gap-1 text-xs text-white/50">
-                <Globe size={10} className="text-emerald-400" />
-                Public
-              </span>
+              {wishlist.isPublic ? (
+                <span className="flex items-center gap-1 text-xs text-white/50">
+                  <Globe size={10} className="text-emerald-400" />
+                  Public
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 text-xs text-white/50">
+                  <Lock size={10} className="text-violet-400" />
+                  Shared with you
+                </span>
+              )}
               <span className="text-xs text-white/40">
                 {itemCount} {itemCount === 1 ? 'item' : 'items'}
               </span>
@@ -146,20 +153,28 @@ export default function PublicProfilePage() {
                 {profile.user.firstName} {profile.user.lastName}
               </h1>
               <p className="text-sm text-[#9898b4] mt-0.5">
-                {profile.publicWishlists.length}{' '}
-                {profile.publicWishlists.length === 1 ? 'public wishlist' : 'public wishlists'}
+                {profile.publicWishlists.filter((w) => w.isPublic).length}{' '}
+                {profile.publicWishlists.filter((w) => w.isPublic).length === 1
+                  ? 'public wishlist'
+                  : 'public wishlists'}
+                {profile.publicWishlists.some((w) => !w.isPublic) && (
+                  <span>
+                    {' '}·{' '}
+                    {profile.publicWishlists.filter((w) => !w.isPublic).length} shared with you
+                  </span>
+                )}
               </p>
             </div>
           </motion.div>
 
           {/* Wishlists section */}
           <div>
-            <h2 className="text-base font-semibold text-[#c8c8da] mb-3">Public wishlists</h2>
+            <h2 className="text-base font-semibold text-[#c8c8da] mb-3">Wishlists</h2>
 
             {profile.publicWishlists.length === 0 ? (
               <EmptyState
                 icon={<Package size={26} />}
-                title="No public wishlists"
+                title="No wishlists available"
                 description="This user hasn't shared any public wishlists yet."
               />
             ) : (

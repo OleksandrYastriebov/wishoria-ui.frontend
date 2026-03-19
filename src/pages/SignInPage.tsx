@@ -63,14 +63,24 @@ export default function SignInPage() {
                 error={errors.email?.message}
                 {...register('email')}
               />
-              <Input
-                label="Password"
-                type="password"
-                autoComplete="current-password"
-                placeholder="••••••••"
-                error={errors.password?.message}
-                {...register('password')}
-              />
+              <div>
+                <Input
+                  label="Password"
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  error={errors.password?.message}
+                  {...register('password')}
+                />
+                <div className="flex justify-end mt-1.5">
+                  <Link
+                    to="/forgot-password"
+                    className="text-xs text-violet-400 hover:text-violet-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+              </div>
 
               {errors.root && (
                 <p className="text-sm text-red-400 text-center">{errors.root.message}</p>

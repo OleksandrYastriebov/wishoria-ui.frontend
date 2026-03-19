@@ -10,6 +10,8 @@ import WishlistsPage from './pages/WishlistsPage';
 import WishlistDetailPage from './pages/WishlistDetailPage';
 import ProfilePage from './pages/ProfilePage';
 import PublicProfilePage from './pages/PublicProfilePage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -88,6 +90,22 @@ function AppRoutes() {
         element={
           <GuestRoute>
             <SignUpPage />
+          </GuestRoute>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <GuestRoute>
+            <ForgotPasswordPage />
+          </GuestRoute>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <GuestRoute>
+            <ResetPasswordPage />
           </GuestRoute>
         }
       />

@@ -7,6 +7,8 @@ import type {
   UserProfileDto,
   UpdateProfileRequest,
   ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
   WishListsResponse,
   WishListDto,
   CreateWishlistRequest,
@@ -42,6 +44,12 @@ export const signOut = () =>
 
 export const resendConfirmationEmail = (email: string) =>
   api.post<MessageResponse>('/resend-confirmation-email', { email }).then((r) => r.data);
+
+export const forgotPassword = (data: ForgotPasswordRequest) =>
+  api.post<MessageResponse>('/auth/forgot-password', data).then((r) => r.data);
+
+export const resetPassword = (data: ResetPasswordRequest) =>
+  api.post<MessageResponse>('/auth/reset-password', data).then((r) => r.data);
 
 // ─── Users ────────────────────────────────────────────────────────────────────
 

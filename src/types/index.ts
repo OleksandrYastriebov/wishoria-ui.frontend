@@ -37,12 +37,16 @@ export interface UserProfileDto {
   email: string;
   avatarUrl: string | null;
   createdAt: string;
+  profileDescription: string | null;
+  isPrivate: boolean;
 }
 
 export interface UpdateProfileRequest {
   firstName?: string;
   lastName?: string;
   avatarUrl?: string | null;
+  profileDescription?: string;
+  isPrivate?: boolean;
 }
 
 export interface ChangePasswordRequest {

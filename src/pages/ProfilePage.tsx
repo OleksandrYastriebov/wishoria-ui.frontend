@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Camera, Key, Trash2, AlertTriangle, Trash } from 'lucide-react';
+import { Camera, Key, Trash2, AlertTriangle, Trash, Globe, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
@@ -22,6 +22,8 @@ import type { ChangePasswordRequest } from '../types';
 const profileSchema = z.object({
   firstName: z.string().min(1, 'Required').max(50),
   lastName: z.string().min(1, 'Required').max(50),
+  profileDescription: z.string().max(1000, 'Max 1000 characters').optional(),
+  isPrivate: z.boolean().optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -55,12 +57,16 @@ export default function ProfilePage() {
   const {
     register: regProfile,
     handleSubmit: handleProfile,
+    watch: watchProfile,
+    setValue: setProfileValue,
     formState: { errors: profileErrors, isSubmitting: profileSubmitting },
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       firstName: user?.firstName ?? '',
       lastName: user?.lastName ?? '',
+      profileDescription: user?.profileDescription ?? '',
+      isPrivate: user?.isPrivate ?? false,
     },
   });
 
@@ -72,6 +78,8 @@ export default function ProfilePage() {
     formState: { errors: passwordErrors, isSubmitting: passwordSubmitting },
     setError: setPasswordError,
   } = useForm<PasswordFormData>({ resolver: zodResolver(passwordSchema) });
+
+  const isPrivateValue = watchProfile('isPrivate') ?? false;
 
   const onProfileSave = async (data: ProfileFormData) => {
     try {
@@ -253,6 +261,55 @@ export default function ProfilePage() {
               disabled
               hint="Email cannot be changed."
             />
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-[#c8c8da]">
+                Profile description
+              </label>
+              <textarea
+                rows={3}
+                maxLength={1000}
+                placeholder="Tell others a bit about yourself..."
+                className="w-full px-3.5 py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.05] text-sm text-white placeholder:text-white/25 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent hover:border-white/[0.14] resize-none"
+                {...regProfile('profileDescription')}
+              />
+              {profileErrors.profileDescription && (
+                <p className="text-xs text-red-400">{profileErrors.profileDescription.message}</p>
+              )}
+            </div>
+            <div className="flex items-center justify-between p-3.5 rounded-xl border border-white/[0.08] bg-white/[0.03]">
+              <div className="flex items-center gap-3">
+                {isPrivateValue ? (
+                  <Lock size={16} className="text-violet-400 flex-shrink-0" />
+                ) : (
+                  <Globe size={16} className="text-emerald-400 flex-shrink-0" />
+                )}
+                <div>
+                  <p className="text-sm font-medium text-white">
+                    {isPrivateValue ? 'Private profile' : 'Public profile'}
+                  </p>
+                  <p className="text-xs text-[#9898b4]">
+                    {isPrivateValue
+                      ? 'Only people you share wishlists with can view your profile'
+                      : 'Anyone can find and view your profile'}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={isPrivateValue}
+                onClick={() => setProfileValue('isPrivate', !isPrivateValue)}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+                  isPrivateValue ? 'bg-violet-600' : 'bg-white/10'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform transition-transform duration-200 ${
+                    isPrivateValue ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
             <div className="flex justify-end">
               <Button type="submit" isLoading={profileSubmitting}>
                 Save changes

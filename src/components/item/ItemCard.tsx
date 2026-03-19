@@ -83,7 +83,6 @@ export function ItemCard({
           <ImageFallback
             src={item.imageUrl}
             alt={item.title}
-            initials={item.title[0]?.toUpperCase()}
             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
           />
         </div>

@@ -28,11 +28,10 @@ function pickGradient(seed: string): [string, string] {
 export function ImageFallback({
   src,
   alt,
-  initials,
   className,
 }: ImageFallbackProps) {
   const [from, to] = pickGradient(alt);
-  const displayInitials = initials ?? alt.slice(0, 2).toUpperCase();
+  const displayInitials = alt.toUpperCase();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);

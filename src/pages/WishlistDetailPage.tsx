@@ -135,7 +135,6 @@ export default function WishlistDetailPage() {
               <ImageFallback
                 src={wishlist.imageUrl}
                 alt={wishlist.title}
-                initials={wishlist.title.slice(0, 2).toUpperCase()}
                 className="w-full h-48 sm:h-64"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d14] via-[#0d0d14]/20 to-transparent" />

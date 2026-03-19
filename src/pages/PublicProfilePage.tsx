@@ -42,7 +42,6 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
           <ImageFallback
             src={wishlist.imageUrl}
             alt={wishlist.title}
-            initials={wishlist.title.slice(0, 2).toUpperCase()}
             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
           />
           {/* Gradient overlay */}

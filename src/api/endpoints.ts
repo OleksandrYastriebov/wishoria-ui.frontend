@@ -26,6 +26,7 @@ import type {
   GenerateWishlistRequest,
   PublicUserDto,
   UserProfileResponseDto,
+  UserAutocompleteDto,
 } from '../types';
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
@@ -151,6 +152,9 @@ export const generateWishlist = (data: GenerateWishlistRequest) =>
 
 export const searchUsers = (query: string) =>
   api.get<PublicUserDto[]>('/profiles/search', { params: { q: query } }).then((r) => r.data);
+
+export const autocompleteUsers = (query: string) =>
+  api.get<UserAutocompleteDto[]>('/profiles/autocomplete', { params: { q: query } }).then((r) => r.data);
 
 export const getUserProfile = (userId: number) =>
   api.get<UserProfileResponseDto>(`/profiles/${userId}`).then((r) => r.data);

@@ -156,6 +156,14 @@ export interface ImageUploadResponse {
 
 // ─── Public Profiles ──────────────────────────────────────────────────────────
 
+export interface UserAutocompleteDto {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatarUrl: string | null;
+}
+
 export interface PublicUserDto {
   id: number;
   firstName: string;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -9,6 +9,8 @@ import { Button } from '../ui/Button';
 import { Skeleton } from '../ui/SkeletonLoader';
 import { isAxiosError } from 'axios';
 import { useWishlistAccess, useGrantAccess, useRevokeAccess } from '../../hooks/useWishlistAccess';
+import { useUserAutocomplete } from '../../hooks/useUserAutocomplete';
+import type { UserAutocompleteDto } from '../../types';
 
 const schema = z.object({
   email: z.string().email('Enter a valid email address'),
@@ -28,18 +30,35 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
   const grantMutation = useGrantAccess(wishlistId);
   const revokeMutation = useRevokeAccess(wishlistId);
   const [revokingEmail, setRevokingEmail] = useState<string | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  const emailValue = watch('email', '');
+  const { data: suggestions } = useUserAutocomplete(emailValue);
+
+  const { ref: rhfRef, onChange: rhfOnChange, ...emailRegisterProps } = register('email');
+
+  const handleSelectSuggestion = (user: UserAutocompleteDto) => {
+    setValue('email', user.email, { shouldValidate: true });
+    setShowDropdown(false);
+  };
+
   const onSubmit = (data: FormData) => {
     grantMutation.mutate(data.email, {
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        reset();
+        setShowDropdown(false);
+      },
       onError: (err) => {
         const message = isAxiosError<{ errorMessage?: string }>(err)
           ? (err.response?.data?.errorMessage ?? 'Failed to grant access.')
@@ -56,19 +75,67 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
     });
   };
 
+  const hasSuggestions = showDropdown && suggestions && suggestions.length > 0;
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={`Share "${wishlistTitle}"`}>
       <div className="p-6 space-y-5">
         {/* Add email form */}
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="space-y-3">
-          <Input
-            label="Invite by email"
-            type="email"
-            placeholder="friend@example.com"
-            error={errors.email?.message}
-            hint="An email notification will automatically be sent to the invited person."
-            {...register('email')}
-          />
+          <div className="relative">
+            <Input
+              {...emailRegisterProps}
+              ref={(el) => {
+                rhfRef(el);
+                (inputRef as React.MutableRefObject<HTMLInputElement | null>).current = el;
+              }}
+              label="Invite by email"
+              type="email"
+              placeholder="friend@example.com"
+              error={errors.email?.message}
+              hint="An email notification will automatically be sent to the invited person."
+              autoComplete="off"
+              onChange={(e) => {
+                void rhfOnChange(e);
+                setShowDropdown(true);
+              }}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+              onFocus={() => emailValue.trim().length >= 2 && setShowDropdown(true)}
+            />
+            {hasSuggestions && (
+              <ul className="absolute z-50 left-0 right-0 mt-1 bg-[#12121f] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden">
+                {suggestions!.map((user) => (
+                  <li key={user.id}>
+                    <button
+                      type="button"
+                      onMouseDown={() => handleSelectSuggestion(user)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.05] transition-colors text-left"
+                    >
+                      {user.avatarUrl ? (
+                        <img
+                          src={user.avatarUrl}
+                          alt={`${user.firstName} ${user.lastName}`}
+                          className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0">
+                          <span className="text-xs text-violet-400 font-medium">
+                            {user.firstName[0]}{user.lastName[0]}
+                          </span>
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <p className="text-sm text-[#c8c8da] font-medium truncate">
+                          {user.firstName} {user.lastName}
+                        </p>
+                        <p className="text-xs text-[#55556e] truncate">{user.email}</p>
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <Button
             type="submit"
             size="sm"

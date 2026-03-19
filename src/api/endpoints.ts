@@ -26,6 +26,7 @@ import type {
   GenerateDescriptionRequest,
   GenerateDescriptionResponse,
   GenerateWishlistRequest,
+  GiftSuggestionsResponse,
   PublicUserDto,
   UserProfileResponseDto,
   UserAutocompleteDto,
@@ -155,6 +156,9 @@ export const generateItemDescription = (
 
 export const generateWishlist = (data: GenerateWishlistRequest) =>
   api.post<WishListDto>('/ai/wishlists/generate-wishlists', data).then((r) => r.data);
+
+export const generateGiftSuggestions = (userId: number) =>
+  api.post<GiftSuggestionsResponse>(`/ai/users/${userId}/gift-suggestions`).then((r) => r.data);
 
 // ─── Profiles ─────────────────────────────────────────────────────────────────
 

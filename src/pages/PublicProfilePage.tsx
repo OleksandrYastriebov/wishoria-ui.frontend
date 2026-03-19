@@ -1,7 +1,8 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Globe, Lock, Package, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Globe, Lock, Package, ChevronRight, Gift } from 'lucide-react';
 import { usePublicProfile } from '../hooks/usePublicProfile';
+import { useAuth } from '../hooks/useAuth';
 import { Layout } from '../components/layout/Layout';
 import { Avatar } from '../components/ui/Avatar';
 import { ImageFallback } from '../components/ui/ImageFallback';
@@ -11,9 +12,10 @@ import {
   PublicProfileHeaderSkeleton,
   WishlistCardSkeleton,
 } from '../components/ui/SkeletonLoader';
+import { GiftSuggestionsModal } from '../components/wishlist/GiftSuggestionsModal';
 import type { WishListDto } from '../types';
 import toast from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ProfileWishlistCardProps {
   wishlist: WishListDto;
@@ -85,6 +87,8 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
 export default function PublicProfilePage() {
   const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
+  const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
 
   const parsedId = userId ? parseInt(userId, 10) : undefined;
   const validId = parsedId !== undefined && !isNaN(parsedId) ? parsedId : undefined;
@@ -160,7 +164,7 @@ export default function PublicProfilePage() {
               lastName={profile.user.lastName}
               size="xl"
             />
-            <div>
+            <div className="flex-1 min-w-0">
               <h1 className="text-2xl font-bold text-white">
                 {profile.user.firstName} {profile.user.lastName}
               </h1>
@@ -177,7 +181,25 @@ export default function PublicProfilePage() {
                 )}
               </p>
             </div>
+            {(!profile.user.privateProfile || currentUser?.id === profile.user.id) && (
+              <button
+                onClick={() => setIsGiftModalOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-violet-300 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 hover:border-violet-500/40 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 flex-shrink-0"
+              >
+                <Gift size={15} />
+                Magic Gift Ideas
+              </button>
+            )}
           </motion.div>
+
+          {validId && (
+            <GiftSuggestionsModal
+              isOpen={isGiftModalOpen}
+              onClose={() => setIsGiftModalOpen(false)}
+              userId={validId}
+              userName={profile.user.firstName}
+            />
+          )}
 
           {/* Wishlists section */}
           <div>

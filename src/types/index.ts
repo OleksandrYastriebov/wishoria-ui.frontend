@@ -178,6 +178,8 @@ export interface PublicUserDto {
   firstName: string;
   lastName: string;
   avatarUrl: string | null;
+  privateProfile: boolean;
+  profileDescription: string | null;
 }
 
 export interface UserProfileResponseDto {
@@ -200,4 +202,8 @@ export interface GenerateDescriptionResponse {
 export interface GenerateWishlistRequest {
   description: string;
   isPublic?: boolean;
+}
+
+export interface GiftSuggestionsResponse {
+  suggestions: string[];
 }

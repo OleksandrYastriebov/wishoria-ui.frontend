@@ -8,6 +8,7 @@ import { CheckCircle, ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/layout/Navbar';
+import { SeoMeta } from '../components/ui/SeoMeta';
 import { resetPassword } from '../api/endpoints';
 
 const schema = z
@@ -48,6 +49,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-screen bg-[#08080e]">
+      <SeoMeta title="Set New Password" />
       <Navbar />
       <div className="relative flex items-center justify-center px-4 py-12">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.08)_0%,_transparent_70%)] pointer-events-none" />

@@ -16,6 +16,7 @@ import { Button } from '../components/ui/Button';
 import { ImageFallback } from '../components/ui/ImageFallback';
 import { ItemCardSkeleton } from '../components/ui/SkeletonLoader';
 import { EmptyState } from '../components/ui/EmptyState';
+import { SeoMeta } from '../components/ui/SeoMeta';
 import type { WishListItemDto } from '../types';
 
 const MAX_ITEMS = 50;
@@ -81,8 +82,17 @@ export default function WishlistDetailPage() {
   );
   const atLimit = items.length >= MAX_ITEMS;
 
+  const seoDescription = wishlist
+    ? `${wishlist.wishListItems.length} ${wishlist.wishListItems.length === 1 ? 'item' : 'items'} · Wishlist on Wishoria`
+    : undefined;
+
   return (
     <Layout>
+      <SeoMeta
+        title={wishlist?.title}
+        description={seoDescription}
+        image={wishlist?.imageUrl}
+      />
       {/* Back button */}
       <button
         onClick={() =>

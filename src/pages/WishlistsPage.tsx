@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Sparkles } from 'lucide-react';
 import { useWishlists } from '../hooks/useWishlists';
 import { useAuth } from '../hooks/useAuth';
+import { SeoMeta } from '../components/ui/SeoMeta';
 import { Layout } from '../components/layout/Layout';
 import { WishlistCard } from '../components/wishlist/WishlistCard';
 import { WishlistModal } from '../components/wishlist/WishlistModal';
@@ -37,6 +38,7 @@ export default function WishlistsPage() {
 
   return (
     <Layout>
+      <SeoMeta title="My Wishlists" />
       {/* Header */}
       <div className="flex items-start sm:items-center justify-between mb-8 gap-4 flex-wrap">
         <div>

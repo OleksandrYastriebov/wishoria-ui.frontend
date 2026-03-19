@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Gift, Lock, Users, ChevronRight, Sparkles, Globe, Star, Heart, Package } from 'lucide-react';
+import { SeoMeta } from '../components/ui/SeoMeta';
 
 const features = [
   {
@@ -100,6 +101,9 @@ const bentoTiles = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
+      <SeoMeta
+        description="Create and share beautiful wishlists for any occasion. With AI, secret coordination and elegant design."
+      />
       {/* Dark base + landing aurora mesh — fixed */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[#08080e]" />

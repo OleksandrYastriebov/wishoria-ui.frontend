@@ -7,6 +7,7 @@ import { Camera, Key, Trash2, AlertTriangle, Trash } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
+import { SeoMeta } from '../components/ui/SeoMeta';
 import { Avatar } from '../components/ui/Avatar';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
@@ -151,6 +152,7 @@ export default function ProfilePage() {
 
   return (
     <Layout>
+      <SeoMeta title="Account" />
       <div className="max-w-xl mx-auto space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 10 }}

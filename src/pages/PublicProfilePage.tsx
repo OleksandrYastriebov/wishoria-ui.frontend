@@ -6,6 +6,7 @@ import { Layout } from '../components/layout/Layout';
 import { Avatar } from '../components/ui/Avatar';
 import { ImageFallback } from '../components/ui/ImageFallback';
 import { EmptyState } from '../components/ui/EmptyState';
+import { SeoMeta } from '../components/ui/SeoMeta';
 import {
   PublicProfileHeaderSkeleton,
   WishlistCardSkeleton,
@@ -113,8 +114,20 @@ export default function PublicProfilePage() {
     );
   }
 
+  const seoTitle = profile
+    ? `${profile.user.firstName} ${profile.user.lastName}'s wishlists`
+    : undefined;
+  const seoDescription = profile
+    ? `${profile.publicWishlists.filter((w) => w.isPublic).length} public wishlists on Wishoria`
+    : undefined;
+
   return (
     <Layout>
+      <SeoMeta
+        title={seoTitle}
+        description={seoDescription}
+        image={profile?.user.avatarUrl}
+      />
       {/* Back button */}
       <button
         onClick={() => navigate(-1)}

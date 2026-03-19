@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/layout/Navbar';
+import { SeoMeta } from '../components/ui/SeoMeta';
 import { useAuth } from '../hooks/useAuth';
 
 const schema = z.object({
@@ -40,6 +41,7 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen bg-[#08080e]">
+      <SeoMeta title="Sign In" />
       <Navbar />
       <div className="relative flex items-center justify-center px-4 py-12">
         {/* Radial gradient background */}

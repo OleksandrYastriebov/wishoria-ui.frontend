@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/layout/Navbar';
+import { SeoMeta } from '../components/ui/SeoMeta';
 import { signUp, resendConfirmationEmail } from '../api/endpoints';
 
 const schema = z.object({
@@ -77,6 +78,7 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen bg-[#08080e]">
+      <SeoMeta title="Create Account" />
       <Navbar />
       <div className="relative flex items-center justify-center px-4 py-12">
         {/* Radial gradient background */}

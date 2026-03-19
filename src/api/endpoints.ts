@@ -46,10 +46,10 @@ export const resendConfirmationEmail = (email: string) =>
   api.post<MessageResponse>('/resend-confirmation-email', { email }).then((r) => r.data);
 
 export const forgotPassword = (data: ForgotPasswordRequest) =>
-  api.post<MessageResponse>('/auth/forgot-password', data).then((r) => r.data);
+  api.post<MessageResponse>('/forgot-password', data).then((r) => r.data);
 
 export const resetPassword = (data: ResetPasswordRequest) =>
-  api.post<MessageResponse>('/auth/reset-password', data).then((r) => r.data);
+  api.post<MessageResponse>('/reset-password', data).then((r) => r.data);
 
 // ─── Users ────────────────────────────────────────────────────────────────────
 

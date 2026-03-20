@@ -152,7 +152,7 @@ export default function PublicProfilePage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-[#111118] rounded-2xl border border-white/[0.06] p-6 flex items-center gap-5"
+            className="bg-[#111118] rounded-2xl border border-white/[0.06] p-6 flex items-center gap-5 relative"
           >
             <Avatar
               src={profile.user.avatarUrl}
@@ -193,14 +193,16 @@ export default function PublicProfilePage() {
               </p>
             </div>
             {(!profile.user.privateProfile || currentUser?.id === profile.user.id) && (
-              <button
-                onClick={() => setIsGiftModalOpen(true)}
-                className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 flex-shrink-0 overflow-hidden group"
-              >
-                <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Sparkles size={15} className="relative z-10" />
-                <span className="relative z-10">AI Gift Ideas</span>
-              </button>
+              <div className="absolute bottom-6 right-6">
+                <button
+                  onClick={() => setIsGiftModalOpen(true)}
+                  className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 flex-shrink-0 overflow-hidden group"
+                >
+                  <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Sparkles size={15} className="relative z-10" />
+                  <span className="relative z-10">AI Gift Ideas</span>
+                </button>
+              </div>
             )}
           </motion.div>
 

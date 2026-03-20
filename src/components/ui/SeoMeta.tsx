@@ -35,7 +35,6 @@ export function SeoMeta({ title, description, image, type = 'website' }: SeoMeta
       <title>{fullTitle}</title>
       <meta name="description" content={desc} />
 
-      {/* Open Graph */}
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={desc} />
@@ -45,7 +44,6 @@ export function SeoMeta({ title, description, image, type = 'website' }: SeoMeta
       {ogImage && <meta property="og:image:width" content="1200" />}
       {ogImage && <meta property="og:image:height" content="630" />}
 
-      {/* Twitter / X */}
       <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={desc} />

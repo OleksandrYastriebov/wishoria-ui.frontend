@@ -48,12 +48,9 @@ export function Navbar() {
     <>
       <nav className="sticky top-0 z-40 px-3 sm:px-5 pt-3 pb-1.5">
         <div className="relative max-w-6xl mx-auto bg-[#13131f]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-xl shadow-black/30 px-4 sm:px-5 flex items-center justify-between h-16 overflow-hidden">
-          {/* Left glow — violet */}
           <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-violet-500/30 blur-2xl pointer-events-none z-0" />
-          {/* Right glow — tiffany */}
           <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-[#0abfbc]/25 blur-2xl pointer-events-none z-0" />
 
-          {/* Logo */}
           <Link
             to={user ? '/wishlists' : '/'}
             className="flex items-center gap-2.5 font-bold text-white hover:text-violet-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-lg flex-shrink-0 z-10"
@@ -64,17 +61,14 @@ export function Navbar() {
             <span className="text-lg tracking-tight">Wishoria</span>
           </Link>
 
-          {/* Search — desktop only */}
           {user && (
             <div className="hidden sm:flex flex-1 justify-center px-8 max-w-sm mx-auto z-10">
               <UserSearchDropdown />
             </div>
           )}
 
-          {/* Right side — desktop */}
           {user ? (
             <>
-              {/* Desktop: avatar button */}
               <button
                 ref={avatarBtnRef}
                 onClick={() => menuOpen ? setMenuOpen(false) : openMenu()}
@@ -87,7 +81,6 @@ export function Navbar() {
                 </span>
               </button>
 
-              {/* Mobile: hamburger */}
               <button
                 onClick={() => setMobileOpen(true)}
                 className="sm:hidden flex items-center justify-center w-9 h-9 rounded-xl text-[#9898b4] hover:text-white hover:bg-white/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer flex-shrink-0"
@@ -109,7 +102,6 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Desktop user menu — portal to escape overflow:hidden */}
       {createPortal(
         <AnimatePresence>
           {menuOpen && menuPos && (
@@ -149,11 +141,9 @@ export function Navbar() {
         document.body
       )}
 
-      {/* Mobile menu modal */}
       <AnimatePresence>
         {mobileOpen && user && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -163,7 +153,6 @@ export function Navbar() {
               onClick={() => setMobileOpen(false)}
             />
 
-            {/* Drawer */}
             <motion.div
               initial={{ opacity: 0, y: -12, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -171,7 +160,6 @@ export function Navbar() {
               transition={{ duration: 0.2 }}
               className="fixed top-4 left-3 right-3 z-50 bg-[#18181f] rounded-2xl border border-white/[0.08] shadow-2xl shadow-black/60 overflow-hidden"
             >
-              {/* Header */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
                 <div className="flex items-center gap-3">
                   <Avatar src={user.avatarUrl} firstName={user.firstName} lastName={user.lastName} size="md" className="ring-2 ring-violet-500/40 shadow-md shadow-violet-500/30" />
@@ -189,7 +177,6 @@ export function Navbar() {
                 </button>
               </div>
 
-              {/* Search */}
               <div className="px-4 py-3 border-b border-white/[0.06]">
                 <div className="flex items-center gap-2 text-xs text-[#55556e] mb-2 uppercase tracking-wide font-medium">
                   <Search size={11} />
@@ -198,7 +185,6 @@ export function Navbar() {
                 <UserSearchDropdown />
               </div>
 
-              {/* Nav links */}
               <div className="py-1.5">
                 <Link
                   to="/wishlists"

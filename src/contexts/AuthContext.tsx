@@ -32,12 +32,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccessToken(null);
   }, []);
 
-  // Register the failure handler so axios can clear auth on refresh failure
   useEffect(() => {
     setAuthFailureHandler(clearAuth);
   }, [clearAuth]);
 
-  // On mount: refresh access token first, then fetch the user — avoids spurious 401 on /me
   useEffect(() => {
     if (bootstrapped.current) return;
     bootstrapped.current = true;
@@ -51,10 +49,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         const status = axios.isAxiosError(err) ? err.response?.status : undefined;
         if (status === 401 || status === 403) {
-          // No valid session — clear auth
           clearAuth();
         }
-        // Network error, 500, or other — don't clear auth (server may be cold-starting)
       } finally {
         setIsLoading(false);
       }

@@ -80,7 +80,6 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={`Share "${wishlistTitle}"`}>
       <div className="p-6 space-y-5">
-        {/* Add email form */}
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="space-y-3">
           <div className="relative">
             <Input
@@ -146,7 +145,6 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
           </Button>
         </form>
 
-        {/* People with access */}
         <div>
           <h4 className="text-sm font-medium text-[#c8c8da] mb-3">
             People with access

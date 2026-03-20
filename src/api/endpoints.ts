@@ -32,8 +32,6 @@ import type {
   UserAutocompleteDto,
 } from '../types';
 
-// ─── Auth ─────────────────────────────────────────────────────────────────────
-
 export const signIn = (data: SignInRequest) =>
   api.post<SignInResponse>('/sign-in', data).then((r) => r.data);
 
@@ -52,8 +50,6 @@ export const forgotPassword = (data: ForgotPasswordRequest) =>
 export const resetPassword = (data: ResetPasswordRequest) =>
   api.post<MessageResponse>('/reset-password', data).then((r) => r.data);
 
-// ─── Users ────────────────────────────────────────────────────────────────────
-
 export const getMe = () =>
   api.get<UserProfileDto>('/users/me').then((r) => r.data);
 
@@ -65,8 +61,6 @@ export const changePassword = (data: ChangePasswordRequest) =>
 
 export const deleteAccount = (userId: number) =>
   api.delete<MessageResponse>(`/users/${userId}`).then((r) => r.data);
-
-// ─── Wishlists ────────────────────────────────────────────────────────────────
 
 export const getWishlists = () =>
   api.get<WishListsResponse>('/wishlists').then((r) => r.data);
@@ -82,8 +76,6 @@ export const updateWishlist = (wishlistId: string, data: UpdateWishlistRequest) 
 
 export const deleteWishlist = (wishlistId: string) =>
   api.delete<MessageResponse>(`/wishlists/${wishlistId}`).then((r) => r.data);
-
-// ─── Wishlist Items ───────────────────────────────────────────────────────────
 
 export const createItem = (wishlistId: string, data: CreateItemRequest) =>
   api.post<WishListItemDto>(`/wishlists/${wishlistId}`, data).then((r) => r.data);
@@ -107,8 +99,6 @@ export const toggleItemChecked = (
     .patch<MessageResponse>(`/wishlists/${wishlistId}/wishes/${itemId}/checked`, data)
     .then((r) => r.data);
 
-// ─── Access ───────────────────────────────────────────────────────────────────
-
 export const getWishlistAccess = (wishlistId: string) =>
   api.get<WishlistAccessResponse>(`/wishlists/${wishlistId}/access`).then((r) => r.data);
 
@@ -119,8 +109,6 @@ export const revokeAccess = (wishlistId: string, email: string) =>
   api
     .delete<MessageResponse>(`/wishlists/${wishlistId}/access`, { data: { email } })
     .then((r) => r.data);
-
-// ─── Comments ─────────────────────────────────────────────────────────────────
 
 export const getComments = (wishlistId: string, itemId: string) =>
   api
@@ -141,8 +129,6 @@ export const deleteComment = (wishlistId: string, itemId: string, commentId: num
     .delete<MessageResponse>(`/wishlists/${wishlistId}/wishes/${itemId}/comments/${commentId}`)
     .then((r) => r.data);
 
-// ─── AI ───────────────────────────────────────────────────────────────────────
-
 export const generateItemDescription = (
   wishlistId: string,
   data: GenerateDescriptionRequest
@@ -160,8 +146,6 @@ export const generateWishlist = (data: GenerateWishlistRequest) =>
 export const generateGiftSuggestions = (userId: number) =>
   api.post<GiftSuggestionsResponse>(`/ai/users/${userId}/gift-suggestions`).then((r) => r.data);
 
-// ─── Profiles ─────────────────────────────────────────────────────────────────
-
 export const searchUsers = (query: string) =>
   api.get<PublicUserDto[]>('/profiles/search', { params: { q: query } }).then((r) => r.data);
 
@@ -170,8 +154,6 @@ export const autocompleteUsers = (query: string) =>
 
 export const getUserProfile = (userId: number) =>
   api.get<UserProfileResponseDto>(`/profiles/${userId}`).then((r) => r.data);
-
-// ─── Images ───────────────────────────────────────────────────────────────────
 
 export const uploadImage = (file: File) => {
   const formData = new FormData();

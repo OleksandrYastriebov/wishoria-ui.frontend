@@ -51,7 +51,6 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageRemoved, setImageRemoved] = useState(false);
-  // Tracks the raw File object so it can be sent to the AI endpoint as Base64
   const pendingFileRef = useRef<File | null>(null);
 
   const {
@@ -160,7 +159,6 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit Item' : 'Add Item'} size="md">
       <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="p-6 space-y-4">
-        {/* Image upload */}
         <div>
           <label className="text-sm font-medium text-[#c8c8da] block mb-2">Image</label>
           {(previewUrl ?? imageUrlValue) ? (
@@ -240,7 +238,6 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
           />
         </div>
 
-        {/* Description with AI Generate button */}
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-[#c8c8da]">

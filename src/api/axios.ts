@@ -6,7 +6,6 @@ import axios, {
 } from 'axios';
 import type { RefreshTokenResponse } from '../types';
 
-// ─── In-memory token store ────────────────────────────────────────────────────
 let accessToken: string | null = null;
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -20,13 +19,11 @@ export const setAccessToken = (token: string | null): void => {
 
 export const getAccessToken = (): string | null => accessToken;
 
-// Called by AuthContext when user logs out or refresh fails
 let onAuthFailure: (() => void) | null = null;
 export const setAuthFailureHandler = (handler: () => void): void => {
   onAuthFailure = handler;
 };
 
-// ─── Axios instance ───────────────────────────────────────────────────────────
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined ?? '') + '/api/v1';
 
 const api: AxiosInstance = axios.create({
@@ -34,7 +31,6 @@ const api: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
-// ─── Request interceptor: attach Authorization header ─────────────────────────
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -42,7 +38,6 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-// ─── Response interceptor: handle 401 + token refresh ────────────────────────
 const processQueue = (error: unknown, token: string | null): void => {
   failedQueue.forEach(({ resolve, reject }) => {
     if (token) {

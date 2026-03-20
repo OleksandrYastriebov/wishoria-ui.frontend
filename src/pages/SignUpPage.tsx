@@ -40,7 +40,6 @@ export default function SignUpPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  // Countdown timer
   useEffect(() => {
     if (countdown <= 0) return;
     const id = setInterval(() => setCountdown((c) => c - 1), 1000);
@@ -81,7 +80,6 @@ export default function SignUpPage() {
       <SeoMeta title="Create Account" />
       <Navbar />
       <div className="relative flex items-center justify-center px-4 py-12">
-        {/* Radial gradient background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.08)_0%,_transparent_70%)] pointer-events-none" />
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -92,7 +90,6 @@ export default function SignUpPage() {
           <div className="bg-[#111118] rounded-2xl border border-white/[0.07] shadow-2xl shadow-black/40 p-8">
             <AnimatePresence mode="wait">
               {success ? (
-                /* Success state */
                 <motion.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -135,7 +132,6 @@ export default function SignUpPage() {
                   </p>
                 </motion.div>
               ) : (
-                /* Sign up form */
                 <motion.div
                   key="form"
                   initial={{ opacity: 0 }}

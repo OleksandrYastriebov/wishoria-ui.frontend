@@ -5,9 +5,6 @@ export const handleImageUpload = async (file: File): Promise<string> => {
   return result.url;
 };
 
-/**
- * Converts a File to a Base64 data URI string, e.g. "data:image/jpeg;base64,..."
- */
 export const fileToBase64DataUri = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();

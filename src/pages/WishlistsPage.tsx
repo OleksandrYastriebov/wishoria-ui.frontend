@@ -17,7 +17,6 @@ import type { WishListDto } from '../types';
 const MAX_WISHLISTS = 50;
 
 function getBentoClass(index: number): string {
-  // Pattern: [wide, regular], [regular, wide] alternating in pairs
   return (index % 4 === 0 || index % 4 === 3)
     ? 'lg:col-span-2 sm:col-span-2'
     : 'col-span-1';
@@ -39,7 +38,6 @@ export default function WishlistsPage() {
   return (
     <Layout>
       <SeoMeta title="My Wishlists" />
-      {/* Header */}
       <div className="flex items-start sm:items-center justify-between mb-8 gap-4 flex-wrap">
         <div>
           <h1 className="text-2xl font-bold text-white">
@@ -74,7 +72,6 @@ export default function WishlistsPage() {
         )}
       </div>
 
-      {/* Content */}
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -97,12 +94,13 @@ export default function WishlistsPage() {
           }
         />
       ) : (
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <motion.div layout className={`grid grid-cols-1 sm:grid-cols-2 gap-4${wishlists.length > 3 ? ' lg:grid-cols-3' : ''}`}>
           <AnimatePresence>
             {wishlists.map((wl, index) => {
-              const wide = index % 4 === 0 || index % 4 === 3;
+              const useBento = wishlists.length > 3;
+              const wide = useBento && (index % 4 === 0 || index % 4 === 3);
               return (
-                <div key={wl.id} className={getBentoClass(index)}>
+                <div key={wl.id} className={useBento ? getBentoClass(index) : ''}>
                   <WishlistCard
                     wishlist={wl}
                     isOwner={wl.userId === user?.id}
@@ -132,7 +130,6 @@ export default function WishlistsPage() {
         </p>
       )}
 
-      {/* Modals */}
       <AiGenerateModal isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
       <WishlistModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
       <WishlistModal

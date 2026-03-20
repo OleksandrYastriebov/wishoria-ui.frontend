@@ -37,13 +37,10 @@ export function ImageFallback({
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
   const [imgError, setImgError] = useState(false);
 
-  // Reset error state whenever the source URL changes.
   useEffect(() => {
     setImgError(false);
   }, [src]);
 
-  // Measure the container once it is laid out and watch for resize events
-  // (e.g. when the bento-grid rearranges tiles after an item is deleted).
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -55,8 +52,6 @@ export function ImageFallback({
       }
     };
 
-    // Measure immediately after layout (useEffect runs after paint so
-    // getBoundingClientRect already reflects the real dimensions).
     measure();
 
     const observer = new ResizeObserver(measure);
@@ -64,7 +59,6 @@ export function ImageFallback({
     return () => observer.disconnect();
   }, []);
 
-  // Build the optimally-sized Cloudinary URL once we know the container size.
   const resolvedSrc =
     src && size ? withCloudinaryResize(src, size.w, size.h) : null;
 
@@ -80,7 +74,6 @@ export function ImageFallback({
           onError={() => setImgError(true)}
         />
       )}
-      {/* Gradient fallback — visible before the image loads and on error */}
       <div
         className={cn(
           'absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br transition-opacity duration-300 gap-2',

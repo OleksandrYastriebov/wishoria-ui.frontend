@@ -1,5 +1,3 @@
-// ─── Auth ────────────────────────────────────────────────────────────────────
-
 export interface SignInRequest {
   email: string;
   password: string;
@@ -28,8 +26,6 @@ export interface RefreshTokenResponse {
   tokenType: string;
 }
 
-// ─── User ─────────────────────────────────────────────────────────────────────
-
 export interface UserProfileDto {
   id: number;
   firstName: string;
@@ -39,6 +35,7 @@ export interface UserProfileDto {
   createdAt: string;
   profileDescription: string | null;
   isPrivate: boolean;
+  dateOfBirth: string | null;
 }
 
 export interface UpdateProfileRequest {
@@ -47,6 +44,7 @@ export interface UpdateProfileRequest {
   avatarUrl?: string | null;
   profileDescription?: string;
   isPrivate?: boolean;
+  dateOfBirth?: string | null;
 }
 
 export interface ChangePasswordRequest {
@@ -62,8 +60,6 @@ export interface ResetPasswordRequest {
   token: string;
   newPassword: string;
 }
-
-// ─── Wishlist ─────────────────────────────────────────────────────────────────
 
 export interface WishListItemDto {
   id: string;
@@ -104,8 +100,6 @@ export interface UpdateWishlistRequest {
   imageUrl?: string;
 }
 
-// ─── Wishlist Items ───────────────────────────────────────────────────────────
-
 export interface CreateItemRequest {
   title: string;
   url?: string;
@@ -127,8 +121,6 @@ export interface ToggleCheckedRequest {
   isChecked: boolean;
 }
 
-// ─── Access ───────────────────────────────────────────────────────────────────
-
 export interface WishlistAccessResponse {
   emails: string[];
 }
@@ -140,8 +132,6 @@ export interface GrantAccessRequest {
 export interface RevokeAccessRequest {
   email: string;
 }
-
-// ─── Comments ─────────────────────────────────────────────────────────────────
 
 export interface CommentDto {
   id: number;
@@ -161,13 +151,9 @@ export interface CreateCommentRequest {
   text: string;
 }
 
-// ─── Images ───────────────────────────────────────────────────────────────────
-
 export interface ImageUploadResponse {
   url: string;
 }
-
-// ─── Public Profiles ──────────────────────────────────────────────────────────
 
 export interface UserAutocompleteDto {
   id: number;
@@ -190,8 +176,6 @@ export interface UserProfileResponseDto {
   user: PublicUserDto;
   publicWishlists: WishListDto[];
 }
-
-// ─── AI ───────────────────────────────────────────────────────────────────────
 
 export interface GenerateDescriptionRequest {
   title: string;

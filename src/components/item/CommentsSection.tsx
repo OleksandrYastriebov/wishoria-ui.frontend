@@ -116,7 +116,6 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
         <span className="text-xs text-[#55556e]">(not visible to the owner)</span>
       </div>
 
-      {/* Comment list */}
       <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
         {isLoading ? (
           <>
@@ -142,7 +141,6 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
         )}
       </div>
 
-      {/* Input */}
       {user ? (
         <form onSubmit={handleSubmit} className="flex items-end gap-2">
           <Avatar

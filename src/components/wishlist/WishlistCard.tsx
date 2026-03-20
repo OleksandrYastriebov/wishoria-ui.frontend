@@ -38,7 +38,6 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
         transition={{ duration: 0.25 }}
         className="group relative bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06] hover:border-violet-500/30 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300"
       >
-        {/* Cover image — full bleed hero */}
         <Link
           to={`/wishlists/${wishlist.id}`}
           className="block relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
@@ -49,10 +48,8 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
             alt={wishlist.title}
             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
           />
-          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d14] via-[#0d0d14]/30 to-transparent" />
 
-          {/* Visibility badge (top-right) */}
           <div className="absolute top-3 right-3">
             <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium backdrop-blur-sm ${
               wishlist.isPublic
@@ -64,7 +61,6 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
             </span>
           </div>
 
-          {/* Title overlay (bottom of image) */}
           <div className="absolute bottom-0 left-0 right-0 p-4">
             <h3 className="font-bold text-white text-base sm:text-lg truncate drop-shadow-sm">{wishlist.title}</h3>
             <p className="text-white/50 text-xs mt-0.5">
@@ -74,7 +70,6 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
           </div>
         </Link>
 
-        {/* Action bar (owner only) */}
         {isOwner && (
           <div className="flex items-center justify-end gap-1 px-3 py-2 border-t border-white/[0.05] opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity">
             {!wishlist.isPublic && (

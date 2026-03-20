@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
@@ -10,6 +10,7 @@ import { Layout } from '../components/layout/Layout';
 import { SeoMeta } from '../components/ui/SeoMeta';
 import { Avatar } from '../components/ui/Avatar';
 import { Input } from '../components/ui/Input';
+import { DatePicker } from '../components/ui/DatePicker';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../hooks/useAuth';
@@ -18,17 +19,22 @@ import { useUploadImage } from '../hooks/useUploadImage';
 import { useClipboardPaste } from '../hooks/useClipboardPaste';
 import type { ChangePasswordRequest } from '../types';
 
-// ─── Profile form schema ──────────────────────────────────────────────────────
 const profileSchema = z.object({
   firstName: z.string().min(1, 'Required').max(50),
   lastName: z.string().min(1, 'Required').max(50),
   profileDescription: z.string().max(1000, 'Max 1000 characters').optional(),
   isPrivate: z.boolean().optional(),
+  dateOfBirth: z
+    .string()
+    .refine((val) => !val || new Date(val) < new Date(), {
+      message: 'Date of birth must be in the past',
+    })
+    .nullable()
+    .optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 
-// ─── Password form schema ─────────────────────────────────────────────────────
 const passwordSchema = z
   .object({
     currentPassword: z.string().min(1, 'Current password is required'),
@@ -53,12 +59,12 @@ export default function ProfilePage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeletingAvatar, setIsDeletingAvatar] = useState(false);
 
-  // Profile form
   const {
     register: regProfile,
     handleSubmit: handleProfile,
     watch: watchProfile,
     setValue: setProfileValue,
+    control,
     formState: { errors: profileErrors, isSubmitting: profileSubmitting },
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -67,10 +73,10 @@ export default function ProfilePage() {
       lastName: user?.lastName ?? '',
       profileDescription: user?.profileDescription ?? '',
       isPrivate: user?.isPrivate ?? false,
+      dateOfBirth: user?.dateOfBirth ?? null,
     },
   });
 
-  // Password form
   const {
     register: regPassword,
     handleSubmit: handlePasswordForm,
@@ -171,7 +177,6 @@ export default function ProfilePage() {
           <p className="text-sm text-[#9898b4]">Manage your account settings</p>
         </motion.div>
 
-        {/* Avatar section */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -210,6 +215,16 @@ export default function ProfilePage() {
                 {user.firstName} {user.lastName}
               </p>
               <p className="text-sm text-[#9898b4]">{user.email}</p>
+              <p className="text-xs text-[#55556e] mt-0.5">
+                {user.dateOfBirth
+                  ? new Intl.DateTimeFormat('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      timeZone: 'UTC',
+                    }).format(new Date(user.dateOfBirth + 'T00:00:00'))
+                  : 'Date of birth not set'}
+              </p>
               <div className="flex gap-2 mt-1">
                 <button
                   onClick={() => fileInputRef.current?.click()}
@@ -231,7 +246,6 @@ export default function ProfilePage() {
           />
         </motion.div>
 
-        {/* Personal info */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -260,6 +274,20 @@ export default function ProfilePage() {
               value={user.email}
               disabled
               hint="Email cannot be changed."
+            />
+            <Controller
+              control={control}
+              name="dateOfBirth"
+              render={({ field }) => (
+                <DatePicker
+                  label="Date of Birth"
+                  value={field.value ?? null}
+                  onChange={field.onChange}
+                  name={field.name}
+                  error={profileErrors.dateOfBirth?.message}
+                  hint="Optional — not shown on your public profile."
+                />
+              )}
             />
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-[#c8c8da]">
@@ -318,7 +346,6 @@ export default function ProfilePage() {
           </form>
         </motion.div>
 
-        {/* Security */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -336,7 +363,6 @@ export default function ProfilePage() {
           </Button>
         </motion.div>
 
-        {/* Danger zone */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -360,7 +386,6 @@ export default function ProfilePage() {
         </motion.div>
       </div>
 
-      {/* Change password modal */}
       <Modal
         isOpen={isPasswordOpen}
         onClose={() => {
@@ -415,7 +440,6 @@ export default function ProfilePage() {
         </form>
       </Modal>
 
-      {/* Delete account confirmation modal */}
       <Modal
         isOpen={isDeleteOpen}
         onClose={() => {

@@ -44,7 +44,6 @@ export default function SignInPage() {
       <SeoMeta title="Sign In" />
       <Navbar />
       <div className="relative flex items-center justify-center px-4 py-12">
-        {/* Radial gradient background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.08)_0%,_transparent_70%)] pointer-events-none" />
         <motion.div
           initial={{ opacity: 0, y: 16 }}

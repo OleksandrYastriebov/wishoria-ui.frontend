@@ -78,7 +78,6 @@ export function ItemCard({
           item.isChecked ? ' opacity-60 saturate-0' : ''
         }`}
       >
-        {/* Image — top, full width; wide cards use 16/9 */}
         <div className="relative w-full overflow-hidden" style={{ aspectRatio: wide ? '16/9' : '4/3' }}>
           <ImageFallback
             src={item.imageUrl}
@@ -87,7 +86,6 @@ export function ItemCard({
           />
         </div>
 
-        {/* Content below image */}
         <div className="flex flex-col gap-2 p-4">
           <div className="flex items-start justify-between gap-2">
             <div ref={titleRef} className="relative min-w-0 overflow-hidden flex-1" title={titleOverflowing ? item.title : undefined}>
@@ -132,7 +130,6 @@ export function ItemCard({
             <p className="text-xs text-[#9898b4] line-clamp-2">{item.description}</p>
           )}
 
-          {/* Footer actions */}
           <div className="flex items-center gap-3 pt-1">
             <button
               onClick={handleToggle}

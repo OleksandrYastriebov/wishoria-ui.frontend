@@ -20,7 +20,6 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
     } else {
       mutation.reset();
     }
-    // mutation.reset and mutation.mutate are intentionally excluded
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, userId]);
 
@@ -29,7 +28,6 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
   return (
     <Modal isOpen={isOpen} onClose={mutation.isPending ? () => {} : onClose} size="md">
       <div className="relative overflow-hidden">
-        {/* Gradient header */}
         <div className="bg-gradient-to-br from-violet-600 to-purple-700 px-6 py-5 flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
             <Gift size={18} className="text-white" />
@@ -42,7 +40,6 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
           </div>
         </div>
 
-        {/* Content */}
         <div className="p-6 min-h-[200px]">
           <AnimatePresence mode="wait">
             {mutation.isPending && (
@@ -121,7 +118,6 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
           </AnimatePresence>
         </div>
 
-        {/* Footer */}
         {!mutation.isPending && (
           <div className="px-6 pb-6">
             <button

@@ -40,7 +40,6 @@ const fadeUpDelayed = (delay: number) => ({
   animate: { opacity: 1, y: 0, transition: { duration: 0.4, delay } },
 });
 
-// Bento tile data for the decorative preview section
 const bentoTiles = [
   {
     colSpan: 'lg:col-span-2 sm:col-span-2',
@@ -104,31 +103,20 @@ export default function LandingPage() {
       <SeoMeta
         description="Create and share beautiful wishlists for any occasion. With AI, secret coordination and elegant design."
       />
-      {/* Dark base + landing aurora mesh — fixed */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[#08080e]" />
-        {/* Violet — top-left hero glow */}
         <div className="absolute -top-48 -left-48 w-[800px] h-[800px] rounded-full bg-violet-700/[0.22] blur-[160px]" />
-        {/* Tiffany — top-right */}
         <div className="absolute -top-24 right-0 w-[550px] h-[550px] rounded-full bg-[#0abfbc]/[0.10] blur-[180px]" />
-        {/* Indigo — mid-right */}
         <div className="absolute top-[20%] -right-72 w-[600px] h-[600px] rounded-full bg-indigo-600/[0.13] blur-[180px]" />
-        {/* Pink — mid-center-left */}
         <div className="absolute top-[40%] left-[10%] w-[500px] h-[500px] rounded-full bg-pink-600/[0.10] blur-[180px]" />
-        {/* Purple — lower-left */}
         <div className="absolute top-[55%] left-[15%] w-[500px] h-[500px] rounded-full bg-purple-800/[0.12] blur-[200px]" />
-        {/* Tiffany — bottom-right */}
         <div className="absolute bottom-0 right-[5%] w-[450px] h-[450px] rounded-full bg-[#2dd4bf]/[0.09] blur-[160px]" />
-        {/* Fuchsia/pink — bottom-center */}
         <div className="absolute -bottom-20 left-[35%] w-[500px] h-[350px] rounded-full bg-fuchsia-700/[0.09] blur-[160px]" />
       </div>
 
-      {/* Navbar */}
       <nav className="sticky top-0 z-40 px-3 sm:px-5 pt-3 pb-1.5">
         <div className="relative max-w-5xl mx-auto bg-[#13131f]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-xl shadow-black/30 px-4 sm:px-5 flex items-center justify-between h-16 overflow-hidden">
-          {/* Left glow — violet */}
           <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-violet-500/30 blur-2xl pointer-events-none z-0" />
-          {/* Right glow — tiffany */}
           <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-[#0abfbc]/25 blur-2xl pointer-events-none z-0" />
           <div className="flex items-center gap-2.5 font-bold text-white">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center shadow-md shadow-violet-500/30">
@@ -153,7 +141,6 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero */}
       <section className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16 text-center">
         <motion.div
           variants={stagger}
@@ -203,7 +190,6 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Bento preview section */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-16">
         <motion.div
           {...fadeUpDelayed(0.3)}
@@ -218,7 +204,6 @@ export default function LandingPage() {
               className={`${tile.colSpan} relative bg-[#111118] rounded-2xl border border-white/[0.06] overflow-hidden`}
               style={{ minHeight: '160px' }}
             >
-              {/* Gradient background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${tile.gradient} opacity-60`} />
               <div className="relative p-5 h-full flex flex-col justify-between">
                 <div className="flex items-start justify-between">
@@ -239,7 +224,6 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Features */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
         <motion.div
           variants={stagger}
@@ -264,7 +248,6 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* CTA */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
         <motion.div
           {...fadeUpDelayed(0.7)}
@@ -286,7 +269,6 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-white/[0.06] py-8 text-center text-sm text-[#55556e]">
         <div className="flex items-center justify-center gap-2">
           <Sparkles size={14} className="text-violet-500/50" />

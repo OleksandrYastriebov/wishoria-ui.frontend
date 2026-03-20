@@ -93,7 +93,6 @@ export default function WishlistDetailPage() {
         description={seoDescription}
         image={wishlist?.imageUrl}
       />
-      {/* Back button */}
       <button
         onClick={() =>
           fromProfileId !== undefined
@@ -108,8 +107,7 @@ export default function WishlistDetailPage() {
 
       {isLoading ? (
         <div className="space-y-6">
-          {/* Header skeleton */}
-          <div className="bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06]">
+            <div className="bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06]">
             <div className="w-full h-48 bg-white/[0.07] animate-pulse" />
             <div className="p-5 space-y-2">
               <div className="h-6 w-1/3 bg-white/[0.07] rounded animate-pulse" />
@@ -124,7 +122,6 @@ export default function WishlistDetailPage() {
         </div>
       ) : wishlist ? (
         <div className="space-y-6">
-          {/* Wishlist header */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -199,7 +196,6 @@ export default function WishlistDetailPage() {
             </div>
           </motion.div>
 
-          {/* Items grid */}
           {items.length === 0 ? (
             <EmptyState
               icon={<Package size={26} />}
@@ -221,10 +217,12 @@ export default function WishlistDetailPage() {
               }
             />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4${items.length > 3 ? ' lg:grid-cols-3' : ''}`}>
               <AnimatePresence>
-                {items.map((item, index) => (
-                  <div key={item.id} className={getBentoClass(index)}>
+                {items.map((item, index) => {
+                  const useBento = items.length > 3;
+                  return (
+                  <div key={item.id} className={useBento ? getBentoClass(index) : ''}>
                     <ItemCard
                       item={item}
                       wishlistId={wishlist.id}
@@ -233,10 +231,11 @@ export default function WishlistDetailPage() {
                       onEdit={(i) => setEditItem(i)}
                       onOpenComments={(i) => setCommentsItem(i)}
                       onRequireAuth={() => setRequireAuthOpen(true)}
-                      wide={isBentoWide(index)}
+                      wide={useBento && isBentoWide(index)}
                     />
                   </div>
-                ))}
+                  );
+                })}
               </AnimatePresence>
               {isOwner && !atLimit && (
                 <button
@@ -258,7 +257,6 @@ export default function WishlistDetailPage() {
         </div>
       ) : null}
 
-      {/* Modals */}
       {wishlist && (
         <>
           <ItemModal
@@ -286,7 +284,6 @@ export default function WishlistDetailPage() {
             />
           )}
 
-          {/* Comments modal */}
           <Modal
             isOpen={!!commentsItem}
             onClose={() => setCommentsItem(null)}
@@ -305,7 +302,6 @@ export default function WishlistDetailPage() {
         </>
       )}
 
-      {/* Require auth modal */}
       <Modal
         isOpen={requireAuthOpen}
         onClose={() => setRequireAuthOpen(false)}

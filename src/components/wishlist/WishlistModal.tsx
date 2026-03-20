@@ -105,7 +105,6 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit Wishlist' : 'New Wishlist'}>
       <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="p-6 space-y-4">
-        {/* Image upload */}
         <div>
           <label className="text-sm font-medium text-[#c8c8da] block mb-2">Cover Image</label>
           <div className="relative">

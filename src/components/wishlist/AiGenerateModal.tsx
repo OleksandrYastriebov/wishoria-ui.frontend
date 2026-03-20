@@ -50,7 +50,6 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
       reset();
       generateMutation.reset();
     }
-    // generateMutation.reset is intentionally excluded to avoid infinite loops
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
@@ -61,7 +60,6 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={generateMutation.isPending ? () => {} : onClose} size="md">
       <div className="relative overflow-hidden">
-        {/* Loading overlay */}
         <AnimatePresence>
           {generateMutation.isPending && (
             <motion.div
@@ -80,7 +78,6 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
           )}
         </AnimatePresence>
 
-        {/* Gradient header */}
         <div className="bg-gradient-to-br from-violet-600 to-purple-700 px-6 py-5 flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
             <Sparkles size={18} className="text-white" />
@@ -93,9 +90,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
           </div>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 flex flex-col gap-5">
-          {/* Textarea */}
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-[#c8c8da]">
               Describe your wishlist
@@ -121,7 +116,6 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
             </div>
           </div>
 
-          {/* Visibility toggle */}
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-[#c8c8da]">Visibility</span>
             <div className="flex rounded-lg border border-white/[0.1] overflow-hidden">
@@ -152,7 +146,6 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
             </div>
           </div>
 
-          {/* Generate button */}
           <button
             type="submit"
             disabled={generateMutation.isPending}

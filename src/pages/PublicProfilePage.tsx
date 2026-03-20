@@ -46,10 +46,8 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
             alt={wishlist.title}
             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
           />
-          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d14] via-[#0d0d14]/30 to-transparent" />
 
-          {/* Title overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-4">
             <h3 className="font-bold text-white text-base truncate drop-shadow-sm flex items-center gap-1">
               {wishlist.title}
@@ -131,7 +129,6 @@ export default function PublicProfilePage() {
         description={seoDescription}
         image={profile?.user.avatarUrl}
       />
-      {/* Back button */}
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded"
@@ -151,7 +148,6 @@ export default function PublicProfilePage() {
         </div>
       ) : profile ? (
         <div className="space-y-6">
-          {/* Profile header */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -207,7 +203,6 @@ export default function PublicProfilePage() {
             />
           )}
 
-          {/* Wishlists section */}
           <div>
             <h2 className="text-base font-semibold text-[#c8c8da] mb-3">Wishlists</h2>
 

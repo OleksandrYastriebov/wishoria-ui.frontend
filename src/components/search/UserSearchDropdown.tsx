@@ -33,7 +33,6 @@ export function UserSearchDropdown() {
   const showResults = showDropdown && results.length > 0;
   const showEmpty = showDropdown && !isFetching && results.length === 0;
 
-  // Update dropdown position
   const updatePos = useCallback(() => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -51,7 +50,6 @@ export function UserSearchDropdown() {
     };
   }, [showDropdown, updatePos]);
 
-  // Close on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -89,7 +87,6 @@ export function UserSearchDropdown() {
 
   return (
     <div ref={containerRef} className="relative w-full">
-      {/* Search input */}
       <div
         className={cn(
           'flex items-center gap-2 h-9 px-3 rounded-xl border transition-all duration-200',
@@ -135,7 +132,6 @@ export function UserSearchDropdown() {
         )}
       </div>
 
-      {/* Dropdown — rendered in body via portal to escape overflow:hidden */}
       {createPortal(
         <AnimatePresence>
           {showDropdown && dropdownPos && (

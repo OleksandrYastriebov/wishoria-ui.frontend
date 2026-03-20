@@ -1,17 +1,3 @@
-/**
- * Injects Cloudinary resize/crop transformations into a Cloudinary URL.
- *
- * Inserts `w_{W},h_{H},c_fill` as a chained transformation immediately after
- * `/upload/` so the CDN serves an image that exactly matches the rendered
- * container — no over-fetching, no ugly browser-side stretching.
- *
- * Dimensions are rounded up to the nearest 100 px step so that a small
- * number of URL variants are generated (good for CDN cache hit-rate).
- * Device pixel ratio (capped at 2×) is factored in so retina screens get
- * crisp images.
- *
- * Non-Cloudinary URLs are returned as-is.
- */
 export function withCloudinaryResize(
   url: string,
   cssWidth: number,

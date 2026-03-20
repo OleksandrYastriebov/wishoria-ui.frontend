@@ -170,6 +170,7 @@ export interface PublicUserDto {
   avatarUrl: string | null;
   privateProfile: boolean;
   profileDescription: string | null;
+  dateOfBirth: string | null;
 }
 
 export interface UserProfileResponseDto {

@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Globe, Lock, Package, ChevronRight, Sparkles } from 'lucide-react';
+import { ArrowLeft, Globe, Lock, Package, ChevronRight, Sparkles, Cake } from 'lucide-react';
 import { usePublicProfile } from '../hooks/usePublicProfile';
 import { useAuth } from '../hooks/useAuth';
 import { Layout } from '../components/layout/Layout';
@@ -167,6 +167,16 @@ export default function PublicProfilePage() {
               {profile.user.profileDescription && (
                 <p className="text-sm text-[#c8c8da] mt-1 line-clamp-2">
                   {profile.user.profileDescription}
+                </p>
+              )}
+              {profile.user.dateOfBirth && (
+                <p className="flex items-center gap-1.5 text-sm text-[#9898b4] mt-1">
+                  <Cake size={13} className="text-violet-400 flex-shrink-0" />
+                  {new Date(profile.user.dateOfBirth + 'T00:00:00').toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
                 </p>
               )}
               <p className="text-sm text-[#9898b4] mt-0.5">

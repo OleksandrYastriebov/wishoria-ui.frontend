@@ -285,7 +285,7 @@ export default function ProfilePage() {
                   onChange={field.onChange}
                   name={field.name}
                   error={profileErrors.dateOfBirth?.message}
-                  hint="Optional — not shown on your public profile."
+                  hint="Optional — visible on your public profile."
                 />
               )}
             />

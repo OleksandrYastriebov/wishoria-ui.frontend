@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,9 +7,8 @@ import { z } from 'zod';
 import { motion } from 'framer-motion';
 import { Camera, Key, Trash2, AlertTriangle, Trash, Globe, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Layout } from '../components/layout/Layout';
-import { SeoMeta } from '../components/ui/SeoMeta';
 import { Avatar } from '../components/ui/Avatar';
 import { Input } from '../components/ui/Input';
 import { DatePicker } from '../components/ui/DatePicker';
@@ -50,7 +51,7 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export default function ProfilePage() {
   const { user, updateUser, logout } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const uploadMutation = useUploadImage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
@@ -154,7 +155,7 @@ export default function ProfilePage() {
       await deleteAccount(user.id);
       await logout();
       toast.success('Account deleted.');
-      void navigate('/');
+      router.push('/');
     } catch {
       toast.error('Failed to delete account.');
     } finally {
@@ -166,7 +167,6 @@ export default function ProfilePage() {
 
   return (
     <Layout>
-      <SeoMeta title="Account" />
       <div className="max-w-xl mx-auto space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 10 }}

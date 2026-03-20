@@ -24,7 +24,7 @@ export const setAuthFailureHandler = (handler: () => void): void => {
   onAuthFailure = handler;
 };
 
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined ?? '') + '/api/v1';
+const BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '') + '/api/v1';
 
 const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,

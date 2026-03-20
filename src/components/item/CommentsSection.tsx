@@ -1,4 +1,7 @@
+'use client';
+
 import { useRef, useState } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Send, Trash2, Lock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -179,9 +182,9 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
         <div className="flex items-center gap-2 p-3 rounded-xl bg-white/[0.04] border border-white/[0.06]">
           <Lock size={14} className="text-[#55556e]" />
           <p className="text-sm text-[#9898b4]">
-            <a href="/sign-in" className="text-violet-400 hover:text-violet-300 hover:underline font-medium transition-colors">
+            <Link href="/sign-in" className="text-violet-400 hover:text-violet-300 hover:underline font-medium transition-colors">
               Log in
-            </a>{' '}
+            </Link>{' '}
             to join the secret discussion
           </p>
         </div>

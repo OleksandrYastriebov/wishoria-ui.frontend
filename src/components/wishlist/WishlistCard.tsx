@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Globe, Lock, Pencil, Trash2, UserPlus } from 'lucide-react';
 import type { WishListDto } from '../../types';
@@ -39,7 +41,7 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
         className="group relative bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06] hover:border-violet-500/30 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300"
       >
         <Link
-          to={`/wishlists/${wishlist.id}`}
+          href={`/wishlists/${wishlist.id}`}
           className="block relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
           style={{ aspectRatio: wide ? '16/9' : '4/3' }}
         >

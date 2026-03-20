@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, ChevronDown, Calendar } from 'lucide-react';
 import { cn } from '../../utils/cn';

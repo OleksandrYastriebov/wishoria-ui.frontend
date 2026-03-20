@@ -1,6 +1,8 @@
+'use client';
+
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Loader2 } from 'lucide-react';
 import { useUserSearch } from '../../hooks/useUserSearch';
@@ -24,7 +26,7 @@ export function UserSearchDropdown() {
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const debouncedQuery = useDebounce(inputValue, 350);
   const { data: results = [], isFetching } = useUserSearch(debouncedQuery);
@@ -70,9 +72,9 @@ export function UserSearchDropdown() {
     (userId: number) => {
       setIsOpen(false);
       setInputValue('');
-      navigate(`/profile/${userId}`);
+      router.push(`/profile/${userId}`);
     },
-    [navigate]
+    [router]
   );
 
   const handleKeyDown = useCallback(

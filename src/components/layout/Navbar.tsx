@@ -1,4 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Sparkles, LogOut, User, List, Menu, X, Search } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { Avatar } from '../ui/Avatar';
@@ -10,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export function Navbar() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [menuPos, setMenuPos] = useState<{ top: number; right: number } | null>(null);
@@ -38,7 +41,7 @@ export function Navbar() {
     try {
       await logout();
       toast.success('Signed out successfully.');
-      navigate('/');
+      router.push('/');
     } catch {
       toast.error('Failed to sign out.');
     }
@@ -52,7 +55,7 @@ export function Navbar() {
           <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-[#0abfbc]/25 blur-2xl pointer-events-none z-0" />
 
           <Link
-            to={user ? '/wishlists' : '/'}
+            href={user ? '/wishlists' : '/'}
             className="flex items-center gap-2.5 font-bold text-white hover:text-violet-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-lg flex-shrink-0 z-10"
           >
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center shadow-lg shadow-violet-500/30">
@@ -91,10 +94,10 @@ export function Navbar() {
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <Link to="/sign-in" className="px-3 py-1.5 text-sm font-medium text-[#9898b4] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-lg">
+              <Link href="/sign-in" className="px-3 py-1.5 text-sm font-medium text-[#9898b4] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-lg">
                 Sign in
               </Link>
-              <Link to="/sign-up" className="px-3.5 py-1.5 text-sm font-medium text-white bg-violet-600 rounded-xl hover:bg-violet-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080e]">
+              <Link href="/sign-up" className="px-3.5 py-1.5 text-sm font-medium text-white bg-violet-600 rounded-xl hover:bg-violet-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080e]">
                 Get started
               </Link>
             </div>
@@ -120,11 +123,11 @@ export function Navbar() {
                   <p className="text-xs text-[#9898b4] truncate mt-0.5">{user?.email}</p>
                 </div>
                 <div className="py-1.5">
-                  <Link to="/wishlists" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#c8c8da] hover:bg-white/[0.05] hover:text-white transition-colors">
+                  <Link href="/wishlists" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#c8c8da] hover:bg-white/[0.05] hover:text-white transition-colors">
                     <List size={15} className="text-[#9898b4]" />
                     My Wishlists
                   </Link>
-                  <Link to="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#c8c8da] hover:bg-white/[0.05] hover:text-white transition-colors">
+                  <Link href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#c8c8da] hover:bg-white/[0.05] hover:text-white transition-colors">
                     <User size={15} className="text-[#9898b4]" />
                     Profile
                   </Link>
@@ -187,7 +190,7 @@ export function Navbar() {
 
               <div className="py-1.5">
                 <Link
-                  to="/wishlists"
+                  href="/wishlists"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-2.5 px-4 py-3 text-sm text-[#c8c8da] hover:bg-white/[0.05] hover:text-white transition-colors"
                 >
@@ -195,7 +198,7 @@ export function Navbar() {
                   My Wishlists
                 </Link>
                 <Link
-                  to="/profile"
+                  href="/profile"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-2.5 px-4 py-3 text-sm text-[#c8c8da] hover:bg-white/[0.05] hover:text-white transition-colors"
                 >

@@ -1,4 +1,7 @@
-import { useParams, Link, useNavigate } from 'react-router-dom';
+'use client';
+
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Globe, Lock, Package, ChevronRight, Sparkles, Cake } from 'lucide-react';
 import { usePublicProfile } from '../hooks/usePublicProfile';
@@ -7,7 +10,6 @@ import { Layout } from '../components/layout/Layout';
 import { Avatar } from '../components/ui/Avatar';
 import { ImageFallback } from '../components/ui/ImageFallback';
 import { EmptyState } from '../components/ui/EmptyState';
-import { SeoMeta } from '../components/ui/SeoMeta';
 import {
   PublicProfileHeaderSkeleton,
   WishlistCardSkeleton,
@@ -36,8 +38,7 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
       className="group bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06] hover:border-violet-500/30 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300"
     >
       <Link
-        to={`/wishlists/${wishlist.id}`}
-        state={{ fromProfileId: ownerUserId }}
+        href={`/wishlists/${wishlist.id}?fromProfileId=${ownerUserId}`}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-2xl"
       >
         <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
@@ -83,8 +84,9 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
 }
 
 export default function PublicProfilePage() {
-  const { userId } = useParams<{ userId: string }>();
-  const navigate = useNavigate();
+  const params = useParams<{ userId: string }>();
+  const userId = params?.userId;
+  const router = useRouter();
   const { user: currentUser } = useAuth();
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
 
@@ -105,7 +107,7 @@ export default function PublicProfilePage() {
         <div className="text-center py-16 space-y-3">
           <p className="text-[#9898b4] text-sm">User not found or the profile is unavailable.</p>
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => router.back()}
             className="text-violet-400 hover:text-violet-300 hover:underline text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors"
           >
             Go back
@@ -115,22 +117,10 @@ export default function PublicProfilePage() {
     );
   }
 
-  const seoTitle = profile
-    ? `${profile.user.firstName} ${profile.user.lastName}'s wishlists`
-    : undefined;
-  const seoDescription = profile
-    ? `${profile.publicWishlists.filter((w) => w.isPublic).length} public wishlists on Wishoria`
-    : undefined;
-
   return (
     <Layout>
-      <SeoMeta
-        title={seoTitle}
-        description={seoDescription}
-        image={profile?.user.avatarUrl}
-      />
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => router.back()}
         className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded"
       >
         <ArrowLeft size={15} />

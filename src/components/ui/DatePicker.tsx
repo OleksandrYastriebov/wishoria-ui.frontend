@@ -128,7 +128,7 @@ export function DatePicker({
           disabled={disabled}
           onClick={openPicker}
           className={cn(
-            'w-full px-3.5 py-2.5 rounded-xl border text-sm text-left transition-colors flex items-center justify-between',
+            'w-full px-3.5 py-2.5 rounded-xl border text-sm text-left transition-colors flex items-center justify-between cursor-pointer',
             'focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent',
             error
               ? 'border-red-500/50 bg-red-500/10 focus:ring-red-500/60'
@@ -151,14 +151,14 @@ export function DatePicker({
                   <button
                     type="button"
                     onClick={prevMonth}
-                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-[#9898b4] hover:text-white transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-[#9898b4] hover:text-white transition-colors cursor-pointer"
                   >
                     <ChevronLeft size={16} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setView('month')}
-                    className="flex items-center gap-1 text-sm font-semibold text-white hover:text-violet-400 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06]"
+                    className="flex items-center gap-1 text-sm font-semibold text-white hover:text-violet-400 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
                   >
                     {MONTHS[month]} {year}
                     <ChevronDown size={13} className="text-[#55556e]" />
@@ -166,7 +166,7 @@ export function DatePicker({
                   <button
                     type="button"
                     onClick={nextMonth}
-                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-[#9898b4] hover:text-white transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-[#9898b4] hover:text-white transition-colors cursor-pointer"
                   >
                     <ChevronRight size={16} />
                   </button>
@@ -190,7 +190,7 @@ export function DatePicker({
                       type="button"
                       onClick={() => handleDayClick(day)}
                       className={cn(
-                        'w-full aspect-square flex items-center justify-center text-sm rounded-lg transition-colors',
+                        'w-full aspect-square flex items-center justify-center text-sm rounded-lg transition-colors cursor-pointer',
                         isSelected(day)
                           ? 'bg-violet-600 text-white font-semibold'
                           : isToday(day)
@@ -210,7 +210,7 @@ export function DatePicker({
                       onChange?.(null);
                       setIsOpen(false);
                     }}
-                    className="mt-3 w-full text-xs text-[#55556e] hover:text-red-400 transition-colors py-1.5 rounded-lg hover:bg-red-500/5"
+                    className="mt-3 w-full text-xs text-[#55556e] hover:text-red-400 transition-colors py-1.5 rounded-lg hover:bg-red-500/5 cursor-pointer"
                   >
                     Clear date
                   </button>
@@ -225,7 +225,7 @@ export function DatePicker({
                   <button
                     type="button"
                     onClick={() => setView('year')}
-                    className="flex items-center gap-1 text-sm font-semibold text-white hover:text-violet-400 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06]"
+                    className="flex items-center gap-1 text-sm font-semibold text-white hover:text-violet-400 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
                   >
                     {year}
                     <ChevronDown size={13} className="text-[#55556e]" />
@@ -233,7 +233,7 @@ export function DatePicker({
                   <button
                     type="button"
                     onClick={() => setView('calendar')}
-                    className="text-xs text-[#9898b4] hover:text-white transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06]"
+                    className="text-xs text-[#9898b4] hover:text-white transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
                   >
                     Back
                   </button>
@@ -248,7 +248,7 @@ export function DatePicker({
                         setView('calendar');
                       }}
                       className={cn(
-                        'py-2 rounded-xl text-sm transition-colors',
+                        'py-2 rounded-xl text-sm transition-colors cursor-pointer',
                         i === month
                           ? 'bg-violet-600 text-white font-semibold'
                           : 'text-[#c8c8da] hover:bg-white/[0.08]',
@@ -269,7 +269,7 @@ export function DatePicker({
                   <button
                     type="button"
                     onClick={() => setView('month')}
-                    className="text-xs text-[#9898b4] hover:text-white transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06]"
+                    className="text-xs text-[#9898b4] hover:text-white transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
                   >
                     Back
                   </button>
@@ -288,7 +288,7 @@ export function DatePicker({
                         setView('month');
                       }}
                       className={cn(
-                        'w-full py-1.5 rounded-xl text-sm text-center transition-colors',
+                        'w-full py-1.5 rounded-xl text-sm text-center transition-colors cursor-pointer',
                         y === year
                           ? 'bg-violet-600 text-white font-semibold'
                           : 'text-[#c8c8da] hover:bg-white/[0.08]',

@@ -79,7 +79,7 @@ export default function WishlistDetailPage() {
     <Layout>
       <button
         onClick={() => fromProfileId !== undefined ? router.push(`/profile/${fromProfileId}`) : router.back()}
-        className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded"
+        className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded cursor-pointer"
       >
         <ArrowLeft size={15} />
         {fromProfileId !== undefined ? 'Back to profile' : 'Back'}
@@ -148,7 +148,7 @@ export default function WishlistDetailPage() {
                 })}
               </AnimatePresence>
               {isOwner && !atLimit && (
-                <button onClick={() => setIsAddItemOpen(true)} className="rounded-2xl border-2 border-dashed border-white/[0.08] hover:border-violet-500/40 hover:bg-violet-500/5 transition-all duration-200 flex items-center justify-center gap-2 text-[#55556e] hover:text-violet-400 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500">
+                <button onClick={() => setIsAddItemOpen(true)} className="rounded-2xl border-2 border-dashed border-white/[0.08] hover:border-violet-500/40 hover:bg-violet-500/5 transition-all duration-200 flex items-center justify-center gap-2 text-[#55556e] hover:text-violet-400 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer">
                   <Plus size={20} strokeWidth={1.5} /><span className="text-sm font-medium">Add item</span>
                 </button>
               )}

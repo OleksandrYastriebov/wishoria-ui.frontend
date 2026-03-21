@@ -33,14 +33,14 @@ export function ConfirmModal({
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-[#c8c8da] bg-white/[0.07] rounded-lg hover:bg-white/[0.12] active:bg-white/[0.15] transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+            className="px-4 py-2 text-sm font-medium text-[#c8c8da] bg-white/[0.07] rounded-lg hover:bg-white/[0.12] active:bg-white/[0.15] transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 cursor-pointer disabled:cursor-not-allowed"
           >
             {cancelLabel}
           </button>
           <button
             onClick={onConfirm}
             disabled={isLoading}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 ${
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 cursor-pointer disabled:cursor-not-allowed ${
               isDestructive
                 ? 'bg-red-600 text-white hover:bg-red-500 active:bg-red-700 focus-visible:ring-red-500'
                 : 'bg-violet-600 text-white hover:bg-violet-500 active:bg-violet-700 focus-visible:ring-violet-500'

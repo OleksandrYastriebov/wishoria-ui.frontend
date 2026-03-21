@@ -123,7 +123,7 @@ export function UserSearchDropdown() {
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.1 }}
               onClick={handleClear}
-              className="text-[#55556e] hover:text-[#9898b4] active:text-white transition-colors focus-visible:outline-none rounded ml-auto flex-shrink-0"
+              className="text-[#55556e] hover:text-[#9898b4] active:text-white transition-colors focus-visible:outline-none rounded ml-auto flex-shrink-0 cursor-pointer"
               aria-label="Clear search"
             >
               <X size={13} />
@@ -167,7 +167,7 @@ export function UserSearchDropdown() {
                     >
                       <button
                         onClick={() => handleSelectUser(user.id)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] active:bg-white/[0.1] transition-colors text-left focus-visible:outline-none focus-visible:bg-white/[0.06]"
+                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] active:bg-white/[0.1] transition-colors text-left focus-visible:outline-none focus-visible:bg-white/[0.06] cursor-pointer"
                       >
                         <Avatar
                           src={user.avatarUrl}

@@ -43,7 +43,7 @@ export function Button({
     <button
       disabled={disabled || isLoading}
       className={cn(
-        'inline-flex items-center justify-center font-medium rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none',
+        'inline-flex items-center justify-center font-medium rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 select-none cursor-pointer disabled:cursor-not-allowed',
         variantClasses[variant],
         sizeClasses[size],
         className

@@ -180,7 +180,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
                   setImageRemoved(true);
                   pendingFileRef.current = null;
                 }}
-                className="absolute top-2 right-2 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2"
+                className="absolute top-2 right-2 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
               >
                 Remove
               </button>
@@ -189,7 +189,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full h-20 rounded-xl border-2 border-dashed border-white/[0.08] flex flex-col items-center justify-center gap-1 text-[#55556e] hover:text-violet-400 hover:border-violet-500/40 transition-colors"
+              className="w-full h-20 rounded-xl border-2 border-dashed border-white/[0.08] flex flex-col items-center justify-center gap-1 text-[#55556e] hover:text-violet-400 hover:border-violet-500/40 transition-colors cursor-pointer"
             >
               <ImageIcon size={18} />
               <span className="text-xs">Upload image</span>
@@ -200,7 +200,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 mt-1 transition-colors"
+              className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 mt-1 transition-colors cursor-pointer"
             >
               <Upload size={12} />
               Replace
@@ -251,7 +251,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
                 type="button"
                 onClick={() => void handleGenerateDescription()}
                 disabled={isGenerating || isLoading}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-1 focus-visible:ring-offset-[#111118] disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-violet-500 to-purple-500 text-white hover:from-violet-600 hover:to-purple-600 active:from-violet-700 active:to-purple-700 shadow-sm"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-1 focus-visible:ring-offset-[#111118] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer bg-gradient-to-r from-violet-500 to-purple-500 text-white hover:from-violet-600 hover:to-purple-600 active:from-violet-700 active:to-purple-700 shadow-sm"
               >
                 {isGenerating ? (
                   <>

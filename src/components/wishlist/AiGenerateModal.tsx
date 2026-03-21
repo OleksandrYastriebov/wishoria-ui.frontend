@@ -124,7 +124,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
               <button
                 type="button"
                 onClick={() => setValue('isPublic', false)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                   !isPublic
                     ? 'bg-violet-600 text-white'
                     : 'bg-[#18181f] text-[#9898b4] hover:bg-white/[0.06] hover:text-white'
@@ -136,7 +136,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
               <button
                 type="button"
                 onClick={() => setValue('isPublic', true)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                   isPublic
                     ? 'bg-violet-600 text-white'
                     : 'bg-[#18181f] text-[#9898b4] hover:bg-white/[0.06] hover:text-white'
@@ -151,7 +151,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
           <button
             type="submit"
             disabled={generateMutation.isPending}
-            className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:from-violet-700 active:to-purple-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080e] shadow-lg shadow-violet-500/20"
+            className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:from-violet-700 active:to-purple-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080e] shadow-lg shadow-violet-500/20"
           >
             <Sparkles size={15} />
             Generate Wishlist

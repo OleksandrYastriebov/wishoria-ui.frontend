@@ -111,7 +111,7 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
                     <button
                       type="button"
                       onMouseDown={() => handleSelectSuggestion(user)}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.05] transition-colors text-left"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.05] transition-colors text-left cursor-pointer"
                     >
                       {user.avatarUrl ? (
                         <div className="relative w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
@@ -181,7 +181,7 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
                   <button
                     onClick={() => handleRevoke(email)}
                     disabled={revokingEmail === email}
-                    className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                    className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 cursor-pointer disabled:cursor-not-allowed"
                     aria-label={`Remove ${email}`}
                   >
                     <UserMinus size={14} />

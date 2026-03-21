@@ -77,7 +77,7 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
             {!wishlist.isPublic && (
               <button
                 onClick={() => onShare(wishlist)}
-                className="p-1.5 rounded-lg text-[#9898b4] hover:text-violet-400 hover:bg-violet-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+                className="p-1.5 rounded-lg text-[#9898b4] hover:text-violet-400 hover:bg-violet-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
                 aria-label="Share wishlist"
               >
                 <UserPlus size={14} />
@@ -85,14 +85,14 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
             )}
             <button
               onClick={() => onEdit(wishlist)}
-              className="p-1.5 rounded-lg text-[#9898b4] hover:text-white hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+              className="p-1.5 rounded-lg text-[#9898b4] hover:text-white hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
               aria-label="Edit wishlist"
             >
               <Pencil size={14} />
             </button>
             <button
               onClick={() => setConfirmDelete(true)}
-              className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+              className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 cursor-pointer"
               aria-label="Delete wishlist"
             >
               <Trash2 size={14} />

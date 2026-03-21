@@ -105,14 +105,14 @@ export function ItemCard({
               <div className="flex items-center gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity">
                 <button
                   onClick={() => onEdit(item)}
-                  className="p-1.5 rounded-lg text-[#9898b4] hover:text-white hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+                  className="p-1.5 rounded-lg text-[#9898b4] hover:text-white hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
                   aria-label="Edit item"
                 >
                   <Pencil size={13} />
                 </button>
                 <button
                   onClick={() => setConfirmDelete(true)}
-                  className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                  className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 cursor-pointer"
                   aria-label="Delete item"
                 >
                   <Trash2 size={13} />
@@ -140,8 +140,8 @@ export function ItemCard({
                 isReservedByOther
                   ? 'text-[#55556e] cursor-not-allowed'
                   : item.isChecked
-                  ? 'text-emerald-400 hover:text-emerald-300'
-                  : 'text-[#9898b4] hover:text-emerald-400'
+                  ? 'text-emerald-400 hover:text-emerald-300 cursor-pointer'
+                  : 'text-[#9898b4] hover:text-emerald-400 cursor-pointer'
               }`}
             >
               {isReservedByOther ? (
@@ -169,7 +169,7 @@ export function ItemCard({
             {!isOwner && (
               <button
                 onClick={() => onOpenComments(item)}
-                className="flex items-center gap-1 text-xs text-[#55556e] hover:text-[#9898b4] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded ml-auto"
+                className="flex items-center gap-1 text-xs text-[#55556e] hover:text-[#9898b4] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded ml-auto cursor-pointer"
               >
                 <MessageCircle size={13} />
                 Discuss

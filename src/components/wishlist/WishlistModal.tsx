@@ -126,7 +126,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
                     setValue('imageUrl', '');
                     setImageRemoved(true);
                   }}
-                  className="absolute top-2 right-2 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2"
+                  className="absolute top-2 right-2 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
                 >
                   Remove
                 </button>
@@ -135,7 +135,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full h-24 rounded-xl border-2 border-dashed border-white/[0.08] flex flex-col items-center justify-center gap-1.5 text-[#55556e] hover:text-violet-400 hover:border-violet-500/40 transition-colors"
+                className="w-full h-24 rounded-xl border-2 border-dashed border-white/[0.08] flex flex-col items-center justify-center gap-1.5 text-[#55556e] hover:text-violet-400 hover:border-violet-500/40 transition-colors cursor-pointer"
               >
                 <ImageIcon size={20} />
                 <span className="text-xs">Upload cover image</span>
@@ -154,7 +154,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 mt-1 transition-colors"
+              className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 mt-1 transition-colors cursor-pointer"
             >
               <Upload size={12} />
               Replace image

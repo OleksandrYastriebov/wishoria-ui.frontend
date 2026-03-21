@@ -108,7 +108,7 @@ export default function PublicProfilePage() {
           <p className="text-[#9898b4] text-sm">User not found or the profile is unavailable.</p>
           <button
             onClick={() => router.back()}
-            className="text-violet-400 hover:text-violet-300 hover:underline text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors"
+            className="text-violet-400 hover:text-violet-300 hover:underline text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors cursor-pointer"
           >
             Go back
           </button>
@@ -121,7 +121,7 @@ export default function PublicProfilePage() {
     <Layout>
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded"
+        className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded cursor-pointer"
       >
         <ArrowLeft size={15} />
         Back
@@ -186,7 +186,7 @@ export default function PublicProfilePage() {
               <div className="absolute bottom-6 right-6">
                 <button
                   onClick={() => setIsGiftModalOpen(true)}
-                  className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 flex-shrink-0 overflow-hidden group"
+                  className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 flex-shrink-0 overflow-hidden group cursor-pointer"
                 >
                   <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <Sparkles size={15} className="relative z-10" />

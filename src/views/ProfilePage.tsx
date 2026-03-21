@@ -194,7 +194,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadMutation.isPending}
-                className="absolute bottom-0 right-0 p-1.5 rounded-full bg-violet-600 text-white hover:bg-violet-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 disabled:opacity-60"
+                className="absolute bottom-0 right-0 p-1.5 rounded-full bg-violet-600 text-white hover:bg-violet-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                 aria-label="Change avatar"
               >
                 <Camera size={12} />
@@ -203,7 +203,7 @@ export default function ProfilePage() {
                 <button
                   onClick={() => void handleDeleteAvatar()}
                   disabled={uploadMutation.isPending || isDeletingAvatar}
-                  className="absolute bottom-0 left-0 p-1.5 rounded-full bg-red-600 text-white hover:bg-red-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-60"
+                  className="absolute bottom-0 left-0 p-1.5 rounded-full bg-red-600 text-white hover:bg-red-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                   aria-label="Remove avatar"
                 >
                   <Trash size={12} />
@@ -229,7 +229,7 @@ export default function ProfilePage() {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploadMutation.isPending}
-                  className="text-xs text-violet-400 hover:text-violet-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors disabled:opacity-60"
+                  className="text-xs text-violet-400 hover:text-violet-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                 >
                   {uploadMutation.isPending ? 'Uploading...' : 'Change photo'}
                 </button>
@@ -327,7 +327,7 @@ export default function ProfilePage() {
                 role="switch"
                 aria-checked={isPrivateValue}
                 onClick={() => setProfileValue('isPrivate', !isPrivateValue)}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer ${
                   isPrivateValue ? 'bg-violet-600' : 'bg-white/10'
                 }`}
               >

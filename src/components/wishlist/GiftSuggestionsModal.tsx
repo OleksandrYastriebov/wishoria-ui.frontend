@@ -124,7 +124,7 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
           <div className="px-6 pb-6">
             <button
               onClick={onClose}
-              className="w-full py-2.5 rounded-xl text-sm font-medium text-[#9898b4] bg-white/[0.05] hover:bg-white/[0.08] hover:text-white border border-white/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+              className="w-full py-2.5 rounded-xl text-sm font-medium text-[#9898b4] bg-white/[0.05] hover:bg-white/[0.08] hover:text-white border border-white/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
             >
               Close
             </button>

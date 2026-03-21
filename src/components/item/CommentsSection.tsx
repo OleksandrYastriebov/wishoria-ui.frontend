@@ -68,7 +68,7 @@ function CommentItem({
         <button
           onClick={() => onDelete(comment.id)}
           disabled={isDeleting}
-          className="flex-shrink-0 p-1 rounded-md opacity-0 group-hover:opacity-100 text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+          className="flex-shrink-0 p-1 rounded-md opacity-0 group-hover:opacity-100 text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 cursor-pointer disabled:cursor-not-allowed"
           aria-label="Delete comment"
         >
           <Trash2 size={12} />
@@ -171,7 +171,7 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
             <button
               type="submit"
               disabled={!text.trim() || createMutation.isPending}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-lg text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-lg text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
               aria-label="Send comment"
             >
               <Send size={14} />

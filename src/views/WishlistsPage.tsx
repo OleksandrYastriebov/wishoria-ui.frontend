@@ -54,7 +54,7 @@ export default function WishlistsPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsAiOpen(true)}
-              className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-purple-600 rounded-xl hover:from-violet-500 hover:to-purple-500 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080e] shadow-lg shadow-violet-500/20 overflow-hidden"
+              className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-purple-600 rounded-xl hover:from-violet-500 hover:to-purple-500 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080e] shadow-lg shadow-violet-500/20 overflow-hidden cursor-pointer"
             >
               <motion.span
                 className="absolute inset-0 bg-white/20"
@@ -115,7 +115,7 @@ export default function WishlistsPage() {
           {!atLimit && (
             <button
               onClick={() => setIsCreateOpen(true)}
-              className="rounded-2xl border-2 border-dashed border-white/[0.08] hover:border-violet-500/40 hover:bg-violet-500/5 transition-all duration-200 flex flex-col items-center justify-center gap-2 text-[#55556e] hover:text-violet-400 min-h-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+              className="rounded-2xl border-2 border-dashed border-white/[0.08] hover:border-violet-500/40 hover:bg-violet-500/5 transition-all duration-200 flex flex-col items-center justify-center gap-2 text-[#55556e] hover:text-violet-400 min-h-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
             >
               <Plus size={28} strokeWidth={1.5} />
               <span className="text-sm font-medium">Add wishlist</span>

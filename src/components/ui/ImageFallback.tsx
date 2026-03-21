@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '../../utils/cn';
 import { withCloudinaryResize } from '../../utils/cloudinary';
@@ -69,10 +70,11 @@ export function ImageFallback({
   return (
     <div ref={containerRef} className={cn('relative overflow-hidden', className)}>
       {showImage && (
-        <img
+        <Image
           src={resolvedSrc!}
           alt={alt}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
           onError={() => setImgError(true)}
         />
       )}

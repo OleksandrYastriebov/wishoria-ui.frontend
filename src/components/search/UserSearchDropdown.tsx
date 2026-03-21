@@ -111,6 +111,7 @@ export function UserSearchDropdown() {
           className="bg-transparent text-sm text-white placeholder:text-white/25 outline-none flex-1 min-w-0"
           aria-label="Search users"
           aria-expanded={showDropdown}
+          aria-controls="user-search-listbox"
           aria-autocomplete="list"
           role="combobox"
         />
@@ -150,6 +151,7 @@ export function UserSearchDropdown() {
                 zIndex: 9999,
               }}
               className="bg-[#18181f] rounded-xl shadow-2xl shadow-black/50 border border-white/[0.08] overflow-hidden"
+              id="user-search-listbox"
               role="listbox"
               aria-label="Search results"
             >

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { cn } from '../../utils/cn';
 import { useState, useEffect } from 'react';
 
@@ -52,16 +53,15 @@ export function Avatar({ src, firstName, lastName, size = 'md', className }: Ava
 
   if (src && !imageError) {
     return (
-      <img
-        src={src}
-        alt={`${firstName ?? ''} ${lastName ?? ''}`}
-        className={cn(
-          'rounded-full object-cover flex-shrink-0',
-          sizeClass,
-          className
-        )}
-        onError={() => setImageError(true)}
-      />
+      <div className={cn('relative rounded-full flex-shrink-0 overflow-hidden', sizeClass, className)}>
+        <Image
+          src={src}
+          alt={`${firstName ?? ''} ${lastName ?? ''}`}
+          fill
+          className="object-cover"
+          onError={() => setImageError(true)}
+        />
+      </div>
     );
   }
 

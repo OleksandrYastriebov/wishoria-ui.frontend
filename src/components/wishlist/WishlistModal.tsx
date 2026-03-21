@@ -112,6 +112,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
           <div className="relative">
             {(previewUrl ?? imageUrlValue) ? (
               <div className="relative w-full h-32 rounded-xl overflow-hidden border border-white/[0.08] mb-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={previewUrl ?? imageUrlValue}
                   alt="Preview"

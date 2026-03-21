@@ -10,6 +10,7 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { Skeleton } from '../ui/SkeletonLoader';
 import { isAxiosError } from 'axios';
+import Image from 'next/image';
 import { useWishlistAccess, useGrantAccess, useRevokeAccess } from '../../hooks/useWishlistAccess';
 import { useUserAutocomplete } from '../../hooks/useUserAutocomplete';
 import type { UserAutocompleteDto } from '../../types';
@@ -113,11 +114,14 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
                       className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.05] transition-colors text-left"
                     >
                       {user.avatarUrl ? (
-                        <img
-                          src={user.avatarUrl}
-                          alt={`${user.firstName} ${user.lastName}`}
-                          className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-                        />
+                        <div className="relative w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
+                          <Image
+                            src={user.avatarUrl}
+                            alt={`${user.firstName} ${user.lastName}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0">
                           <span className="text-xs text-violet-400 font-medium">

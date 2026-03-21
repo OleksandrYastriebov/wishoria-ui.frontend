@@ -4,6 +4,7 @@ import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'Wishoria — Beautiful wishlists, made to share',
+  icons: { icon: '/favicon.svg' },
   description:
     'Create and share beautiful wishlists for any occasion. With AI, secret coordination and elegant design.',
   openGraph: {

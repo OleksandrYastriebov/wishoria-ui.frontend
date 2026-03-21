@@ -165,6 +165,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
           <label className="text-sm font-medium text-[#c8c8da] block mb-2">Image</label>
           {(previewUrl ?? imageUrlValue) ? (
             <div className="relative w-full h-28 rounded-xl overflow-hidden border border-white/[0.08] mb-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewUrl ?? imageUrlValue}
                 alt="Preview"

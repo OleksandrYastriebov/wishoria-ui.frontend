@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import WishlistDetailPage from '../../../../src/views/WishlistDetailPage';
 
@@ -59,4 +60,10 @@ export async function generateMetadata({
   }
 }
 
-export default WishlistDetailPage;
+export default function Page() {
+  return (
+    <Suspense>
+      <WishlistDetailPage />
+    </Suspense>
+  );
+}

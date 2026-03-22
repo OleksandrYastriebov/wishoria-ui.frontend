@@ -173,15 +173,15 @@ export default function ProfilePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <h1 className="text-2xl font-bold text-white mb-1">Profile</h1>
-          <p className="text-sm text-[#9898b4]">Manage your account settings</p>
+          <h1 className="text-2xl font-bold text-stone-900 mb-1">Profile</h1>
+          <p className="text-sm text-stone-500">Manage your account settings</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05 }}
-          className="bg-[#111118] rounded-2xl border border-white/[0.06] p-6"
+          className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-6"
         >
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -194,7 +194,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadMutation.isPending}
-                className="absolute bottom-0 right-0 p-1.5 rounded-full bg-violet-600 text-white hover:bg-violet-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
+                className="absolute bottom-0 right-0 p-1.5 rounded-full bg-amber-500 text-white hover:bg-amber-400 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                 aria-label="Change avatar"
               >
                 <Camera size={12} />
@@ -211,11 +211,11 @@ export default function ProfilePage() {
               )}
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-white">
+              <p className="font-semibold text-stone-900">
                 {user.firstName} {user.lastName}
               </p>
-              <p className="text-sm text-[#9898b4]">{user.email}</p>
-              <p className="text-xs text-[#55556e] mt-0.5">
+              <p className="text-sm text-stone-500">{user.email}</p>
+              <p className="text-xs text-stone-400 mt-0.5">
                 {user.dateOfBirth
                   ? new Intl.DateTimeFormat('en-US', {
                       year: 'numeric',
@@ -229,12 +229,12 @@ export default function ProfilePage() {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploadMutation.isPending}
-                  className="text-xs text-violet-400 hover:text-violet-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
+                  className="text-xs text-amber-600 hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded transition-colors disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                 >
                   {uploadMutation.isPending ? 'Uploading...' : 'Change photo'}
                 </button>
               </div>
-              <p className="text-xs text-[#55556e] mt-0.5">Max file size: 5 MB</p>
+              <p className="text-xs text-stone-400 mt-0.5">Max file size: 5 MB</p>
             </div>
           </div>
           <input
@@ -250,9 +250,9 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="bg-[#111118] rounded-2xl border border-white/[0.06] p-6"
+          className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-6"
         >
-          <h2 className="text-base font-semibold text-white mb-4">Personal Information</h2>
+          <h2 className="text-base font-semibold text-stone-900 mb-4">Personal Information</h2>
           <form
             onSubmit={(e) => void handleProfile(onProfileSave)(e)}
             className="space-y-4"
@@ -290,32 +290,32 @@ export default function ProfilePage() {
               )}
             />
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-[#c8c8da]">
+              <label className="text-sm font-medium text-stone-600">
                 Profile description
               </label>
               <textarea
                 rows={3}
                 maxLength={1000}
                 placeholder="Tell others a bit about yourself..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.05] text-sm text-white placeholder:text-white/25 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent hover:border-white/[0.14] resize-none"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 bg-white/60 text-sm text-stone-900 placeholder:text-stone-300 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent hover:border-stone-300 resize-none"
                 {...regProfile('profileDescription')}
               />
               {profileErrors.profileDescription && (
-                <p className="text-xs text-red-400">{profileErrors.profileDescription.message}</p>
+                <p className="text-xs text-red-500">{profileErrors.profileDescription.message}</p>
               )}
             </div>
-            <div className="flex items-center justify-between p-3.5 rounded-xl border border-white/[0.08] bg-white/[0.03]">
+            <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-200 bg-white/40">
               <div className="flex items-center gap-3">
                 {isPrivateValue ? (
-                  <Lock size={16} className="text-violet-400 flex-shrink-0" />
+                  <Lock size={16} className="text-amber-500 flex-shrink-0" />
                 ) : (
-                  <Globe size={16} className="text-emerald-400 flex-shrink-0" />
+                  <Globe size={16} className="text-emerald-500 flex-shrink-0" />
                 )}
                 <div>
-                  <p className="text-sm font-medium text-white">
+                  <p className="text-sm font-medium text-stone-900">
                     {isPrivateValue ? 'Private profile' : 'Public profile'}
                   </p>
-                  <p className="text-xs text-[#9898b4]">
+                  <p className="text-xs text-stone-500">
                     {isPrivateValue
                       ? 'Only people you share wishlists with can view your profile'
                       : 'Anyone can find and view your profile'}
@@ -327,8 +327,8 @@ export default function ProfilePage() {
                 role="switch"
                 aria-checked={isPrivateValue}
                 onClick={() => setProfileValue('isPrivate', !isPrivateValue)}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer ${
-                  isPrivateValue ? 'bg-violet-600' : 'bg-white/10'
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer ${
+                  isPrivateValue ? 'bg-amber-500' : 'bg-stone-200'
                 }`}
               >
                 <span
@@ -350,10 +350,10 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.15 }}
-          className="bg-[#111118] rounded-2xl border border-white/[0.06] p-6"
+          className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-6"
         >
-          <h2 className="text-base font-semibold text-white mb-1">Security</h2>
-          <p className="text-sm text-[#9898b4] mb-4">Manage your password</p>
+          <h2 className="text-base font-semibold text-stone-900 mb-1">Security</h2>
+          <p className="text-sm text-stone-500 mb-4">Manage your password</p>
           <Button
             variant="secondary"
             leftIcon={<Key size={15} />}
@@ -370,10 +370,10 @@ export default function ProfilePage() {
           className="bg-red-500/5 rounded-2xl border border-red-500/20 p-6"
         >
           <div className="flex items-center gap-2 mb-1">
-            <AlertTriangle size={16} className="text-red-400" />
-            <h2 className="text-base font-semibold text-red-400">Danger Zone</h2>
+            <AlertTriangle size={16} className="text-red-500" />
+            <h2 className="text-base font-semibold text-red-500">Danger Zone</h2>
           </div>
-          <p className="text-sm text-[#9898b4] mb-4">
+          <p className="text-sm text-stone-500 mb-4">
             Permanently delete your account and all associated data. This cannot be undone.
           </p>
           <Button
@@ -418,7 +418,7 @@ export default function ProfilePage() {
             {...regPassword('confirmPassword')}
           />
           {passwordErrors.root && (
-            <p className="text-sm text-red-400">{passwordErrors.root.message}</p>
+            <p className="text-sm text-red-500">{passwordErrors.root.message}</p>
           )}
           <div className="flex gap-3">
             <Button
@@ -451,20 +451,20 @@ export default function ProfilePage() {
       >
         <div className="p-6">
           <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 mb-4">
-            <p className="text-sm text-red-300 leading-relaxed">
+            <p className="text-sm text-red-600 leading-relaxed">
               This will permanently delete your account, all wishlists, items, and comments.
               <strong> This action cannot be undone.</strong>
             </p>
           </div>
-          <p className="text-sm text-[#9898b4] mb-3">
-            Type <strong className="text-white">DELETE</strong> to confirm:
+          <p className="text-sm text-stone-500 mb-3">
+            Type <strong className="text-stone-900">DELETE</strong> to confirm:
           </p>
           <input
             type="text"
             value={deleteConfirmText}
             onChange={(e) => setDeleteConfirmText(e.target.value)}
             placeholder="DELETE"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.05] text-white placeholder:text-white/25 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
+            className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 bg-white/60 text-stone-900 placeholder:text-stone-300 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
           />
           <div className="flex gap-3">
             <Button

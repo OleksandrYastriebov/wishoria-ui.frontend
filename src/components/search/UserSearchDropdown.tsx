@@ -92,11 +92,11 @@ export function UserSearchDropdown() {
       <div
         className={cn(
           'flex items-center gap-2 h-9 px-3 rounded-xl border transition-all duration-200',
-          'bg-white/[0.04] border-white/[0.08]',
-          'focus-within:bg-white/[0.07] focus-within:border-violet-500/50 focus-within:shadow-sm focus-within:shadow-violet-500/10'
+          'bg-white/70 backdrop-blur-sm border-stone-200/80',
+          'focus-within:bg-white/90 focus-within:border-amber-400/70 focus-within:shadow-sm focus-within:shadow-amber-500/10'
         )}
       >
-        <Search size={14} className="text-[#55556e] flex-shrink-0" />
+        <Search size={14} className="text-stone-400 flex-shrink-0" />
         <input
           ref={inputRef}
           type="text"
@@ -108,7 +108,7 @@ export function UserSearchDropdown() {
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder="Search people..."
-          className="bg-transparent text-sm text-white placeholder:text-white/25 outline-none flex-1 min-w-0"
+          className="bg-transparent text-sm text-stone-900 placeholder:text-stone-400/60 outline-none flex-1 min-w-0"
           aria-label="Search users"
           aria-expanded={showDropdown}
           aria-controls="user-search-listbox"
@@ -123,7 +123,7 @@ export function UserSearchDropdown() {
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.1 }}
               onClick={handleClear}
-              className="text-[#55556e] hover:text-[#9898b4] active:text-white transition-colors focus-visible:outline-none rounded ml-auto flex-shrink-0 cursor-pointer"
+              className="text-stone-400 hover:text-stone-600 active:text-stone-900 transition-colors focus-visible:outline-none rounded ml-auto flex-shrink-0 cursor-pointer"
               aria-label="Clear search"
             >
               <X size={13} />
@@ -131,7 +131,7 @@ export function UserSearchDropdown() {
           )}
         </AnimatePresence>
         {isFetching && debouncedQuery.trim().length >= 2 && (
-          <Loader2 size={13} className="text-violet-400 animate-spin flex-shrink-0" />
+          <Loader2 size={13} className="text-amber-500 animate-spin flex-shrink-0" />
         )}
       </div>
 
@@ -150,7 +150,7 @@ export function UserSearchDropdown() {
                 width: dropdownPos.width,
                 zIndex: 9999,
               }}
-              className="bg-[#18181f] rounded-xl shadow-2xl shadow-black/50 border border-white/[0.08] overflow-hidden"
+              className="bg-white/85 backdrop-blur-2xl rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/70 overflow-hidden"
               id="user-search-listbox"
               role="listbox"
               aria-label="Search results"
@@ -167,7 +167,7 @@ export function UserSearchDropdown() {
                     >
                       <button
                         onClick={() => handleSelectUser(user.id)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.06] active:bg-white/[0.1] transition-colors text-left focus-visible:outline-none focus-visible:bg-white/[0.06] cursor-pointer"
+                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-black/[0.04] active:bg-black/[0.07] transition-colors text-left focus-visible:outline-none focus-visible:bg-black/[0.04] cursor-pointer"
                       >
                         <Avatar
                           src={user.avatarUrl}
@@ -176,7 +176,7 @@ export function UserSearchDropdown() {
                           size="sm"
                         />
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-[#c8c8da] truncate">
+                          <p className="text-sm font-medium text-stone-900 truncate">
                             {user.firstName} {user.lastName}
                           </p>
                         </div>
@@ -188,14 +188,14 @@ export function UserSearchDropdown() {
 
               {showEmpty && (
                 <div className="px-4 py-4 text-center">
-                  <p className="text-sm text-[#55556e]">No users found</p>
+                  <p className="text-sm text-stone-400">No users found</p>
                 </div>
               )}
 
               {isFetching && !showResults && (
                 <div className="px-4 py-4 flex items-center justify-center gap-2">
-                  <Loader2 size={14} className="text-violet-400 animate-spin" />
-                  <span className="text-sm text-[#9898b4]">Searching...</span>
+                  <Loader2 size={14} className="text-amber-500 animate-spin" />
+                  <span className="text-sm text-stone-500">Searching...</span>
                 </div>
               )}
             </motion.div>

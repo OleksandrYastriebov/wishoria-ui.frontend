@@ -35,11 +35,11 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: index * 0.06 }}
-      className="group bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06] hover:border-violet-500/30 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300"
+      className="group bg-white/60 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:border-amber-400/40 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300"
     >
       <Link
         href={`/wishlists/${wishlist.id}?fromProfileId=${ownerUserId}`}
-        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-2xl"
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded-2xl"
       >
         <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
           <ImageFallback
@@ -47,7 +47,7 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
             alt={wishlist.title}
             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d14] via-[#0d0d14]/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-stone-900/20 to-transparent" />
 
           <div className="absolute bottom-0 left-0 right-0 p-4">
             <h3 className="font-bold text-white text-base truncate drop-shadow-sm flex items-center gap-1">
@@ -59,21 +59,21 @@ function ProfileWishlistCard({ wishlist, ownerUserId, index }: ProfileWishlistCa
             </h3>
             <div className="flex items-center gap-3 mt-1">
               {wishlist.isPublic ? (
-                <span className="flex items-center gap-1 text-xs text-white/50">
+                <span className="flex items-center gap-1 text-xs text-white/60">
                   <Globe size={10} className="text-emerald-400" />
                   Public
                 </span>
               ) : (
-                <span className="flex items-center gap-1 text-xs text-white/50">
-                  <Lock size={10} className="text-violet-400" />
+                <span className="flex items-center gap-1 text-xs text-white/60">
+                  <Lock size={10} className="text-amber-400" />
                   Shared with you
                 </span>
               )}
-              <span className="text-xs text-white/40">
+              <span className="text-xs text-white/50">
                 {itemCount} {itemCount === 1 ? 'item' : 'items'}
               </span>
               {itemCount > 0 && (
-                <span className="text-xs text-white/40">{checkedCount} reserved</span>
+                <span className="text-xs text-white/50">{checkedCount} reserved</span>
               )}
             </div>
           </div>
@@ -105,10 +105,10 @@ export default function PublicProfilePage() {
     return (
       <Layout>
         <div className="text-center py-16 space-y-3">
-          <p className="text-[#9898b4] text-sm">User not found or the profile is unavailable.</p>
+          <p className="text-stone-500 text-sm">User not found or the profile is unavailable.</p>
           <button
             onClick={() => router.back()}
-            className="text-violet-400 hover:text-violet-300 hover:underline text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded transition-colors cursor-pointer"
+            className="text-amber-600 hover:text-amber-500 hover:underline text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded transition-colors cursor-pointer"
           >
             Go back
           </button>
@@ -121,7 +121,7 @@ export default function PublicProfilePage() {
     <Layout>
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded cursor-pointer"
+        className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded cursor-pointer"
       >
         <ArrowLeft size={15} />
         Back
@@ -142,7 +142,7 @@ export default function PublicProfilePage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-[#111118] rounded-2xl border border-white/[0.06] p-6 flex items-center gap-5 relative"
+            className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-6 flex items-center gap-5 relative"
           >
             <Avatar
               src={profile.user.avatarUrl}
@@ -151,17 +151,17 @@ export default function PublicProfilePage() {
               size="xl"
             />
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-stone-900">
                 {profile.user.firstName} {profile.user.lastName}
               </h1>
               {profile.user.profileDescription && (
-                <p className="text-sm text-[#c8c8da] mt-1 line-clamp-2">
+                <p className="text-sm text-stone-600 mt-1 line-clamp-2">
                   {profile.user.profileDescription}
                 </p>
               )}
               {profile.user.dateOfBirth && (
-                <p className="flex items-center gap-1.5 text-sm text-[#9898b4] mt-1">
-                  <Cake size={13} className="text-violet-400 flex-shrink-0" />
+                <p className="flex items-center gap-1.5 text-sm text-stone-500 mt-1">
+                  <Cake size={13} className="text-amber-500 flex-shrink-0" />
                   {new Date(profile.user.dateOfBirth + 'T00:00:00').toLocaleDateString('en-US', {
                     month: 'long',
                     day: 'numeric',
@@ -169,7 +169,7 @@ export default function PublicProfilePage() {
                   })}
                 </p>
               )}
-              <p className="text-sm text-[#9898b4] mt-0.5">
+              <p className="text-sm text-stone-500 mt-0.5">
                 {profile.publicWishlists.filter((w) => w.isPublic).length}{' '}
                 {profile.publicWishlists.filter((w) => w.isPublic).length === 1
                   ? 'public wishlist'
@@ -186,7 +186,7 @@ export default function PublicProfilePage() {
               <div className="absolute bottom-6 right-6">
                 <button
                   onClick={() => setIsGiftModalOpen(true)}
-                  className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 flex-shrink-0 overflow-hidden group cursor-pointer"
+                  className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 flex-shrink-0 overflow-hidden group cursor-pointer"
                 >
                   <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <Sparkles size={15} className="relative z-10" />
@@ -206,7 +206,7 @@ export default function PublicProfilePage() {
           )}
 
           <div>
-            <h2 className="text-base font-semibold text-[#c8c8da] mb-3">Wishlists</h2>
+            <h2 className="text-base font-semibold text-stone-600 mb-3">Wishlists</h2>
 
             {profile.publicWishlists.length === 0 ? (
               <EmptyState

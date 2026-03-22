@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.60);
+  --glass-border: rgba(255, 255, 255, 0.70);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.90);
+  --color-accent: #f59e0b;
+  --color-text-primary: #1c1917;
+  --color-text-secondary: #78716c;
+  --color-text-muted: #a8a29e;
+  --color-bg: #fefdf8;
+}
+
 * {
   box-sizing: border-box;
 }

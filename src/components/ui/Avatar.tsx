@@ -21,10 +21,10 @@ const sizeClasses = {
 };
 
 const colorPalette = [
-  'bg-violet-500',
+  'bg-amber-500',
   'bg-blue-500',
   'bg-emerald-500',
-  'bg-amber-500',
+  'bg-violet-500',
   'bg-pink-500',
   'bg-indigo-500',
   'bg-teal-500',
@@ -40,7 +40,7 @@ function getInitials(firstName?: string, lastName?: string): string {
 function getColor(firstName?: string, lastName?: string): string {
   const name = (firstName ?? '') + (lastName ?? '');
   const idx = name.charCodeAt(0) % colorPalette.length;
-  return colorPalette[idx] ?? 'bg-violet-500';
+  return colorPalette[idx] ?? 'bg-amber-500';
 }
 
 export function Avatar({ src, firstName, lastName, size = 'md', className }: AvatarProps) {

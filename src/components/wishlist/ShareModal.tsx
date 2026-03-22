@@ -105,13 +105,13 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
               onFocus={() => emailValue.trim().length >= 2 && setShowDropdown(true)}
             />
             {hasSuggestions && (
-              <ul className="absolute z-50 left-0 right-0 mt-1 bg-[#12121f] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden">
+              <ul className="absolute z-50 left-0 right-0 mt-1 bg-white/90 backdrop-blur-xl border border-white/70 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.10)] overflow-hidden">
                 {suggestions!.map((user) => (
                   <li key={user.id}>
                     <button
                       type="button"
                       onMouseDown={() => handleSelectSuggestion(user)}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.05] transition-colors text-left cursor-pointer"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-stone-50 transition-colors text-left cursor-pointer"
                     >
                       {user.avatarUrl ? (
                         <div className="relative w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
@@ -123,17 +123,17 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
                           />
                         </div>
                       ) : (
-                        <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs text-violet-400 font-medium">
+                        <div className="w-7 h-7 rounded-full bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+                          <span className="text-xs text-amber-600 font-medium">
                             {user.firstName[0]}{user.lastName[0]}
                           </span>
                         </div>
                       )}
                       <div className="min-w-0">
-                        <p className="text-sm text-[#c8c8da] font-medium truncate">
+                        <p className="text-sm text-stone-900 font-medium truncate">
                           {user.firstName} {user.lastName}
                         </p>
-                        <p className="text-xs text-[#55556e] truncate">{user.email}</p>
+                        <p className="text-xs text-stone-400 truncate">{user.email}</p>
                       </div>
                     </button>
                   </li>
@@ -152,7 +152,7 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
         </form>
 
         <div>
-          <h4 className="text-sm font-medium text-[#c8c8da] mb-3">
+          <h4 className="text-sm font-medium text-stone-600 mb-3">
             People with access
           </h4>
 
@@ -162,7 +162,7 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
               <Skeleton className="h-10 w-full" />
             </div>
           ) : !accessData || accessData.emails.length === 0 ? (
-            <p className="text-sm text-[#55556e] py-4 text-center">
+            <p className="text-sm text-stone-400 py-4 text-center">
               No one has access yet. Invite someone above.
             </p>
           ) : (
@@ -170,18 +170,18 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
               {accessData.emails.map((email) => (
                 <li
                   key={email}
-                  className="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+                  className="flex items-center justify-between px-3 py-2 rounded-xl bg-stone-50 border border-stone-100"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <div className="w-7 h-7 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0">
-                      <Mail size={13} className="text-violet-400" />
+                    <div className="w-7 h-7 rounded-full bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+                      <Mail size={13} className="text-amber-500" />
                     </div>
-                    <span className="text-sm text-[#c8c8da] truncate">{email}</span>
+                    <span className="text-sm text-stone-600 truncate">{email}</span>
                   </div>
                   <button
                     onClick={() => handleRevoke(email)}
                     disabled={revokingEmail === email}
-                    className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 cursor-pointer disabled:cursor-not-allowed"
+                    className="p-1.5 rounded-lg text-stone-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 cursor-pointer disabled:cursor-not-allowed"
                     aria-label={`Remove ${email}`}
                   >
                     <UserMinus size={14} />

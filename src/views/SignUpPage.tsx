@@ -68,27 +68,27 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#08080e]">
+    <div className="min-h-screen bg-[#fefdf8]">
       <Navbar />
       <div className="relative flex items-center justify-center px-4 py-12">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.08)_0%,_transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(245,158,11,0.07)_0%,_transparent_70%)] pointer-events-none" />
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="w-full max-w-sm relative">
-          <div className="bg-[#111118] rounded-2xl border border-white/[0.07] shadow-2xl shadow-black/40 p-8">
+          <div className="bg-white/70 backdrop-blur-2xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-8">
             <AnimatePresence mode="wait">
               {success ? (
                 <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="text-center">
-                  <div className="w-14 h-14 rounded-2xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center mx-auto mb-4"><Mail size={26} className="text-violet-400" /></div>
-                  <h2 className="text-xl font-bold text-white mb-2">Check your email</h2>
-                  <p className="text-sm text-[#9898b4] leading-relaxed mb-6">We&apos;ve sent a confirmation link to <strong className="text-white font-medium">{registeredEmail}</strong>. Click it to activate your account.</p>
+                  <div className="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center mx-auto mb-4"><Mail size={26} className="text-amber-500" /></div>
+                  <h2 className="text-xl font-bold text-stone-900 mb-2">Check your email</h2>
+                  <p className="text-sm text-stone-500 leading-relaxed mb-6">We&apos;ve sent a confirmation link to <strong className="text-stone-900 font-medium">{registeredEmail}</strong>. Click it to activate your account.</p>
                   <Button variant="secondary" onClick={() => void handleResend()} disabled={countdown > 0 || resending} isLoading={resending} leftIcon={<RefreshCw size={14} />} className="w-full">
                     {countdown > 0 ? `Resend in ${countdown}s` : 'Resend confirmation email'}
                   </Button>
-                  <p className="text-sm text-[#9898b4] text-center mt-5">Already confirmed?{' '}<Link href="/sign-in" className="text-violet-400 font-medium hover:text-violet-300">Sign in</Link></p>
+                  <p className="text-sm text-stone-500 text-center mt-5">Already confirmed?{' '}<Link href="/sign-in" className="text-amber-600 font-medium hover:text-amber-500">Sign in</Link></p>
                 </motion.div>
               ) : (
                 <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <h1 className="text-xl font-bold text-white mb-1">Create account</h1>
-                  <p className="text-sm text-[#9898b4] mb-6">Start organizing your wishlists today</p>
+                  <h1 className="text-xl font-bold text-stone-900 mb-1">Create account</h1>
+                  <p className="text-sm text-stone-500 mb-6">Start organizing your wishlists today</p>
                   <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="space-y-3">
                     <div className="grid grid-cols-2 gap-3">
                       <Input label="First name" autoComplete="given-name" placeholder="Alex" error={errors.firstName?.message} {...register('firstName')} />
@@ -98,7 +98,7 @@ export default function SignUpPage() {
                     <Input label="Password" type="password" autoComplete="new-password" placeholder="Min 8 characters" error={errors.password?.message} {...register('password')} />
                     <Button type="submit" className="w-full" size="lg" isLoading={isSubmitting}>Create account</Button>
                   </form>
-                  <p className="text-sm text-[#9898b4] text-center mt-5">Already have an account?{' '}<Link href="/sign-in" className="text-violet-400 font-medium hover:text-violet-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded">Sign in</Link></p>
+                  <p className="text-sm text-stone-500 text-center mt-5">Already have an account?{' '}<Link href="/sign-in" className="text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded">Sign in</Link></p>
                 </motion.div>
               )}
             </AnimatePresence>

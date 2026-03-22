@@ -15,17 +15,17 @@ interface ImageFallbackProps {
 }
 
 const gradients: [string, string][] = [
-  ['from-violet-950', 'to-purple-900'],
-  ['from-blue-950', 'to-indigo-900'],
-  ['from-emerald-950', 'to-teal-900'],
-  ['from-amber-950', 'to-orange-900'],
-  ['from-pink-950', 'to-rose-900'],
-  ['from-sky-950', 'to-cyan-900'],
+  ['from-amber-100', 'to-orange-200'],
+  ['from-blue-100', 'to-indigo-200'],
+  ['from-emerald-100', 'to-teal-200'],
+  ['from-rose-100', 'to-pink-200'],
+  ['from-violet-100', 'to-purple-200'],
+  ['from-sky-100', 'to-cyan-200'],
 ];
 
 function pickGradient(seed: string): [string, string] {
   const idx = (seed.charCodeAt(0) ?? 0) % gradients.length;
-  return gradients[idx] ?? ['from-violet-950', 'to-purple-900'];
+  return gradients[idx] ?? ['from-amber-100', 'to-orange-200'];
 }
 
 export function ImageFallback({
@@ -90,7 +90,7 @@ export function ImageFallback({
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          className="w-8 h-8 text-white/20 select-none"
+          className="w-8 h-8 text-stone-400 select-none"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.2"
@@ -101,7 +101,7 @@ export function ImageFallback({
           <path d="M5 22v-6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6" />
           <line x1="3" y1="22" x2="21" y2="22" />
         </svg>
-        <span className="text-white/30 text-xs font-medium select-none tracking-widest uppercase">
+        <span className="text-stone-400 text-xs font-medium select-none tracking-widest uppercase">
           {displayInitials}
         </span>
       </div>

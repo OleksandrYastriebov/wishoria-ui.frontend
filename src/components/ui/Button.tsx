@@ -13,13 +13,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses = {
   primary:
-    'bg-violet-600 text-white hover:bg-violet-500 active:bg-violet-700 focus-visible:ring-violet-500 focus-visible:ring-offset-[#08080e] disabled:bg-violet-900 disabled:text-violet-400',
+    'bg-amber-500 text-white hover:bg-amber-400 active:bg-amber-600 focus-visible:ring-amber-500 focus-visible:ring-offset-[#fefdf8] disabled:bg-amber-200 disabled:text-amber-400 shadow-sm shadow-amber-500/30',
   secondary:
-    'bg-white/[0.07] text-[#c8c8da] hover:bg-white/[0.12] active:bg-white/[0.15] focus-visible:ring-white/30 disabled:opacity-40',
+    'bg-white/60 backdrop-blur-sm text-stone-700 border border-white/70 hover:bg-white/80 active:bg-white/90 focus-visible:ring-amber-400 shadow-[0_2px_8px_rgba(0,0,0,0.06)] disabled:opacity-40',
   ghost:
-    'bg-transparent text-[#9898b4] hover:bg-white/[0.06] hover:text-white active:bg-white/[0.1] focus-visible:ring-white/30 disabled:opacity-40',
+    'bg-transparent text-stone-500 hover:bg-black/[0.05] hover:text-stone-900 active:bg-black/[0.08] focus-visible:ring-amber-400 disabled:opacity-40',
   danger:
-    'bg-red-600 text-white hover:bg-red-500 active:bg-red-700 focus-visible:ring-red-500 focus-visible:ring-offset-[#08080e] disabled:bg-red-900 disabled:text-red-400',
+    'bg-red-500 text-white hover:bg-red-400 active:bg-red-600 focus-visible:ring-red-500 focus-visible:ring-offset-[#fefdf8] disabled:bg-red-200 disabled:text-red-400',
 };
 
 const sizeClasses = {

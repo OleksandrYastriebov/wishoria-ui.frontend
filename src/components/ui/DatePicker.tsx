@@ -117,7 +117,7 @@ export function DatePicker({
   return (
     <div className="flex flex-col gap-1.5" ref={containerRef}>
       {label && (
-        <label htmlFor={inputId} className="text-sm font-medium text-[#c8c8da]">
+        <label htmlFor={inputId} className="text-sm font-medium text-stone-600">
           {label}
         </label>
       )}
@@ -129,21 +129,21 @@ export function DatePicker({
           onClick={openPicker}
           className={cn(
             'w-full px-3.5 py-2.5 rounded-xl border text-sm text-left transition-colors flex items-center justify-between cursor-pointer',
-            'focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent',
+            'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent',
             error
-              ? 'border-red-500/50 bg-red-500/10 focus:ring-red-500/60'
-              : 'border-white/[0.08] bg-white/[0.05] hover:border-white/[0.14]',
+              ? 'border-red-400/50 bg-red-50 focus:ring-red-500/60'
+              : 'border-stone-200 bg-white/60 hover:border-stone-300',
             'disabled:opacity-40 disabled:cursor-not-allowed',
           )}
         >
-          <span className={value ? 'text-white' : 'text-white/25'}>
+          <span className={value ? 'text-stone-900' : 'text-stone-300'}>
             {value ? formatDisplay(value) : placeholder}
           </span>
-          <Calendar size={15} className="text-[#55556e] flex-shrink-0" />
+          <Calendar size={15} className="text-stone-400 flex-shrink-0" />
         </button>
 
         {isOpen && (
-          <div className="absolute z-50 mt-1.5 w-72 rounded-2xl border border-white/[0.08] bg-[#0d0d14] shadow-2xl shadow-black/60 p-3">
+          <div className="absolute z-50 mt-1.5 w-72 rounded-2xl border border-white/70 bg-white/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-3">
             {/* Calendar view */}
             {view === 'calendar' && (
               <>
@@ -151,22 +151,22 @@ export function DatePicker({
                   <button
                     type="button"
                     onClick={prevMonth}
-                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-[#9898b4] hover:text-white transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
                   >
                     <ChevronLeft size={16} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setView('month')}
-                    className="flex items-center gap-1 text-sm font-semibold text-white hover:text-violet-400 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
+                    className="flex items-center gap-1 text-sm font-semibold text-stone-900 hover:text-amber-600 transition-colors px-2 py-1 rounded-lg hover:bg-stone-100 cursor-pointer"
                   >
                     {MONTHS[month]} {year}
-                    <ChevronDown size={13} className="text-[#55556e]" />
+                    <ChevronDown size={13} className="text-stone-400" />
                   </button>
                   <button
                     type="button"
                     onClick={nextMonth}
-                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-[#9898b4] hover:text-white transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
                   >
                     <ChevronRight size={16} />
                   </button>
@@ -174,7 +174,7 @@ export function DatePicker({
 
                 <div className="grid grid-cols-7 mb-1">
                   {DAYS.map((d) => (
-                    <div key={d} className="text-center text-[11px] text-[#55556e] font-medium py-1">
+                    <div key={d} className="text-center text-[11px] text-stone-400 font-medium py-1">
                       {d}
                     </div>
                   ))}
@@ -192,10 +192,10 @@ export function DatePicker({
                       className={cn(
                         'w-full aspect-square flex items-center justify-center text-sm rounded-lg transition-colors cursor-pointer',
                         isSelected(day)
-                          ? 'bg-violet-600 text-white font-semibold'
+                          ? 'bg-amber-500 text-white font-semibold'
                           : isToday(day)
-                            ? 'border border-violet-500/50 text-violet-400 hover:bg-violet-600/20'
-                            : 'text-[#c8c8da] hover:bg-white/[0.08]',
+                            ? 'border border-amber-400/50 text-amber-600 hover:bg-amber-500/10'
+                            : 'text-stone-600 hover:bg-stone-100',
                       )}
                     >
                       {day}
@@ -210,7 +210,7 @@ export function DatePicker({
                       onChange?.(null);
                       setIsOpen(false);
                     }}
-                    className="mt-3 w-full text-xs text-[#55556e] hover:text-red-400 transition-colors py-1.5 rounded-lg hover:bg-red-500/5 cursor-pointer"
+                    className="mt-3 w-full text-xs text-stone-400 hover:text-red-500 transition-colors py-1.5 rounded-lg hover:bg-red-50 cursor-pointer"
                   >
                     Clear date
                   </button>
@@ -225,15 +225,15 @@ export function DatePicker({
                   <button
                     type="button"
                     onClick={() => setView('year')}
-                    className="flex items-center gap-1 text-sm font-semibold text-white hover:text-violet-400 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
+                    className="flex items-center gap-1 text-sm font-semibold text-stone-900 hover:text-amber-600 transition-colors px-2 py-1 rounded-lg hover:bg-stone-100 cursor-pointer"
                   >
                     {year}
-                    <ChevronDown size={13} className="text-[#55556e]" />
+                    <ChevronDown size={13} className="text-stone-400" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setView('calendar')}
-                    className="text-xs text-[#9898b4] hover:text-white transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
+                    className="text-xs text-stone-500 hover:text-stone-900 transition-colors px-2 py-1 rounded-lg hover:bg-stone-100 cursor-pointer"
                   >
                     Back
                   </button>
@@ -250,8 +250,8 @@ export function DatePicker({
                       className={cn(
                         'py-2 rounded-xl text-sm transition-colors cursor-pointer',
                         i === month
-                          ? 'bg-violet-600 text-white font-semibold'
-                          : 'text-[#c8c8da] hover:bg-white/[0.08]',
+                          ? 'bg-amber-500 text-white font-semibold'
+                          : 'text-stone-600 hover:bg-stone-100',
                       )}
                     >
                       {m}
@@ -265,18 +265,18 @@ export function DatePicker({
             {view === 'year' && (
               <>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-semibold text-white px-2">Select year</span>
+                  <span className="text-sm font-semibold text-stone-900 px-2">Select year</span>
                   <button
                     type="button"
                     onClick={() => setView('month')}
-                    className="text-xs text-[#9898b4] hover:text-white transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.06] cursor-pointer"
+                    className="text-xs text-stone-500 hover:text-stone-900 transition-colors px-2 py-1 rounded-lg hover:bg-stone-100 cursor-pointer"
                   >
                     Back
                   </button>
                 </div>
                 <div
                   ref={yearListRef}
-                  className="h-52 overflow-y-auto space-y-0.5 pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full"
+                  className="h-52 overflow-y-auto space-y-0.5 pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-stone-200 [&::-webkit-scrollbar-thumb]:rounded-full"
                 >
                   {YEARS.map((y) => (
                     <button
@@ -290,8 +290,8 @@ export function DatePicker({
                       className={cn(
                         'w-full py-1.5 rounded-xl text-sm text-center transition-colors cursor-pointer',
                         y === year
-                          ? 'bg-violet-600 text-white font-semibold'
-                          : 'text-[#c8c8da] hover:bg-white/[0.08]',
+                          ? 'bg-amber-500 text-white font-semibold'
+                          : 'text-stone-600 hover:bg-stone-100',
                       )}
                     >
                       {y}
@@ -303,8 +303,8 @@ export function DatePicker({
           </div>
         )}
       </div>
-      {hint && !error && <p className="text-xs text-[#9898b4]">{hint}</p>}
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {hint && !error && <p className="text-xs text-stone-500">{hint}</p>}
+      {error && <p className="text-xs text-red-500">{error}</p>}
       {/* Hidden input for native form compatibility */}
       <input type="hidden" name={name} value={value ?? ''} />
     </div>

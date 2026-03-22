@@ -49,7 +49,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="absolute inset-0 bg-black/70 backdrop-blur-md"
+            className="absolute inset-0 bg-black/30 backdrop-blur-md"
             onClick={onClose}
           />
 
@@ -59,7 +59,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
             exit={{ opacity: 0, scale: 0.95, y: 8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'relative w-full bg-[#111118] rounded-2xl shadow-2xl shadow-black/60 border border-white/[0.08] z-10 overflow-hidden',
+              'relative w-full bg-white/55 backdrop-blur-2xl rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 z-10 overflow-hidden',
               sizeClasses[size],
               className
             )}
@@ -68,11 +68,11 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
             aria-label={title}
           >
             {title && (
-              <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
-                <h2 className="text-lg font-semibold text-white">{title}</h2>
+              <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.06]">
+                <h2 className="text-lg font-semibold text-stone-900">{title}</h2>
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg text-[#9898b4] hover:text-white hover:bg-white/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
+                  className="p-1.5 rounded-lg text-stone-400 hover:text-stone-900 hover:bg-black/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
                   aria-label="Close"
                 >
                   <X size={18} />

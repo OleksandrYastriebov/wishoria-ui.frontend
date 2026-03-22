@@ -30,15 +30,17 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
   return (
     <Modal isOpen={isOpen} onClose={mutation.isPending ? () => {} : onClose} size="md">
       <div className="relative overflow-hidden">
-        <div className="bg-gradient-to-br from-violet-600 to-purple-700 px-6 py-5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-            <Gift size={18} className="text-white" />
-          </div>
-          <div>
-            <h2 className="text-base font-semibold text-white">Magic Gift Ideas</h2>
-            <p className="text-xs text-violet-200 mt-0.5">
-              AI-powered suggestions for {userName}
-            </p>
+        <div className="relative px-6 py-5 border-b border-black/[0.06] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 via-orange-300/10 to-transparent pointer-events-none" />
+          <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-amber-400/10 blur-2xl pointer-events-none" />
+          <div className="relative flex items-center gap-4">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-md shadow-amber-500/30">
+              <Gift size={20} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-stone-900">Magic Gift Ideas</h2>
+              <p className="text-xs text-stone-500 mt-0.5">AI-powered suggestions for {userName}</p>
+            </div>
           </div>
         </div>
 
@@ -53,11 +55,11 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
                 className="flex flex-col items-center justify-center gap-4 py-8"
               >
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-full border-[3px] border-violet-500/30 border-t-violet-500 animate-spin" />
-                  <Sparkles size={16} className="absolute inset-0 m-auto text-violet-400" />
+                  <div className="w-12 h-12 rounded-full border-[3px] border-amber-500/30 border-t-amber-500 animate-spin" />
+                  <Sparkles size={16} className="absolute inset-0 m-auto text-amber-500" />
                 </div>
-                <p className="text-sm font-medium text-white">Generating gift ideas...</p>
-                <p className="text-xs text-[#9898b4]">This may take a few seconds</p>
+                <p className="text-sm font-medium text-stone-900">Generating gift ideas...</p>
+                <p className="text-xs text-stone-500">This may take a few seconds</p>
               </motion.div>
             )}
 
@@ -69,9 +71,9 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center gap-3 py-8 text-center"
               >
-                <Gift size={28} className="text-[#55556e]" />
-                <p className="text-sm font-medium text-white">No suggestions available</p>
-                <p className="text-xs text-[#9898b4]">
+                <Gift size={28} className="text-stone-300" />
+                <p className="text-sm font-medium text-stone-900">No suggestions available</p>
+                <p className="text-xs text-stone-500">
                   Encourage {userName} to fill out their profile for better results.
                 </p>
               </motion.div>
@@ -85,7 +87,7 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
                 exit={{ opacity: 0 }}
                 className="flex flex-col gap-2"
               >
-                <p className="text-xs text-[#9898b4] mb-1">
+                <p className="text-xs text-stone-500 mb-1">
                   Here are some ideas you might consider gifting:
                 </p>
                 {suggestions.map((suggestion, i) => (
@@ -94,12 +96,12 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06 }}
-                    className="flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-3"
+                    className="flex items-start gap-3 rounded-xl border border-stone-100 bg-stone-50 px-4 py-3"
                   >
-                    <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center text-[10px] font-bold text-violet-400">
+                    <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-amber-500/20 flex items-center justify-center text-[10px] font-bold text-amber-600">
                       {i + 1}
                     </span>
-                    <span className="text-sm text-[#c8c8da]">{suggestion}</span>
+                    <span className="text-sm text-stone-600">{suggestion}</span>
                   </motion.div>
                 ))}
               </motion.div>
@@ -113,8 +115,8 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center gap-3 py-8 text-center"
               >
-                <p className="text-sm font-medium text-white">Could not generate suggestions</p>
-                <p className="text-xs text-[#9898b4]">Please try again later.</p>
+                <p className="text-sm font-medium text-stone-900">Could not generate suggestions</p>
+                <p className="text-xs text-stone-500">Please try again later.</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -124,7 +126,7 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
           <div className="px-6 pb-6">
             <button
               onClick={onClose}
-              className="w-full py-2.5 rounded-xl text-sm font-medium text-[#9898b4] bg-white/[0.05] hover:bg-white/[0.08] hover:text-white border border-white/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
+              className="w-full py-2.5 rounded-xl text-sm font-medium text-stone-500 bg-stone-100 hover:bg-stone-200 hover:text-stone-900 border border-stone-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
             >
               Close
             </button>

@@ -57,13 +57,13 @@ export default function WishlistDetailPage() {
         <div className="text-center py-16 space-y-3">
           {!user ? (
             <>
-              <p className="text-[#9898b4]">Sign in to view this wishlist.</p>
-              <Link href="/sign-in" className="inline-flex items-center gap-2 px-4 py-2 mt-1 text-sm font-medium text-white bg-violet-600 rounded-xl hover:bg-violet-500 transition-colors">Sign in</Link>
+              <p className="text-stone-500">Sign in to view this wishlist.</p>
+              <Link href="/sign-in" className="inline-flex items-center gap-2 px-4 py-2 mt-1 text-sm font-medium text-white bg-amber-500 rounded-xl hover:bg-amber-400 transition-colors">Sign in</Link>
             </>
           ) : (
             <>
-              <p className="text-[#9898b4]">Wishlist not found or access denied.</p>
-              <Link href="/wishlists" className="text-violet-400 hover:text-violet-300 hover:underline inline-block text-sm transition-colors">Back to wishlists</Link>
+              <p className="text-stone-500">Wishlist not found or access denied.</p>
+              <Link href="/wishlists" className="text-amber-600 hover:text-amber-500 hover:underline inline-block text-sm transition-colors">Back to wishlists</Link>
             </>
           )}
         </div>
@@ -79,7 +79,7 @@ export default function WishlistDetailPage() {
     <Layout>
       <button
         onClick={() => fromProfileId !== undefined ? router.push(`/profile/${fromProfileId}`) : router.back()}
-        className="flex items-center gap-1.5 text-sm text-[#9898b4] hover:text-white transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded cursor-pointer"
+        className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 transition-colors mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded cursor-pointer"
       >
         <ArrowLeft size={15} />
         {fromProfileId !== undefined ? 'Back to profile' : 'Back'}
@@ -87,11 +87,11 @@ export default function WishlistDetailPage() {
 
       {isLoading ? (
         <div className="space-y-6">
-          <div className="bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06]">
-            <div className="w-full h-48 bg-white/[0.07] animate-pulse" />
+          <div className="bg-white/60 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+            <div className="w-full h-48 bg-stone-200/60 animate-pulse" />
             <div className="p-5 space-y-2">
-              <div className="h-6 w-1/3 bg-white/[0.07] rounded animate-pulse" />
-              <div className="h-4 w-1/4 bg-white/[0.07] rounded animate-pulse" />
+              <div className="h-6 w-1/3 bg-stone-200/60 rounded animate-pulse" />
+              <div className="h-4 w-1/4 bg-stone-200/60 rounded animate-pulse" />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -100,24 +100,24 @@ export default function WishlistDetailPage() {
         </div>
       ) : wishlist ? (
         <div className="space-y-6">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06]">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-white/60 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]">
             <div className="relative">
               <ImageFallback src={wishlist.imageUrl} alt={wishlist.title} className="w-full h-48 sm:h-64" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d14] via-[#0d0d14]/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-stone-900/10 to-transparent" />
             </div>
             <div className="p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="min-w-0">
                 <div ref={titleRef} className="relative min-w-0 overflow-hidden" title={titleOverflowing ? wishlist.title : undefined}>
-                  <h1 className="text-xl font-bold text-white whitespace-nowrap">{wishlist.title}</h1>
-                  {titleOverflowing && <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#111118] to-transparent pointer-events-none" />}
+                  <h1 className="text-xl font-bold text-stone-900 whitespace-nowrap">{wishlist.title}</h1>
+                  {titleOverflowing && <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white/60 to-transparent pointer-events-none" />}
                 </div>
-                <p className="text-sm text-[#9898b4] mt-0.5">
+                <p className="text-sm text-stone-500 mt-0.5">
                   {items.length} {items.length === 1 ? 'item' : 'items'}
                   {items.filter((i) => i.isChecked).length > 0 && ` · ${items.filter((i) => i.isChecked).length} reserved`}
                 </p>
               </div>
               <div className="flex flex-col items-end gap-2 shrink-0">
-                <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium border ${wishlist.isPublic ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' : 'bg-white/[0.06] text-white/40 border-white/[0.08]'}`}>
+                <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium border ${wishlist.isPublic ? 'bg-emerald-500/15 text-emerald-600 border-emerald-500/20' : 'bg-stone-100 text-stone-400 border-stone-200'}`}>
                   {wishlist.isPublic ? <Globe size={10} /> : <Lock size={10} />}
                   {wishlist.isPublic ? 'Public' : 'Private'}
                 </span>
@@ -148,7 +148,7 @@ export default function WishlistDetailPage() {
                 })}
               </AnimatePresence>
               {isOwner && !atLimit && (
-                <button onClick={() => setIsAddItemOpen(true)} className="rounded-2xl border-2 border-dashed border-white/[0.08] hover:border-violet-500/40 hover:bg-violet-500/5 transition-all duration-200 flex items-center justify-center gap-2 text-[#55556e] hover:text-violet-400 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer">
+                <button onClick={() => setIsAddItemOpen(true)} className="rounded-2xl border-2 border-dashed border-stone-200 hover:border-amber-400/60 hover:bg-amber-500/5 transition-all duration-200 flex items-center justify-center gap-2 text-stone-400 hover:text-amber-500 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer">
                   <Plus size={20} strokeWidth={1.5} /><span className="text-sm font-medium">Add item</span>
                 </button>
               )}
@@ -173,10 +173,10 @@ export default function WishlistDetailPage() {
 
       <Modal isOpen={requireAuthOpen} onClose={() => setRequireAuthOpen(false)} title="Sign in required" size="sm">
         <div className="px-6 py-5 text-center">
-          <p className="text-sm text-[#9898b4] mb-5">You need to sign in or create an account to mark items as reserved.</p>
+          <p className="text-sm text-stone-500 mb-5">You need to sign in or create an account to mark items as reserved.</p>
           <div className="flex gap-3">
-            <Link href="/sign-in" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-violet-600 rounded-xl hover:bg-violet-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"><LogIn size={15} />Sign in</Link>
-            <Link href="/sign-up" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-[#c8c8da] bg-white/[0.07] rounded-xl hover:bg-white/[0.12] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"><UserPlusIcon size={15} />Sign up</Link>
+            <Link href="/sign-in" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-amber-500 rounded-xl hover:bg-amber-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"><LogIn size={15} />Sign in</Link>
+            <Link href="/sign-up" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-stone-600 bg-stone-100 rounded-xl hover:bg-stone-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-300"><UserPlusIcon size={15} />Sign up</Link>
           </div>
         </div>
       </Modal>

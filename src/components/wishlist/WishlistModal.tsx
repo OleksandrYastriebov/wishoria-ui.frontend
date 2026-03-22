@@ -108,10 +108,10 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
     <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit Wishlist' : 'New Wishlist'}>
       <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="p-6 space-y-4">
         <div>
-          <label className="text-sm font-medium text-[#c8c8da] block mb-2">Cover Image</label>
+          <label className="text-sm font-medium text-stone-800 block mb-2">Cover Image</label>
           <div className="relative">
             {(previewUrl ?? imageUrlValue) ? (
-              <div className="relative w-full h-32 rounded-xl overflow-hidden border border-white/[0.08] mb-2">
+              <div className="relative w-full h-32 rounded-xl overflow-hidden border border-stone-200 mb-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={previewUrl ?? imageUrlValue}
@@ -135,11 +135,11 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full h-24 rounded-xl border-2 border-dashed border-white/[0.08] flex flex-col items-center justify-center gap-1.5 text-[#55556e] hover:text-violet-400 hover:border-violet-500/40 transition-colors cursor-pointer"
+                className="w-full h-24 rounded-xl border-2 border-dashed border-stone-300 flex flex-col items-center justify-center gap-1.5 text-stone-500 hover:text-stone-700 hover:border-stone-400/60 transition-colors cursor-pointer"
               >
                 <ImageIcon size={20} />
                 <span className="text-xs">Upload cover image</span>
-                <span className="text-[11px] text-[#55556e]">or paste (Ctrl+V)</span>
+                <span className="text-[11px] text-stone-500">or paste (Ctrl+V)</span>
               </button>
             )}
             <input
@@ -154,13 +154,13 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 mt-1 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-xs text-amber-600 hover:text-amber-500 mt-1 transition-colors cursor-pointer"
             >
               <Upload size={12} />
               Replace image
             </button>
           )}
-          <p className="text-xs text-[#55556e] mt-1.5">Max file size: 5 MB</p>
+          <p className="text-xs text-stone-500 mt-1.5">Max file size: 5 MB</p>
         </div>
 
         <Input
@@ -170,10 +170,10 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
           {...register('title')}
         />
 
-        <div className="flex items-center justify-between p-3.5 rounded-xl border border-white/[0.08] hover:border-white/[0.14] transition-colors bg-white/[0.03]">
+        <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-300 hover:border-stone-400 transition-colors bg-white/60">
           <div>
-            <p className="text-sm font-medium text-[#c8c8da]">Public wishlist</p>
-            <p className="text-xs text-[#9898b4] mt-0.5">Anyone with the link can view it</p>
+            <p className="text-sm font-medium text-stone-900">Public wishlist</p>
+            <p className="text-xs text-stone-500 mt-0.5">Anyone with the link can view it</p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
@@ -181,7 +181,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
               className="sr-only peer"
               {...register('isPublic')}
             />
-            <div className="w-10 h-6 bg-white/[0.1] peer-focus:ring-2 peer-focus:ring-violet-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600" />
+            <div className="w-10 h-6 bg-stone-200 peer-focus:ring-2 peer-focus:ring-amber-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500" />
           </label>
         </div>
 

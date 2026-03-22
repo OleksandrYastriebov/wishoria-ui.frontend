@@ -61,40 +61,42 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
 
   return (
     <Modal isOpen={isOpen} onClose={generateMutation.isPending ? () => {} : onClose} size="md">
-      <div className="relative overflow-hidden">
+      <div className="relative">
         <AnimatePresence>
           {generateMutation.isPending && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-[#111118]/90 backdrop-blur-sm rounded-2xl"
+              className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-white/70 backdrop-blur-sm rounded-2xl"
             >
               <div className="relative">
-                <div className="w-12 h-12 rounded-full border-[3px] border-violet-500/30 border-t-violet-500 animate-spin" />
-                <Sparkles size={16} className="absolute inset-0 m-auto text-violet-400" />
+                <div className="w-12 h-12 rounded-full border-[3px] border-amber-500/30 border-t-amber-500 animate-spin" />
+                <Sparkles size={16} className="absolute inset-0 m-auto text-amber-500" />
               </div>
-              <p className="text-sm font-medium text-white">Generating your wishlist...</p>
-              <p className="text-xs text-[#9898b4]">This may take a few seconds</p>
+              <p className="text-sm font-medium text-stone-900">Generating your wishlist...</p>
+              <p className="text-xs text-stone-500">This may take a few seconds</p>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="bg-gradient-to-br from-violet-600 to-purple-700 px-6 py-5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-            <Sparkles size={18} className="text-white" />
-          </div>
-          <div>
-            <h2 className="text-base font-semibold text-white">Generate with AI</h2>
-            <p className="text-xs text-violet-200 mt-0.5">
-              Describe your wishlist and AI will create it for you
-            </p>
+        <div className="relative px-6 py-5 border-b border-black/[0.06] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 via-orange-300/10 to-transparent pointer-events-none" />
+          <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-amber-400/10 blur-2xl pointer-events-none" />
+          <div className="relative flex items-center gap-4">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-md shadow-amber-500/30">
+              <Sparkles size={20} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-stone-900">Generate with AI</h2>
+              <p className="text-xs text-stone-500 mt-0.5">Describe your wishlist and AI will create it for you</p>
+            </div>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 flex flex-col gap-5">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-[#c8c8da]">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
+          <div>
+            <label className="text-sm font-medium text-stone-800 block mb-2">
               Describe your wishlist
             </label>
             <textarea
@@ -102,60 +104,57 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
               rows={4}
               maxLength={500}
               placeholder="e.g. Birthday wishlist for a tech enthusiast who loves gaming and smart home devices, budget around $500..."
-              className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.05] px-3.5 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition hover:border-white/[0.14]"
+              className="w-full resize-none rounded-xl border border-stone-300 bg-white/60 px-3.5 py-3 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition hover:border-stone-400"
             />
-            <div className="flex items-start justify-between gap-2">
+            <div className="flex items-start justify-between gap-2 mt-1">
               {errors.description ? (
-                <p className="text-xs text-red-400">{errors.description.message}</p>
+                <p className="text-xs text-red-500">{errors.description.message}</p>
               ) : (
                 <span />
               )}
-              <span
-                className={`text-xs tabular-nums flex-shrink-0 ${isNearLimit ? 'text-red-400' : 'text-[#55556e]'}`}
-              >
+              <span className={`text-xs tabular-nums flex-shrink-0 ${isNearLimit ? 'text-red-500' : 'text-stone-400'}`}>
                 {charsLeft} / 500
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-[#c8c8da]">Visibility</span>
-            <div className="flex rounded-lg border border-white/[0.1] overflow-hidden">
-              <button
-                type="button"
-                onClick={() => setValue('isPublic', false)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
-                  !isPublic
-                    ? 'bg-violet-600 text-white'
-                    : 'bg-[#18181f] text-[#9898b4] hover:bg-white/[0.06] hover:text-white'
-                }`}
-              >
-                <Lock size={12} />
-                Private
-              </button>
-              <button
-                type="button"
-                onClick={() => setValue('isPublic', true)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
-                  isPublic
-                    ? 'bg-violet-600 text-white'
-                    : 'bg-[#18181f] text-[#9898b4] hover:bg-white/[0.06] hover:text-white'
-                }`}
-              >
-                <Globe size={12} />
-                Public
-              </button>
+          <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-300 hover:border-stone-400 transition-colors bg-white/60">
+            <div className="flex items-center gap-2">
+              {isPublic ? <Globe size={15} className="text-stone-500" /> : <Lock size={15} className="text-stone-500" />}
+              <div>
+                <p className="text-sm font-medium text-stone-900">Public wishlist</p>
+                <p className="text-xs text-stone-500 mt-0.5">Anyone with the link can view it</p>
+              </div>
             </div>
+            <button
+              type="button"
+              onClick={() => setValue('isPublic', !isPublic)}
+              className={`relative inline-flex h-6 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${isPublic ? 'bg-amber-500' : 'bg-stone-200'}`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ${isPublic ? 'translate-x-4' : 'translate-x-0'}`}
+              />
+            </button>
           </div>
 
-          <button
-            type="submit"
-            disabled={generateMutation.isPending}
-            className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:from-violet-700 active:to-purple-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080e] shadow-lg shadow-violet-500/20"
-          >
-            <Sparkles size={15} />
-            Generate Wishlist
-          </button>
+          <div className="flex gap-3 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={generateMutation.isPending}
+              className="flex-1 px-4 py-2.5 rounded-xl border border-stone-300 text-sm font-medium text-stone-700 bg-white/60 hover:bg-white/80 hover:border-stone-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={generateMutation.isPending}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm text-white bg-amber-500 hover:bg-amber-400 active:bg-amber-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 shadow-sm"
+            >
+              <Sparkles size={14} />
+              Generate Wishlist
+            </button>
+          </div>
         </form>
       </div>
     </Modal>

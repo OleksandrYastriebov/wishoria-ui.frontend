@@ -38,46 +38,52 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.25 }}
-        className="group relative bg-[#111118] rounded-2xl overflow-hidden border border-white/[0.06] hover:border-violet-500/30 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300"
+        className="group relative bg-white/75 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/90 hover:border-amber-400/50 hover:shadow-2xl hover:shadow-amber-400/15 transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.08)] ring-1 ring-black/[0.04]"
       >
         <Link
           href={`/wishlists/${wishlist.id}`}
-          className="block relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
-          style={{ aspectRatio: wide ? '16/9' : '4/3' }}
+          className="block relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+          style={{ aspectRatio: wide ? '16/9' : '3/2' }}
         >
           <ImageFallback
             src={wishlist.imageUrl}
             alt={wishlist.title}
             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d14] via-[#0d0d14]/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
+          {/* Public/Private badge — liquid glass style */}
           <div className="absolute top-3 right-3">
-            <span className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium backdrop-blur-sm ${
-              wishlist.isPublic
-                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20'
-                : 'bg-white/10 text-white/50 border border-white/10'
-            }`}>
-              {wishlist.isPublic ? <Globe size={10} /> : <Lock size={10} />}
-              {wishlist.isPublic ? 'Public' : 'Private'}
-            </span>
+            {wishlist.isPublic ? (
+              <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium bg-emerald-400/20 text-emerald-100 backdrop-blur-md border border-emerald-300/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_12px_rgba(0,0,0,0.25)]">
+                <Globe size={10} className="opacity-80" />
+                Public
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium bg-white/10 text-white/90 backdrop-blur-md border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_2px_12px_rgba(0,0,0,0.25)]">
+                <Lock size={10} className="opacity-70" />
+                Private
+              </span>
+            )}
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 p-4">
+          {/* Title area — bottom left, leaves room for control pill */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 pr-3">
             <h3 className="font-bold text-white text-base sm:text-lg truncate drop-shadow-sm">{wishlist.title}</h3>
-            <p className="text-white/50 text-xs mt-0.5">
+            <p className="text-white/70 text-xs mt-0.5">
               {itemCount} {itemCount === 1 ? 'item' : 'items'}
               {checkedCount > 0 && ` · ${checkedCount} reserved`}
             </p>
           </div>
         </Link>
 
+        {/* Floating glassmorphic control pill — overlaid at bottom-right of card */}
         {isOwner && (
-          <div className="flex items-center justify-end gap-1 px-3 py-2 border-t border-white/[0.05] opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity">
+          <div className="absolute bottom-3 right-3 z-10 flex items-center gap-0.5 bg-black/30 backdrop-blur-xl rounded-2xl px-2 py-2 border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_4px_20px_rgba(0,0,0,0.3)]">
             {!wishlist.isPublic && (
               <button
                 onClick={() => onShare(wishlist)}
-                className="p-1.5 rounded-lg text-[#9898b4] hover:text-violet-400 hover:bg-violet-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
+                className="flex items-center justify-center w-8 h-8 rounded-xl text-white/70 hover:text-white hover:bg-white/20 active:bg-white/10 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
                 aria-label="Share wishlist"
               >
                 <UserPlus size={14} />
@@ -85,14 +91,14 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
             )}
             <button
               onClick={() => onEdit(wishlist)}
-              className="p-1.5 rounded-lg text-[#9898b4] hover:text-white hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer"
+              className="flex items-center justify-center w-8 h-8 rounded-xl text-white/70 hover:text-white hover:bg-white/20 active:bg-white/10 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
               aria-label="Edit wishlist"
             >
               <Pencil size={14} />
             </button>
             <button
               onClick={() => setConfirmDelete(true)}
-              className="p-1.5 rounded-lg text-[#9898b4] hover:text-red-400 hover:bg-red-500/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 cursor-pointer"
+              className="flex items-center justify-center w-8 h-8 rounded-xl text-white/70 hover:text-red-400 hover:bg-red-500/25 active:bg-red-500/15 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 cursor-pointer"
               aria-label="Delete wishlist"
             >
               <Trash2 size={14} />

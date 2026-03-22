@@ -1,5 +1,4 @@
 'use client';
-import type React from 'react';
 import { cn } from '../../utils/cn';
 
 interface SkeletonProps { className?: string; }
@@ -27,7 +26,7 @@ export function WishlistCardSkeleton({ className }: WishlistCardSkeletonProps) {
 export function ItemCardSkeleton() {
   return (
     <div className="bg-white/75 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/90 shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.08)] ring-1 ring-black/[0.04] flex flex-col">
-      <Skeleton className="w-full rounded-none" style={{ aspectRatio: '4/3' } as React.CSSProperties} />
+      <Skeleton className="w-full rounded-none aspect-[4/3]" />
       <div className="flex items-center gap-3 px-4 py-3 border-t border-black/[0.05]">
         <Skeleton className="h-4 w-32" />
         <div className="flex gap-1.5 ml-auto">

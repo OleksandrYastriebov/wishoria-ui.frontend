@@ -55,13 +55,13 @@ export function WishlistCard({ wishlist, isOwner, onEdit, onShare, wide = false 
           {/* Public/Private badge — liquid glass style */}
           <div className="absolute top-3 right-3">
             {wishlist.isPublic ? (
-              <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium bg-emerald-400/20 text-emerald-100 backdrop-blur-md border border-emerald-300/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_12px_rgba(0,0,0,0.25)]">
-                <Globe size={10} className="opacity-80" />
+              <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold bg-emerald-500/55 text-white backdrop-blur-md border border-emerald-300/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_2px_16px_rgba(0,0,0,0.45)]">
+                <Globe size={10} />
                 Public
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium bg-white/10 text-white/90 backdrop-blur-md border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_2px_12px_rgba(0,0,0,0.25)]">
-                <Lock size={10} className="opacity-70" />
+              <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold bg-black/40 text-white backdrop-blur-md border border-white/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_2px_16px_rgba(0,0,0,0.45)]">
+                <Lock size={10} />
                 Private
               </span>
             )}

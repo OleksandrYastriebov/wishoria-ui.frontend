@@ -181,7 +181,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
               className="sr-only peer"
               {...register('isPublic')}
             />
-            <div className="w-10 h-6 bg-stone-200 peer-focus:ring-2 peer-focus:ring-amber-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500" />
+            <div className="w-10 h-6 bg-stone-300 peer-focus:ring-2 peer-focus:ring-amber-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500" />
           </label>
         </div>
 

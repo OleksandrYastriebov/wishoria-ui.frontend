@@ -59,6 +59,9 @@ export const updateMe = (data: UpdateProfileRequest) =>
 export const changePassword = (data: ChangePasswordRequest) =>
   api.patch<MessageResponse>('/users/me/password', data).then((r) => r.data);
 
+export const deleteAvatar = () =>
+  api.delete<UserProfileDto>('/users/me/avatar').then((r) => r.data);
+
 export const deleteAccount = (userId: number) =>
   api.delete<MessageResponse>(`/users/${userId}`).then((r) => r.data);
 

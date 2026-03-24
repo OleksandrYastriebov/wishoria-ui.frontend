@@ -89,7 +89,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
             </div>
             <div>
               <h2 className="text-base font-semibold text-stone-900">Generate with AI</h2>
-              <p className="text-xs text-stone-500 mt-0.5">Describe your wishlist and AI will create it for you</p>
+              <p className="text-xs text-stone-700 mt-0.5">Describe your wishlist and AI will create it for you</p>
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
               ) : (
                 <span />
               )}
-              <span className={`text-xs tabular-nums flex-shrink-0 ${isNearLimit ? 'text-red-500' : 'text-stone-400'}`}>
+              <span className={`text-xs tabular-nums flex-shrink-0 ${isNearLimit ? 'text-red-500' : 'text-stone-500'}`}>
                 {charsLeft} / 500
               </span>
             </div>
@@ -129,7 +129,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
             <button
               type="button"
               onClick={() => setValue('isPublic', !isPublic)}
-              className={`relative inline-flex h-6 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${isPublic ? 'bg-amber-500' : 'bg-stone-200'}`}
+              className={`relative inline-flex h-6 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${isPublic ? 'bg-amber-500' : 'bg-stone-300'}`}
             >
               <span
                 className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ${isPublic ? 'translate-x-4' : 'translate-x-0'}`}

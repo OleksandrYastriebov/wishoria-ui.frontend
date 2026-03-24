@@ -53,7 +53,7 @@ export function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-40 px-3 sm:px-5 pt-3 pb-1.5">
-        <div className="relative max-w-6xl mx-auto bg-white/60 backdrop-blur-2xl border border-white/60 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.10)] ring-1 ring-black/[0.04] px-4 sm:px-5 flex items-center justify-between h-16 overflow-hidden">
+        <div className="relative max-w-6xl mx-auto bg-white/90 backdrop-blur-2xl border border-stone-200/80 rounded-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_4px_20px_rgba(0,0,0,0.12),0_12px_40px_rgba(0,0,0,0.08)] px-4 sm:px-5 flex items-center justify-between h-16 overflow-hidden">
           <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-amber-200/30 blur-2xl pointer-events-none z-0" />
           <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-yellow-100/40 blur-2xl pointer-events-none z-0" />
 

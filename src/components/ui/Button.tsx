@@ -15,7 +15,7 @@ const variantClasses = {
   primary:
     'bg-amber-500 text-white hover:bg-amber-400 active:bg-amber-600 focus-visible:ring-amber-500 focus-visible:ring-offset-[#fefdf8] disabled:bg-amber-200 disabled:text-amber-400 shadow-sm shadow-amber-500/30',
   secondary:
-    'bg-white/60 backdrop-blur-sm text-stone-700 border border-white/70 hover:bg-white/80 active:bg-white/90 focus-visible:ring-amber-400 shadow-[0_2px_8px_rgba(0,0,0,0.06)] disabled:opacity-40',
+    'bg-white/60 backdrop-blur-sm text-stone-700 border border-stone-200/90 hover:bg-white/80 active:bg-white/90 focus-visible:ring-amber-400 shadow-[0_2px_8px_rgba(0,0,0,0.08)] disabled:opacity-40',
   ghost:
     'bg-transparent text-stone-500 hover:bg-black/[0.05] hover:text-stone-900 active:bg-black/[0.08] focus-visible:ring-amber-400 disabled:opacity-40',
   danger:

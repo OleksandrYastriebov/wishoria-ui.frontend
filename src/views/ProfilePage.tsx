@@ -15,7 +15,7 @@ import { DatePicker } from '../components/ui/DatePicker';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../hooks/useAuth';
-import { updateMe, changePassword, deleteAccount } from '../api/endpoints';
+import { updateMe, changePassword, deleteAccount, deleteAvatar } from '../api/endpoints';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { useClipboardPaste } from '../hooks/useClipboardPaste';
 import type { ChangePasswordRequest } from '../types';
@@ -120,7 +120,7 @@ export default function ProfilePage() {
     if (!user?.avatarUrl || isDeletingAvatar) return;
     setIsDeletingAvatar(true);
     try {
-      const updated = await updateMe({ avatarUrl: null });
+      const updated = await deleteAvatar();
       updateUser(updated);
       toast.success('Avatar deleted!');
     } catch {
@@ -174,14 +174,14 @@ export default function ProfilePage() {
           transition={{ duration: 0.3 }}
         >
           <h1 className="text-2xl font-bold text-stone-900 mb-1">Profile</h1>
-          <p className="text-sm text-stone-500">Manage your account settings</p>
+          <p className="text-sm text-stone-600">Manage your account settings</p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05 }}
-          className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-6"
+          className="bg-white/50 backdrop-blur-2xl rounded-2xl border border-stone-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.95)] p-6"
         >
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -214,8 +214,8 @@ export default function ProfilePage() {
               <p className="font-semibold text-stone-900">
                 {user.firstName} {user.lastName}
               </p>
-              <p className="text-sm text-stone-500">{user.email}</p>
-              <p className="text-xs text-stone-400 mt-0.5">
+              <p className="text-sm text-stone-600">{user.email}</p>
+              <p className="text-xs text-stone-500 mt-0.5">
                 {user.dateOfBirth
                   ? new Intl.DateTimeFormat('en-US', {
                       year: 'numeric',
@@ -234,7 +234,7 @@ export default function ProfilePage() {
                   {uploadMutation.isPending ? 'Uploading...' : 'Change photo'}
                 </button>
               </div>
-              <p className="text-xs text-stone-400 mt-0.5">Max file size: 5 MB</p>
+              <p className="text-xs text-stone-500 mt-0.5">Max file size: 5 MB</p>
             </div>
           </div>
           <input
@@ -250,7 +250,7 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-6"
+          className="bg-white/50 backdrop-blur-2xl rounded-2xl border border-stone-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.95)] p-6"
         >
           <h2 className="text-base font-semibold text-stone-900 mb-4">Personal Information</h2>
           <form
@@ -297,14 +297,14 @@ export default function ProfilePage() {
                 rows={3}
                 maxLength={1000}
                 placeholder="Tell others a bit about yourself..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 bg-white/60 text-sm text-stone-900 placeholder:text-stone-300 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent hover:border-stone-300 resize-none"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200/80 bg-white/60 backdrop-blur-sm text-sm text-stone-900 placeholder:text-stone-400/60 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent hover:border-stone-300 resize-none"
                 {...regProfile('profileDescription')}
               />
               {profileErrors.profileDescription && (
                 <p className="text-xs text-red-500">{profileErrors.profileDescription.message}</p>
               )}
             </div>
-            <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-200 bg-white/40">
+            <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-200/80 bg-white/50 backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 {isPrivateValue ? (
                   <Lock size={16} className="text-amber-500 flex-shrink-0" />
@@ -315,7 +315,7 @@ export default function ProfilePage() {
                   <p className="text-sm font-medium text-stone-900">
                     {isPrivateValue ? 'Private profile' : 'Public profile'}
                   </p>
-                  <p className="text-xs text-stone-500">
+                  <p className="text-xs text-stone-600">
                     {isPrivateValue
                       ? 'Only people you share wishlists with can view your profile'
                       : 'Anyone can find and view your profile'}
@@ -350,10 +350,10 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.15 }}
-          className="bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)] p-6"
+          className="bg-white/50 backdrop-blur-2xl rounded-2xl border border-stone-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.95)] p-6"
         >
           <h2 className="text-base font-semibold text-stone-900 mb-1">Security</h2>
-          <p className="text-sm text-stone-500 mb-4">Manage your password</p>
+          <p className="text-sm text-stone-600 mb-4">Manage your password</p>
           <Button
             variant="secondary"
             leftIcon={<Key size={15} />}
@@ -373,7 +373,7 @@ export default function ProfilePage() {
             <AlertTriangle size={16} className="text-red-500" />
             <h2 className="text-base font-semibold text-red-500">Danger Zone</h2>
           </div>
-          <p className="text-sm text-stone-500 mb-4">
+          <p className="text-sm text-stone-600 mb-4">
             Permanently delete your account and all associated data. This cannot be undone.
           </p>
           <Button

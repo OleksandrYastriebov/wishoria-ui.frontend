@@ -28,7 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent',
             error
               ? 'border-red-400/60 bg-red-50/60 focus:ring-red-400/60'
-              : 'border-white/70 bg-white/60 backdrop-blur-sm hover:border-white/90',
+              : 'border-stone-200 bg-stone-50 hover:border-stone-300',
             'disabled:opacity-40 disabled:cursor-not-allowed',
             className
           )}

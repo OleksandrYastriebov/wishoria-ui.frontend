@@ -48,7 +48,7 @@ export default function LandingPage() {
         <div className="absolute -bottom-20 left-[35%] w-[500px] h-[350px] rounded-full bg-orange-100/40 blur-[160px]" />
       </div>
       <nav className="sticky top-0 z-40 px-3 sm:px-5 pt-3 pb-1.5">
-        <div className="relative max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-white/70 rounded-2xl shadow-xl shadow-stone-200/80 px-4 sm:px-5 flex items-center justify-between h-16 overflow-hidden">
+        <div className="relative max-w-5xl mx-auto bg-white/90 backdrop-blur-2xl border border-stone-200/80 rounded-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_4px_20px_rgba(0,0,0,0.12),0_12px_40px_rgba(0,0,0,0.08)] px-4 sm:px-5 flex items-center justify-between h-16 overflow-hidden">
           <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-amber-200/30 blur-2xl pointer-events-none z-0" />
           <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-72 h-20 rounded-full bg-yellow-100/40 blur-2xl pointer-events-none z-0" />
           <div className="flex items-center gap-2.5 font-bold text-stone-900 z-10">
@@ -79,14 +79,14 @@ export default function LandingPage() {
             <Link href="/sign-up" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-white bg-amber-500 rounded-xl hover:bg-amber-400 active:bg-amber-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8]">
               Create your first wishlist<ChevronRight size={18} />
             </Link>
-            <Link href="/sign-in" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-stone-700 bg-white/60 backdrop-blur-sm border border-white/70 rounded-xl hover:bg-white/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">Sign in</Link>
+            <Link href="/sign-in" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-stone-700 bg-white/80 backdrop-blur-sm border border-stone-300/80 rounded-xl hover:bg-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">Sign in</Link>
           </motion.div>
         </motion.div>
       </section>
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-16">
         <motion.div {...fadeUpDelayed(0.3)} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {bentoTiles.map((tile, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 + i * 0.06 }} className={`${tile.colSpan} relative bg-white/60 backdrop-blur-xl rounded-2xl border border-white/70 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)]`} style={{ minHeight: '160px' }}>
+            <motion.div key={i} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 + i * 0.06 }} className={`${tile.colSpan} relative bg-white/85 backdrop-blur-xl rounded-2xl border border-stone-200/80 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.10)]`} style={{ minHeight: '160px' }}>
               <div className={`absolute inset-0 bg-gradient-to-br ${tile.gradient} opacity-60`} />
               <div className="relative p-5 h-full flex flex-col justify-between">
                 <div className="flex items-start justify-between">

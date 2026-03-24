@@ -92,8 +92,8 @@ export function UserSearchDropdown() {
       <div
         className={cn(
           'flex items-center gap-2 h-9 px-3 rounded-xl border transition-all duration-200',
-          'bg-white/70 backdrop-blur-sm border-stone-200/80',
-          'focus-within:bg-white/90 focus-within:border-amber-400/70 focus-within:shadow-sm focus-within:shadow-amber-500/10'
+          'bg-stone-100/90 border-stone-300/80 shadow-inner shadow-black/[0.04]',
+          'focus-within:bg-white focus-within:border-amber-400/80 focus-within:shadow-sm focus-within:shadow-amber-500/15'
         )}
       >
         <Search size={14} className="text-stone-400 flex-shrink-0" />

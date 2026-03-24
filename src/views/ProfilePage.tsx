@@ -194,7 +194,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadMutation.isPending}
-                className="absolute bottom-0 right-0 p-1.5 rounded-full bg-amber-500 text-white hover:bg-amber-400 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
+                className="absolute bottom-0 right-0 p-1.5 rounded-full bg-amber-600 text-white hover:bg-amber-500 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                 aria-label="Change avatar"
               >
                 <Camera size={12} />
@@ -229,7 +229,7 @@ export default function ProfilePage() {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploadMutation.isPending}
-                  className="text-xs text-amber-600 hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded transition-colors disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
+                  className="text-xs text-amber-700 hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded transition-colors disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
                 >
                   {uploadMutation.isPending ? 'Uploading...' : 'Change photo'}
                 </button>
@@ -327,8 +327,8 @@ export default function ProfilePage() {
                 role="switch"
                 aria-checked={isPrivateValue}
                 onClick={() => setProfileValue('isPrivate', !isPrivateValue)}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer ${
-                  isPrivateValue ? 'bg-amber-500' : 'bg-stone-200'
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer ${
+                  isPrivateValue ? 'bg-amber-600' : 'bg-stone-200'
                 }`}
               >
                 <span

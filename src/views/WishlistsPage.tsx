@@ -54,7 +54,7 @@ export default function WishlistsPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsAiOpen(true)}
-              className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl hover:from-amber-400 hover:to-amber-500 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8] shadow-lg shadow-amber-500/20 overflow-hidden cursor-pointer"
+              className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-amber-600 to-amber-700 rounded-xl hover:from-amber-500 hover:to-amber-600 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8] shadow-lg shadow-amber-600/20 overflow-hidden cursor-pointer"
             >
               <motion.span
                 className="absolute inset-0 bg-white/20"
@@ -115,7 +115,7 @@ export default function WishlistsPage() {
           {!atLimit && (
             <button
               onClick={() => setIsCreateOpen(true)}
-              className="rounded-2xl border-2 border-dashed border-stone-300/60 hover:border-amber-400/60 hover:bg-amber-50/40 transition-all duration-200 flex flex-col items-center justify-center gap-2 text-stone-400 hover:text-amber-600 min-h-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
+              className="rounded-2xl border-2 border-dashed border-stone-300/60 hover:border-amber-500/60 hover:bg-amber-50/40 transition-all duration-200 flex flex-col items-center justify-center gap-2 text-stone-400 hover:text-amber-700 min-h-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer"
             >
               <Plus size={28} strokeWidth={1.5} />
               <span className="text-sm font-medium">Add wishlist</span>
@@ -125,7 +125,7 @@ export default function WishlistsPage() {
       )}
 
       {atLimit && (
-        <p className="text-sm text-amber-500 text-center mt-4">
+        <p className="text-sm text-amber-700 text-center mt-4">
           You&apos;ve reached the maximum of {MAX_WISHLISTS} wishlists.
         </p>
       )}

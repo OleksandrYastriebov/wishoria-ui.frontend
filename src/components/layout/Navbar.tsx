@@ -100,7 +100,7 @@ export function Navbar() {
               <Link href="/sign-in" className="px-3 py-1.5 text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded-lg">
                 Sign in
               </Link>
-              <Link href="/sign-up" className="px-3.5 py-1.5 text-sm font-medium text-white bg-amber-500 rounded-xl hover:bg-amber-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8]">
+              <Link href="/sign-up" className="px-3.5 py-1.5 text-sm font-medium text-white bg-amber-600 rounded-xl hover:bg-amber-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8]">
                 Get started
               </Link>
             </div>
@@ -135,7 +135,7 @@ export function Navbar() {
                     Profile
                   </Link>
                   <div className="my-1 border-t border-black/[0.06]" />
-                  <button onClick={() => { setMenuOpen(false); void handleLogout(); }} className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors">
+                  <button onClick={() => { setMenuOpen(false); void handleLogout(); }} className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/10 transition-colors">
                     <LogOut size={15} />
                     Sign out
                   </button>
@@ -211,7 +211,7 @@ export function Navbar() {
                 <div className="my-1 border-t border-black/[0.06]" />
                 <button
                   onClick={() => { setMobileOpen(false); void handleLogout(); }}
-                  className="flex w-full items-center gap-2.5 px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="flex w-full items-center gap-2.5 px-4 py-3 text-sm text-red-600 hover:bg-red-500/10 transition-colors"
                 >
                   <LogOut size={16} />
                   Sign out

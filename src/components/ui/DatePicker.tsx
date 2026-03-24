@@ -192,9 +192,9 @@ export function DatePicker({
                       className={cn(
                         'w-full aspect-square flex items-center justify-center text-sm rounded-lg transition-colors cursor-pointer',
                         isSelected(day)
-                          ? 'bg-amber-500 text-white font-semibold'
+                          ? 'bg-amber-600 text-white font-semibold'
                           : isToday(day)
-                            ? 'border border-amber-400/50 text-amber-600 hover:bg-amber-500/10'
+                            ? 'border border-amber-500/60 text-amber-700 hover:bg-amber-600/10'
                             : 'text-stone-600 hover:bg-stone-100',
                       )}
                     >
@@ -250,7 +250,7 @@ export function DatePicker({
                       className={cn(
                         'py-2 rounded-xl text-sm transition-colors cursor-pointer',
                         i === month
-                          ? 'bg-amber-500 text-white font-semibold'
+                          ? 'bg-amber-600 text-white font-semibold'
                           : 'text-stone-600 hover:bg-stone-100',
                       )}
                     >
@@ -290,7 +290,7 @@ export function DatePicker({
                       className={cn(
                         'w-full py-1.5 rounded-xl text-sm text-center transition-colors cursor-pointer',
                         y === year
-                          ? 'bg-amber-500 text-white font-semibold'
+                          ? 'bg-amber-600 text-white font-semibold'
                           : 'text-stone-600 hover:bg-stone-100',
                       )}
                     >

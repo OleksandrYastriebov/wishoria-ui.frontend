@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
                     <Button type="submit" className="w-full" size="lg" isLoading={isSubmitting}>Send reset link</Button>
                   </form>
                   <p className="text-sm text-stone-500 text-center mt-5">
-                    <Link href="/sign-in" className="text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Back to sign in</Link>
+                    <Link href="/sign-in" className="text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Back to sign in</Link>
                   </p>
                 </div>
               </motion.div>
@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
                   <h1 className="text-xl font-bold text-stone-900 mb-2">Check your inbox</h1>
                   <p className="text-sm text-stone-500 mb-1">If <span className="text-stone-900 font-medium">{submittedEmail}</span> is registered, you'll receive a password reset link shortly.</p>
                   <p className="text-xs text-stone-400 mb-6">The link expires in 1 hour.</p>
-                  <Link href="/sign-in" className="text-sm text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Back to sign in</Link>
+                  <Link href="/sign-in" className="text-sm text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Back to sign in</Link>
                 </div>
               </motion.div>
             )}

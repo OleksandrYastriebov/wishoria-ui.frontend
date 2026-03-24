@@ -59,7 +59,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-2 z-10">
             <Link href="/sign-in" className="px-3 py-1.5 text-sm font-medium text-stone-500 hover:text-stone-900 transition-colors rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">Sign in</Link>
-            <Link href="/sign-up" className="px-3.5 py-1.5 text-sm font-medium text-white bg-amber-500 rounded-xl hover:bg-amber-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8]">Get started free</Link>
+            <Link href="/sign-up" className="px-3.5 py-1.5 text-sm font-medium text-white bg-amber-600 rounded-xl hover:bg-amber-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8]">Get started free</Link>
           </div>
         </div>
       </nav>
@@ -76,7 +76,7 @@ export default function LandingPage() {
             Create and share wishlists for any occasion. Let friends secretly coordinate gifts without spoiling the surprise.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 mt-8">
-            <Link href="/sign-up" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-white bg-amber-500 rounded-xl hover:bg-amber-400 active:bg-amber-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8]">
+            <Link href="/sign-up" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-white bg-amber-600 rounded-xl hover:bg-amber-500 active:bg-amber-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8]">
               Create your first wishlist<ChevronRight size={18} />
             </Link>
             <Link href="/sign-in" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-stone-700 bg-white/80 backdrop-blur-sm border border-stone-300/80 rounded-xl hover:bg-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">Sign in</Link>

@@ -129,7 +129,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
             <button
               type="button"
               onClick={() => setValue('isPublic', !isPublic)}
-              className={`relative inline-flex h-6 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${isPublic ? 'bg-amber-500' : 'bg-stone-300'}`}
+              className={`relative inline-flex h-6 w-10 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${isPublic ? 'bg-amber-600' : 'bg-stone-300'}`}
             >
               <span
                 className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ${isPublic ? 'translate-x-4' : 'translate-x-0'}`}
@@ -149,7 +149,7 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
             <button
               type="submit"
               disabled={generateMutation.isPending}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm text-white bg-amber-500 hover:bg-amber-400 active:bg-amber-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 shadow-sm"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm text-white bg-amber-600 hover:bg-amber-500 active:bg-amber-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 shadow-sm"
             >
               <Sparkles size={14} />
               Generate Wishlist

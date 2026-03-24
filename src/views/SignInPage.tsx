@@ -50,7 +50,7 @@ export default function SignInPage() {
               <div>
                 <Input label="Password" type="password" autoComplete="current-password" placeholder="••••••••" error={errors.password?.message} {...register('password')} />
                 <div className="flex justify-end mt-1.5">
-                  <Link href="/forgot-password" className="text-xs text-amber-600 hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded transition-colors">Forgot password?</Link>
+                  <Link href="/forgot-password" className="text-xs text-amber-700 hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded transition-colors">Forgot password?</Link>
                 </div>
               </div>
               {errors.root && <p className="text-sm text-red-400 text-center">{errors.root.message}</p>}
@@ -58,7 +58,7 @@ export default function SignInPage() {
             </form>
             <p className="text-sm text-stone-500 text-center mt-5">
               Don&apos;t have an account?{' '}
-              <Link href="/sign-up" className="text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded">Sign up</Link>
+              <Link href="/sign-up" className="text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded">Sign up</Link>
             </p>
           </div>
         </motion.div>

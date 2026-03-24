@@ -108,7 +108,7 @@ export default function PublicProfilePage() {
           <p className="text-stone-500 text-sm">User not found or the profile is unavailable.</p>
           <button
             onClick={() => router.back()}
-            className="text-amber-600 hover:text-amber-500 hover:underline text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded transition-colors cursor-pointer"
+            className="text-amber-700 hover:text-amber-600 hover:underline text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded transition-colors cursor-pointer"
           >
             Go back
           </button>

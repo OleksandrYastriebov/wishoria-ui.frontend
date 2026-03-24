@@ -83,7 +83,7 @@ export default function SignUpPage() {
                   <Button variant="secondary" onClick={() => void handleResend()} disabled={countdown > 0 || resending} isLoading={resending} leftIcon={<RefreshCw size={14} />} className="w-full">
                     {countdown > 0 ? `Resend in ${countdown}s` : 'Resend confirmation email'}
                   </Button>
-                  <p className="text-sm text-stone-500 text-center mt-5">Already confirmed?{' '}<Link href="/sign-in" className="text-amber-600 font-medium hover:text-amber-500">Sign in</Link></p>
+                  <p className="text-sm text-stone-500 text-center mt-5">Already confirmed?{' '}<Link href="/sign-in" className="text-amber-700 font-medium hover:text-amber-600">Sign in</Link></p>
                 </motion.div>
               ) : (
                 <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -98,7 +98,7 @@ export default function SignUpPage() {
                     <Input label="Password" type="password" autoComplete="new-password" placeholder="Min 8 characters" error={errors.password?.message} {...register('password')} />
                     <Button type="submit" className="w-full" size="lg" isLoading={isSubmitting}>Create account</Button>
                   </form>
-                  <p className="text-sm text-stone-500 text-center mt-5">Already have an account?{' '}<Link href="/sign-in" className="text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded">Sign in</Link></p>
+                  <p className="text-sm text-stone-500 text-center mt-5">Already have an account?{' '}<Link href="/sign-in" className="text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded">Sign in</Link></p>
                 </motion.div>
               )}
             </AnimatePresence>

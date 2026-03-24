@@ -58,12 +58,12 @@ export default function WishlistDetailPage() {
           {!user ? (
             <>
               <p className="text-stone-500">Sign in to view this wishlist.</p>
-              <Link href="/sign-in" className="inline-flex items-center gap-2 px-4 py-2 mt-1 text-sm font-medium text-white bg-amber-500 rounded-xl hover:bg-amber-400 transition-colors">Sign in</Link>
+              <Link href="/sign-in" className="inline-flex items-center gap-2 px-4 py-2 mt-1 text-sm font-medium text-white bg-amber-600 rounded-xl hover:bg-amber-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600">Sign in</Link>
             </>
           ) : (
             <>
               <p className="text-stone-500">Wishlist not found or access denied.</p>
-              <Link href="/wishlists" className="text-amber-600 hover:text-amber-500 hover:underline inline-block text-sm transition-colors">Back to wishlists</Link>
+              <Link href="/wishlists" className="text-amber-700 hover:text-amber-600 hover:underline inline-block text-sm transition-colors">Back to wishlists</Link>
             </>
           )}
         </div>
@@ -148,14 +148,14 @@ export default function WishlistDetailPage() {
                 })}
               </AnimatePresence>
               {isOwner && !atLimit && (
-                <button onClick={() => setIsAddItemOpen(true)} className="rounded-2xl border-2 border-dashed border-stone-200 hover:border-amber-400/60 hover:bg-amber-500/5 transition-all duration-200 flex items-center justify-center gap-2 text-stone-400 hover:text-amber-500 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer">
+                <button onClick={() => setIsAddItemOpen(true)} className="rounded-2xl border-2 border-dashed border-stone-200 hover:border-amber-500/60 hover:bg-amber-600/5 transition-all duration-200 flex items-center justify-center gap-2 text-stone-400 hover:text-amber-700 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer">
                   <Plus size={20} strokeWidth={1.5} /><span className="text-sm font-medium">Add item</span>
                 </button>
               )}
             </div>
           )}
 
-          {atLimit && isOwner && <p className="text-sm text-amber-500 text-center">You&apos;ve reached the maximum of {MAX_ITEMS} items per wishlist.</p>}
+          {atLimit && isOwner && <p className="text-sm text-amber-700 text-center">You&apos;ve reached the maximum of {MAX_ITEMS} items per wishlist.</p>}
         </div>
       ) : null}
 
@@ -175,7 +175,7 @@ export default function WishlistDetailPage() {
         <div className="px-6 py-5 text-center">
           <p className="text-sm text-stone-500 mb-5">You need to sign in or create an account to mark items as reserved.</p>
           <div className="flex gap-3">
-            <Link href="/sign-in" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-amber-500 rounded-xl hover:bg-amber-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"><LogIn size={15} />Sign in</Link>
+            <Link href="/sign-in" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-amber-600 rounded-xl hover:bg-amber-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600"><LogIn size={15} />Sign in</Link>
             <Link href="/sign-up" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-stone-600 bg-stone-100 rounded-xl hover:bg-stone-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-300"><UserPlusIcon size={15} />Sign up</Link>
           </div>
         </div>

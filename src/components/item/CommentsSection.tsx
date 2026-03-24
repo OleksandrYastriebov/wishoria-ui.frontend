@@ -54,7 +54,7 @@ function CommentItem({
         )}
         <div className={`relative px-3 py-2 rounded-2xl text-sm break-words ${
           isOwn
-            ? 'bg-amber-500 text-white rounded-br-sm'
+            ? 'bg-amber-600 text-white rounded-br-sm'
             : 'bg-stone-100 text-stone-700 rounded-bl-sm'
         }`}>
           {comment.text}
@@ -171,7 +171,7 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
             <button
               type="submit"
               disabled={!text.trim() || createMutation.isPending}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-lg text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-lg text-amber-600 hover:text-amber-700 hover:bg-amber-600/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer"
               aria-label="Send comment"
             >
               <Send size={14} />
@@ -182,7 +182,7 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
         <div className="flex items-center gap-2 p-3 rounded-xl bg-stone-50 border border-stone-100">
           <Lock size={14} className="text-stone-400" />
           <p className="text-sm text-stone-500">
-            <Link href="/sign-in" className="text-amber-600 hover:text-amber-500 hover:underline font-medium transition-colors">
+            <Link href="/sign-in" className="text-amber-700 hover:text-amber-600 hover:underline font-medium transition-colors">
               Log in
             </Link>{' '}
             to join the secret discussion

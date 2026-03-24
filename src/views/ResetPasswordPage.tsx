@@ -49,7 +49,7 @@ export default function ResetPasswordPage() {
                   <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 mx-auto mb-4"><AlertTriangle size={22} className="text-red-500" /></div>
                   <h1 className="text-xl font-bold text-stone-900 mb-2">Invalid link</h1>
                   <p className="text-sm text-stone-500 mb-6">This reset link is missing or malformed. Please request a new one.</p>
-                  <Link href="/forgot-password" className="text-sm text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded">Request new link</Link>
+                  <Link href="/forgot-password" className="text-sm text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded">Request new link</Link>
                 </div>
               </motion.div>
             ) : !succeeded ? (
@@ -64,7 +64,7 @@ export default function ResetPasswordPage() {
                     <Button type="submit" className="w-full" size="lg" isLoading={isSubmitting}>Reset password</Button>
                   </form>
                   <p className="text-sm text-stone-500 text-center mt-5">
-                    <Link href="/sign-in" className="text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Back to sign in</Link>
+                    <Link href="/sign-in" className="text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Back to sign in</Link>
                   </p>
                 </div>
               </motion.div>
@@ -74,7 +74,7 @@ export default function ResetPasswordPage() {
                   <div className="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/20 mx-auto mb-4"><CheckCircle size={22} className="text-amber-500" /></div>
                   <h1 className="text-xl font-bold text-stone-900 mb-2">Password updated!</h1>
                   <p className="text-sm text-stone-500 mb-6">Your password has been changed. You can now sign in with your new credentials.</p>
-                  <Link href="/sign-in" className="text-sm text-amber-600 font-medium hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Sign in</Link>
+                  <Link href="/sign-in" className="text-sm text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded inline-flex items-center gap-1"><ArrowLeft size={13} />Sign in</Link>
                 </div>
               </motion.div>
             )}

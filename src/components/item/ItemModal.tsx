@@ -162,7 +162,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
     <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit Item' : 'Add Item'} size="md">
       <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="p-6 space-y-4">
         <div>
-          <label className="text-sm font-medium text-stone-600 block mb-2">Image</label>
+          <label className="text-sm font-medium text-stone-700 block mb-2">Image</label>
           {(previewUrl ?? imageUrlValue) ? (
             <div className="relative w-full h-28 rounded-xl overflow-hidden border border-stone-200 mb-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -189,24 +189,24 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full h-20 rounded-xl border-2 border-dashed border-stone-200 flex flex-col items-center justify-center gap-1 text-stone-400 hover:text-stone-700 hover:border-stone-400/60 transition-colors cursor-pointer"
+              className="w-full h-20 rounded-xl border-2 border-dashed border-stone-300 flex flex-col items-center justify-center gap-1 text-stone-500 hover:text-stone-700 hover:border-stone-400 transition-colors cursor-pointer"
             >
               <ImageIcon size={18} />
               <span className="text-xs">Upload image</span>
-              <span className="text-[11px] text-stone-400">or paste (Ctrl+V)</span>
+              <span className="text-[11px] text-stone-500">or paste (Ctrl+V)</span>
             </button>
           )}
           {(previewUrl ?? imageUrlValue) && (
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 text-xs text-amber-600 hover:text-amber-500 mt-1 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg mt-1 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-1"
             >
               <Upload size={12} />
               Replace
             </button>
           )}
-          <p className="text-xs text-stone-400 mt-1.5">Max file size: 5 MB</p>
+          <p className="text-xs text-stone-500 mt-1.5">Max file size: 5 MB</p>
           <input
             ref={fileInputRef}
             type="file"
@@ -243,7 +243,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
 
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-stone-600">
+            <label className="text-sm font-medium text-stone-700">
               Description (optional)
             </label>
             {canGenerateDescription && (
@@ -251,7 +251,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
                 type="button"
                 onClick={() => void handleGenerateDescription()}
                 disabled={isGenerating || isLoading}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 focus-visible:ring-offset-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-400 hover:to-orange-400 active:from-amber-600 active:to-orange-600 shadow-sm"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-1 focus-visible:ring-offset-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:from-amber-500 hover:to-orange-500 active:from-amber-700 active:to-orange-700 shadow-sm"
               >
                 {isGenerating ? (
                   <>
@@ -271,7 +271,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
             placeholder="Any color, just not white"
             rows={2}
             disabled={isGenerating}
-            className="w-full px-3.5 py-2.5 rounded-xl border text-sm text-stone-900 placeholder:text-stone-300 transition-colors resize-none focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent border-stone-200 bg-white/60 hover:border-stone-300 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full px-3.5 py-2.5 rounded-xl border text-sm text-stone-900 placeholder:text-stone-400 transition-colors resize-none focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent border-stone-200 bg-stone-50 hover:border-stone-300 disabled:opacity-40 disabled:cursor-not-allowed"
             {...register('description')}
           />
           {errors.description && (

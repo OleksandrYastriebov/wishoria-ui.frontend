@@ -154,7 +154,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 text-xs text-amber-600 hover:text-amber-500 mt-1 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg mt-1 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-1"
             >
               <Upload size={12} />
               Replace image
@@ -181,7 +181,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
               className="sr-only peer"
               {...register('isPublic')}
             />
-            <div className="w-10 h-6 bg-stone-300 peer-focus:ring-2 peer-focus:ring-amber-500 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500" />
+            <div className="w-10 h-6 bg-stone-300 peer-focus:ring-2 peer-focus:ring-amber-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600" />
           </label>
         </div>
 

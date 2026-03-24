@@ -43,9 +43,13 @@ export async function generateMetadata({
     return {
       title: `${wishlist.title} · Wishoria`,
       description,
+      alternates: {
+        canonical: `/wishlists/${wishlistId}`,
+      },
       openGraph: {
         title: `${wishlist.title} · Wishoria`,
         description,
+        url: `https://wishoria.vercel.app/wishlists/${wishlistId}`,
         images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
       },
       twitter: {

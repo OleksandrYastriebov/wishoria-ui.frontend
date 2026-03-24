@@ -3,13 +3,18 @@ import './globals.css';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://wishoria.vercel.app'),
   title: 'Wishoria — Beautiful wishlists, made to share',
   icons: { icon: '/favicon.svg' },
   description:
     'Create and share beautiful wishlists for any occasion. With AI, secret coordination and elegant design.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     siteName: 'Wishoria',
     type: 'website',
+    url: 'https://wishoria.vercel.app',
     title: 'Wishoria — Beautiful wishlists, made to share',
     description:
       'Create and share beautiful wishlists for any occasion. With AI, secret coordination and elegant design.',

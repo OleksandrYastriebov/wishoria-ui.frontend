@@ -13,9 +13,11 @@ import { AiGenerateModal } from '../components/wishlist/AiGenerateModal';
 import { WishlistCardSkeleton } from '../components/ui/SkeletonLoader';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Button } from '../components/ui/Button';
+import { Pagination } from '../components/ui/Pagination';
 import type { WishListDto } from '../types';
 
 const MAX_WISHLISTS = 50;
+const PAGE_SIZE = 12;
 
 function getBentoClass(index: number): string {
   return (index % 4 === 0 || index % 4 === 3)
@@ -25,16 +27,17 @@ function getBentoClass(index: number): string {
 
 export default function WishlistsPage() {
   const { user } = useAuth();
-  const { data, isLoading, isError } = useWishlists();
+  const [page, setPage] = useState(0);
+  const { data, isLoading, isError } = useWishlists(page, PAGE_SIZE);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isAiOpen, setIsAiOpen] = useState(false);
   const [editWishlist, setEditWishlist] = useState<WishListDto | null>(null);
   const [shareWishlist, setShareWishlist] = useState<WishListDto | null>(null);
 
-  const wishlists = [...(data?.wishLists ?? [])].sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  );
-  const atLimit = wishlists.length >= MAX_WISHLISTS;
+  const wishlists = data?.content ?? [];
+  const totalElements = data?.totalElements ?? 0;
+  const totalPages = data?.totalPages ?? 0;
+  const atLimit = totalElements >= MAX_WISHLISTS;
 
   return (
     <Layout>
@@ -43,9 +46,9 @@ export default function WishlistsPage() {
           <h1 className="text-2xl font-bold text-stone-900">
             {user?.firstName ? `${user.firstName}'s Wishlists` : 'My Wishlists'}
           </h1>
-          {wishlists.length > 0 && (
+          {totalElements > 0 && (
             <p className="text-sm text-stone-500 mt-1">
-              {wishlists.length} / {MAX_WISHLISTS} wishlists
+              {totalElements} / {MAX_WISHLISTS} wishlists
             </p>
           )}
         </div>
@@ -94,34 +97,43 @@ export default function WishlistsPage() {
           }
         />
       ) : (
-        <motion.div layout className={`grid grid-cols-1 sm:grid-cols-2 gap-4${wishlists.length > 3 ? ' lg:grid-cols-3' : ''}`}>
-          <AnimatePresence>
-            {wishlists.map((wl, index) => {
-              const useBento = wishlists.length > 3;
-              const wide = useBento && (index % 4 === 0 || index % 4 === 3);
-              return (
-                <div key={wl.id} className={useBento ? getBentoClass(index) : ''}>
-                  <WishlistCard
-                    wishlist={wl}
-                    isOwner={wl.userId === user?.id}
-                    onEdit={(w) => setEditWishlist(w)}
-                    onShare={(w) => setShareWishlist(w)}
-                    wide={wide}
-                  />
-                </div>
-              );
-            })}
-          </AnimatePresence>
-          {!atLimit && (
-            <button
-              onClick={() => setIsCreateOpen(true)}
-              className="rounded-2xl border-2 border-dashed border-stone-300/60 hover:border-amber-500/60 hover:bg-amber-50/40 transition-all duration-200 flex flex-col items-center justify-center gap-2 text-stone-400 hover:text-amber-700 min-h-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer"
-            >
-              <Plus size={28} strokeWidth={1.5} />
-              <span className="text-sm font-medium">Add wishlist</span>
-            </button>
-          )}
-        </motion.div>
+        <>
+          <motion.div layout className={`grid grid-cols-1 sm:grid-cols-2 gap-4${wishlists.length > 3 ? ' lg:grid-cols-3' : ''}`}>
+            <AnimatePresence>
+              {wishlists.map((wl, index) => {
+                const useBento = wishlists.length > 3;
+                const wide = useBento && (index % 4 === 0 || index % 4 === 3);
+                return (
+                  <div key={wl.id} className={useBento ? getBentoClass(index) : ''}>
+                    <WishlistCard
+                      wishlist={wl}
+                      isOwner={wl.userId === user?.id}
+                      onEdit={(w) => setEditWishlist(w)}
+                      onShare={(w) => setShareWishlist(w)}
+                      wide={wide}
+                    />
+                  </div>
+                );
+              })}
+            </AnimatePresence>
+            {!atLimit && totalPages <= 1 && (
+              <button
+                onClick={() => setIsCreateOpen(true)}
+                className="rounded-2xl border-2 border-dashed border-stone-300/60 hover:border-amber-500/60 hover:bg-amber-50/40 transition-all duration-200 flex flex-col items-center justify-center gap-2 text-stone-400 hover:text-amber-700 min-h-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer"
+              >
+                <Plus size={28} strokeWidth={1.5} />
+                <span className="text-sm font-medium">Add wishlist</span>
+              </button>
+            )}
+          </motion.div>
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            totalElements={totalElements}
+            onPageChange={setPage}
+          />
+        </>
       )}
 
       {atLimit && (

@@ -65,8 +65,8 @@ export const deleteAvatar = () =>
 export const deleteAccount = (userId: number) =>
   api.delete<MessageResponse>(`/users/${userId}`).then((r) => r.data);
 
-export const getWishlists = () =>
-  api.get<WishListsResponse>('/wishlists').then((r) => r.data);
+export const getWishlists = (page = 0, size = 12) =>
+  api.get<WishListsResponse>('/wishlists', { params: { page, size } }).then((r) => r.data);
 
 export const getWishlist = (wishlistId: string) =>
   api.get<WishListDto>(`/wishlists/${wishlistId}`).then((r) => r.data);
@@ -113,9 +113,9 @@ export const revokeAccess = (wishlistId: string, email: string) =>
     .delete<MessageResponse>(`/wishlists/${wishlistId}/access`, { data: { email } })
     .then((r) => r.data);
 
-export const getComments = (wishlistId: string, itemId: string) =>
+export const getComments = (wishlistId: string, itemId: string, page = 0, size = 20) =>
   api
-    .get<CommentsResponse>(`/wishlists/${wishlistId}/wishes/${itemId}/comments`)
+    .get<CommentsResponse>(`/wishlists/${wishlistId}/wishes/${itemId}/comments`, { params: { page, size } })
     .then((r) => r.data);
 
 export const createComment = (
@@ -155,8 +155,8 @@ export const searchUsers = (query: string) =>
 export const autocompleteUsers = (query: string) =>
   api.get<UserAutocompleteDto[]>('/profiles/autocomplete', { params: { q: query } }).then((r) => r.data);
 
-export const getUserProfile = (userId: number) =>
-  api.get<UserProfileResponseDto>(`/profiles/${userId}`).then((r) => r.data);
+export const getUserProfile = (userId: number, page = 0, size = 6) =>
+  api.get<UserProfileResponseDto>(`/profiles/${userId}`, { params: { page, size } }).then((r) => r.data);
 
 export const uploadImage = (file: File) => {
   const formData = new FormData();

@@ -1,15 +1,19 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { getComments, createComment, deleteComment } from '../api/endpoints';
 import type { CreateCommentRequest } from '../types';
+
+const PAGE_SIZE = 20;
 
 const commentsKey = (wishlistId: string, itemId: string) =>
   ['comments', wishlistId, itemId] as const;
 
 export function useComments(wishlistId: string, itemId: string) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: commentsKey(wishlistId, itemId),
-    queryFn: () => getComments(wishlistId, itemId),
+    queryFn: ({ pageParam }) => getComments(wishlistId, itemId, pageParam, PAGE_SIZE),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => (lastPage.last ? undefined : lastPage.page + 1),
     enabled: !!wishlistId && !!itemId,
   });
 }

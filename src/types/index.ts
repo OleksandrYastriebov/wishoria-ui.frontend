@@ -84,9 +84,16 @@ export interface WishListDto {
   createdAt: string;
 }
 
-export interface WishListsResponse {
-  wishLists: WishListDto[];
+export interface PagedResponse<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
 }
+
+export type WishListsResponse = PagedResponse<WishListDto>;
 
 export interface CreateWishlistRequest {
   title: string;
@@ -143,9 +150,7 @@ export interface CommentDto {
   createdAt: string;
 }
 
-export interface CommentsResponse {
-  comments: CommentDto[];
-}
+export type CommentsResponse = PagedResponse<CommentDto>;
 
 export interface CreateCommentRequest {
   text: string;
@@ -175,7 +180,7 @@ export interface PublicUserDto {
 
 export interface UserProfileResponseDto {
   user: PublicUserDto;
-  publicWishlists: WishListDto[];
+  publicWishlists: PagedResponse<WishListDto>;
 }
 
 export interface GenerateDescriptionRequest {

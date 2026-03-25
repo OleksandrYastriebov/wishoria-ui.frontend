@@ -10,6 +10,7 @@ import { Layout } from '../components/layout/Layout';
 import { Avatar } from '../components/ui/Avatar';
 import { ImageFallback } from '../components/ui/ImageFallback';
 import { EmptyState } from '../components/ui/EmptyState';
+import { Pagination } from '../components/ui/Pagination';
 import {
   PublicProfileHeaderSkeleton,
   WishlistCardSkeleton,
@@ -93,7 +94,8 @@ export default function PublicProfilePage() {
   const parsedId = userId ? parseInt(userId, 10) : undefined;
   const validId = parsedId !== undefined && !isNaN(parsedId) ? parsedId : undefined;
 
-  const { data: profile, isLoading, isError } = usePublicProfile(validId);
+  const [wishlistPage, setWishlistPage] = useState(0);
+  const { data: profile, isLoading, isError } = usePublicProfile(validId, wishlistPage);
 
   useEffect(() => {
     if (isError) {
@@ -170,16 +172,8 @@ export default function PublicProfilePage() {
                 </p>
               )}
               <p className="text-sm text-stone-500 mt-0.5">
-                {profile.publicWishlists.filter((w) => w.isPublic).length}{' '}
-                {profile.publicWishlists.filter((w) => w.isPublic).length === 1
-                  ? 'public wishlist'
-                  : 'public wishlists'}
-                {profile.publicWishlists.some((w) => !w.isPublic) && (
-                  <span>
-                    {' '}·{' '}
-                    {profile.publicWishlists.filter((w) => !w.isPublic).length} shared with you
-                  </span>
-                )}
+                {profile.publicWishlists.totalElements}{' '}
+                {profile.publicWishlists.totalElements === 1 ? 'wishlist' : 'wishlists'} available
               </p>
             </div>
             {(!profile.user.privateProfile || currentUser?.id === profile.user.id) && (
@@ -208,27 +202,34 @@ export default function PublicProfilePage() {
           <div>
             <h2 className="text-base font-semibold text-stone-600 mb-3">Wishlists</h2>
 
-            {profile.publicWishlists.length === 0 ? (
+            {profile.publicWishlists.totalElements === 0 ? (
               <EmptyState
                 icon={<Package size={26} />}
                 title="No wishlists available"
                 description="This user hasn't shared any public wishlists yet."
               />
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <AnimatePresence>
-                  {[...profile.publicWishlists]
-                    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-                    .map((wishlist, i) => (
-                    <ProfileWishlistCard
-                      key={wishlist.id}
-                      wishlist={wishlist}
-                      ownerUserId={profile.user.id}
-                      index={i}
-                    />
-                  ))}
-                </AnimatePresence>
-              </div>
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <AnimatePresence>
+                    {profile.publicWishlists.content.map((wishlist, i) => (
+                      <ProfileWishlistCard
+                        key={wishlist.id}
+                        wishlist={wishlist}
+                        ownerUserId={profile.user.id}
+                        index={i}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </div>
+
+                <Pagination
+                  page={wishlistPage}
+                  totalPages={profile.publicWishlists.totalPages}
+                  totalElements={profile.publicWishlists.totalElements}
+                  onPageChange={setWishlistPage}
+                />
+              </>
             )}
           </div>
         </div>

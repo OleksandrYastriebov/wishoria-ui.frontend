@@ -11,10 +11,10 @@ import type { CreateWishlistRequest, GenerateWishlistRequest, UpdateWishlistRequ
 
 export const WISHLISTS_KEY = ['wishlists'] as const;
 
-export function useWishlists() {
+export function useWishlists(page = 0, size = 12) {
   return useQuery({
-    queryKey: WISHLISTS_KEY,
-    queryFn: getWishlists,
+    queryKey: [...WISHLISTS_KEY, page, size] as const,
+    queryFn: () => getWishlists(page, size),
   });
 }
 

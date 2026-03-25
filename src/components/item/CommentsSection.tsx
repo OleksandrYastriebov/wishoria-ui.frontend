@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Send, Trash2, Lock } from 'lucide-react';
+import { Send, Trash2, Lock, Loader2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useComments, useCreateComment, useDeleteComment } from '../../hooks/useComments';
 import { useAuth } from '../../hooks/useAuth';
@@ -80,7 +80,7 @@ function CommentItem({
 
 export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
   const { user } = useAuth();
-  const { data, isLoading } = useComments(wishlistId, itemId);
+  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useComments(wishlistId, itemId);
   const createMutation = useCreateComment(wishlistId, itemId);
   const deleteMutation = useDeleteComment(wishlistId, itemId);
   const [text, setText] = useState('');
@@ -109,14 +109,18 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
     });
   };
 
-  const comments = data?.comments ?? [];
+  const comments = data?.pages.flatMap((p) => p.content) ?? [];
+  const totalElements = data?.pages[0]?.totalElements ?? 0;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2 pb-2 border-b border-stone-100">
         <Lock size={13} className="text-amber-500" />
         <h4 className="text-sm font-semibold text-stone-700">Secret Discussion</h4>
-        <span className="text-xs text-stone-400">(not visible to the owner)</span>
+        {totalElements > 0 && (
+          <span className="text-xs text-stone-400">({totalElements})</span>
+        )}
+        <span className="text-xs text-stone-400 ml-auto">(not visible to the owner)</span>
       </div>
 
       <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
@@ -141,6 +145,19 @@ export function CommentsSection({ wishlistId, itemId }: CommentsSectionProps) {
               />
             ))}
           </AnimatePresence>
+        )}
+
+        {hasNextPage && (
+          <button
+            onClick={() => void fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="w-full flex items-center justify-center gap-1.5 py-2 text-xs text-amber-700 hover:text-amber-600 hover:bg-amber-50/60 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
+          >
+            {isFetchingNextPage ? (
+              <Loader2 size={12} className="animate-spin" />
+            ) : null}
+            {isFetchingNextPage ? 'Loading…' : 'Load more comments'}
+          </button>
         )}
       </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,6 +19,7 @@ import { Button } from '../components/ui/Button';
 import { ImageFallback } from '../components/ui/ImageFallback';
 import { ItemCardSkeleton } from '../components/ui/SkeletonLoader';
 import { EmptyState } from '../components/ui/EmptyState';
+import { trackWishlistView } from '../lib/aep/events';
 import type { WishListItemDto } from '../types';
 
 const MAX_ITEMS = 50;
@@ -35,6 +36,18 @@ export default function WishlistDetailPage() {
   const { data: wishlist, isLoading: isWishlistLoading, isError } = useWishlistDetail(wishlistId ?? '', !isAuthLoading);
   const isLoading = isAuthLoading || isWishlistLoading;
   const { ref: titleRef, isOverflowing: titleOverflowing } = useIsOverflowing<HTMLDivElement>();
+
+  useEffect(() => {
+    if (!wishlist || isAuthLoading) return;
+    void trackWishlistView({
+      wishlistId: wishlist.id,
+      pageType: 'wishlist_detail',
+      isPublic: wishlist.isPublic,
+      hasImage: wishlist.imageUrl != null,
+      ...(user && { userId: user.id, email: user.email }),
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wishlist?.id, isAuthLoading]);
 
   const [isAddItemOpen, setIsAddItemOpen] = useState(false);
   const [editItem, setEditItem] = useState<WishListItemDto | null>(null);
@@ -132,7 +145,7 @@ export default function WishlistDetailPage() {
               <AnimatePresence>
                 {items.map((item) => (
                     <div key={item.id} className="h-full">
-                      <ItemCard item={item} wishlistId={wishlist.id} isOwner={isOwner} currentUserId={user?.id ?? null} onEdit={(i) => setEditItem(i)} onOpenComments={(i) => setCommentsItem(i)} onRequireAuth={() => setRequireAuthOpen(true)} />
+                      <ItemCard item={item} wishlistId={wishlist.id} isOwner={isOwner} currentUserId={user?.id ?? null} currentUserEmail={user?.email} onEdit={(i) => setEditItem(i)} onOpenComments={(i) => setCommentsItem(i)} onRequireAuth={() => setRequireAuthOpen(true)} />
                     </div>
                   ))}
               </AnimatePresence>

@@ -13,6 +13,8 @@ import { ImageCropModal } from '../ui/ImageCropModal';
 import { useCreateWishlist, useUpdateWishlist } from '../../hooks/useWishlists';
 import { useUploadImage } from '../../hooks/useUploadImage';
 import { useClipboardPaste } from '../../hooks/useClipboardPaste';
+import { useAuth } from '../../hooks/useAuth';
+import { trackWishlistCreated } from '../../lib/aep/events';
 import type { WishListDto } from '../../types';
 
 const schema = z.object({
@@ -31,6 +33,7 @@ interface WishlistModalProps {
 
 export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalProps) {
   const isEdit = !!editWishlist;
+  const { user } = useAuth();
   const createMutation = useCreateWishlist();
   const updateMutation = useUpdateWishlist();
   const uploadMutation = useUploadImage();
@@ -128,7 +131,17 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
       );
     } else {
       createMutation.mutate(payload, {
-        onSuccess: () => { onClose(); reset(); },
+        onSuccess: (created) => {
+          void trackWishlistCreated({
+            wishlistId: created.id,
+            userId: user?.id,
+            email: user?.email,
+            isPublic: created.isPublic,
+            hasImage: created.imageUrl != null,
+          });
+          onClose();
+          reset();
+        },
       });
     }
   };

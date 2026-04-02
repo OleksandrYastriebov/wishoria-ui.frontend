@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { Providers } from './providers';
 
@@ -30,6 +31,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* Adobe Alloy pre-init snippet — creates window.alloy queue synchronously
+            so the AEP Assurance Chrome extension can hook in before async SDK load */}
+        <Script id="alloy-prehook" strategy="beforeInteractive">{`
+          !function(n,o){o.forEach(function(o){n[o]||((n.__alloyNS=n.__alloyNS||[]).push(o),n[o]=function(){var u=arguments;return new Promise(function(i,l){n[o].q.push([i,l,u])})},n[o].q=[])})}(window,["alloy"]);
+        `}</Script>
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>

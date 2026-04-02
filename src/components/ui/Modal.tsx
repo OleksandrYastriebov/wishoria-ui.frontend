@@ -59,7 +59,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
             exit={{ opacity: 0, scale: 0.95, y: 8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'relative w-full bg-white/55 backdrop-blur-2xl rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 z-10 overflow-hidden',
+              'relative w-full bg-white/80 backdrop-blur-2xl rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 z-10 overflow-hidden',
               sizeClasses[size],
               className
             )}

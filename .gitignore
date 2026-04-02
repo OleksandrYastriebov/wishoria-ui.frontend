@@ -16,6 +16,8 @@ out
 .env
 .env.production
 
+*.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

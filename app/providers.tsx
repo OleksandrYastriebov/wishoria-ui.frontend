@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '../src/contexts/AuthContext';
+import { AEPProvider, PageViewTracker } from '../src/components/aep/AEPProvider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -21,7 +22,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        {children}
+        {/*
+         * AEPProvider initializes Adobe Alloy (sets ECID cookie + device cookie).
+         * PageViewTracker fires a page view event on every route change.
+         * Both are placed inside AuthProvider so they have access to user state.
+         */}
+        <AEPProvider>
+          <PageViewTracker />
+          {children}
+        </AEPProvider>
         <Toaster
           position="bottom-right"
           toastOptions={{

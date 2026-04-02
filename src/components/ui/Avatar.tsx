@@ -20,6 +20,14 @@ const sizeClasses = {
   xl: 'w-20 h-20 text-3xl',
 };
 
+const pixelSizes = {
+  xs: '24px',
+  sm: '32px',
+  md: '40px',
+  lg: '56px',
+  xl: '80px',
+};
+
 const colorPalette = [
   'bg-amber-500',
   'bg-blue-500',
@@ -58,6 +66,7 @@ export function Avatar({ src, firstName, lastName, size = 'md', className }: Ava
           src={src}
           alt={`${firstName ?? ''} ${lastName ?? ''}`}
           fill
+          sizes={pixelSizes[size]}
           className="object-cover"
           onError={() => setImageError(true)}
         />

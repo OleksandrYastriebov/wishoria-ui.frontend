@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Globe, Lock } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { useGenerateWishlist } from '../../hooks/useWishlists';
+import { useAuth } from '../../hooks/useAuth';
+import { trackWishlistCreated } from '../../lib/aep/events';
 
 const schema = z.object({
   description: z
@@ -25,6 +27,7 @@ interface AiGenerateModalProps {
 }
 
 export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
+  const { user } = useAuth();
   const {
     register,
     handleSubmit,
@@ -42,7 +45,15 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
   const charsLeft = description.length;
   const isNearLimit = charsLeft > 450;
 
-  const generateMutation = useGenerateWishlist(() => {
+  const generateMutation = useGenerateWishlist((wishlist) => {
+    void trackWishlistCreated({
+      wishlistId: wishlist.id,
+      userId: user?.id,
+      email: user?.email,
+      isAiGenerated: true,
+      isPublic: wishlist.isPublic,
+      hasImage: wishlist.imageUrl != null,
+    });
     reset();
     onClose();
   });

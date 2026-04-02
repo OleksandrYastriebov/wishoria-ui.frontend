@@ -8,6 +8,7 @@ import type { WishListItemDto } from '../../types';
 import { ImageFallback } from '../ui/ImageFallback';
 import { ConfirmModal } from '../ui/ConfirmModal';
 import { useDeleteItem, useToggleChecked } from '../../hooks/useWishlistItems';
+import { trackItemReservation } from '../../lib/aep/events';
 import type { AxiosError } from 'axios';
 
 interface ItemCardProps {
@@ -15,6 +16,7 @@ interface ItemCardProps {
   wishlistId: string;
   isOwner: boolean;
   currentUserId: number | null;
+  currentUserEmail?: string | null;
   onEdit: (item: WishListItemDto) => void;
   onOpenComments: (item: WishListItemDto) => void;
   onRequireAuth: () => void;
@@ -25,6 +27,7 @@ export function ItemCard({
   wishlistId,
   isOwner,
   currentUserId,
+  currentUserEmail,
   onEdit,
   onOpenComments,
   onRequireAuth,
@@ -43,9 +46,24 @@ export function ItemCard({
 
   const handleToggle = () => {
     if (isReservedByOther) return;
+    const newIsChecked = !item.isChecked;
     toggleMutation.mutate(
-      { itemId: item.id, isChecked: !item.isChecked, currentUserId },
+      { itemId: item.id, isChecked: newIsChecked, currentUserId },
       {
+        onSuccess: () => {
+          void trackItemReservation({
+            wishlistId,
+            itemId: item.id,
+            itemTitle: item.title,
+            isReserved: newIsChecked,
+            userId: currentUserId,
+            email: currentUserEmail ?? undefined,
+            price: item.price,
+            hasUrl: item.url != null,
+            hasImage: item.imageUrl != null,
+            hasDescription: item.description != null,
+          });
+        },
         onError: (err) => {
           const axiosErr = err as AxiosError;
           if (axiosErr.response?.status === 403) {
@@ -147,6 +165,7 @@ export function ItemCard({
           </div>
         )}
 
+        {(isOwner || currentUserId !== null || !!item.url) && (
         <div className="absolute bottom-3 right-3 z-10 flex items-center gap-0.5 bg-black/30 backdrop-blur-xl rounded-2xl px-2 py-2 border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_4px_20px_rgba(0,0,0,0.3)] opacity-100 lg:opacity-70 lg:group-hover:opacity-100 transition-opacity duration-200">
           {isOwner ? (
             <>
@@ -190,26 +209,28 @@ export function ItemCard({
             </>
           ) : (
             <>
-              <button
-                onClick={handleToggle}
-                disabled={isReservedByOther || toggleMutation.isPending}
-                className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:opacity-40 disabled:cursor-not-allowed ${
-                  isReservedByOther
-                    ? 'text-white/40 cursor-not-allowed'
-                    : item.isChecked
-                    ? 'text-emerald-400 hover:bg-white/20 active:bg-white/10 cursor-pointer'
-                    : 'text-white/70 hover:text-white hover:bg-white/20 active:bg-white/10 cursor-pointer'
-                }`}
-                aria-label={item.isChecked ? 'Unreserve item' : 'Mark as reserved'}
-              >
-                {isReservedByOther ? (
-                  <Lock size={14} />
-                ) : item.isChecked ? (
-                  <CheckCircle2 size={14} />
-                ) : (
-                  <Circle size={14} />
-                )}
-              </button>
+              {currentUserId !== null && (
+                <button
+                  onClick={handleToggle}
+                  disabled={isReservedByOther || toggleMutation.isPending}
+                  className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:opacity-40 disabled:cursor-not-allowed ${
+                    isReservedByOther
+                      ? 'text-white/40 cursor-not-allowed'
+                      : item.isChecked
+                      ? 'text-emerald-400 hover:bg-white/20 active:bg-white/10 cursor-pointer'
+                      : 'text-white/70 hover:text-white hover:bg-white/20 active:bg-white/10 cursor-pointer'
+                  }`}
+                  aria-label={item.isChecked ? 'Unreserve item' : 'Mark as reserved'}
+                >
+                  {isReservedByOther ? (
+                    <Lock size={14} />
+                  ) : item.isChecked ? (
+                    <CheckCircle2 size={14} />
+                  ) : (
+                    <Circle size={14} />
+                  )}
+                </button>
+              )}
 
               {item.url && (
                 <a
@@ -223,16 +244,19 @@ export function ItemCard({
                 </a>
               )}
 
-              <button
-                onClick={() => onOpenComments(item)}
-                className="flex items-center justify-center w-8 h-8 rounded-xl text-white/70 hover:text-white hover:bg-white/20 active:bg-white/10 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
-                aria-label="Discuss item"
-              >
-                <MessageCircle size={14} />
-              </button>
+              {currentUserId !== null && (
+                <button
+                  onClick={() => onOpenComments(item)}
+                  className="flex items-center justify-center w-8 h-8 rounded-xl text-white/70 hover:text-white hover:bg-white/20 active:bg-white/10 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
+                  aria-label="Discuss item"
+                >
+                  <MessageCircle size={14} />
+                </button>
+              )}
             </>
           )}
         </div>
+        )}
       </motion.div>
 
       <ConfirmModal

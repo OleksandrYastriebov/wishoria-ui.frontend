@@ -119,6 +119,7 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
                             src={user.avatarUrl}
                             alt={`${user.firstName} ${user.lastName}`}
                             fill
+                            sizes="28px"
                             className="object-cover"
                           />
                         </div>
@@ -152,7 +153,7 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
         </form>
 
         <div>
-          <h4 className="text-sm font-medium text-stone-600 mb-3">
+          <h4 className="text-sm font-medium text-stone-700 mb-3">
             People with access
           </h4>
 
@@ -162,7 +163,7 @@ export function ShareModal({ isOpen, onClose, wishlistId, wishlistTitle }: Share
               <Skeleton className="h-10 w-full" />
             </div>
           ) : !accessData || accessData.emails.length === 0 ? (
-            <p className="text-sm text-stone-400 py-4 text-center">
+            <p className="text-sm text-stone-600 py-4 text-center">
               No one has access yet. Invite someone above.
             </p>
           ) : (

@@ -12,6 +12,8 @@ import { Button } from '../ui/Button';
 import { ImageCropModal } from '../ui/ImageCropModal';
 import { useCreateItem, useUpdateItem } from '../../hooks/useWishlistItems';
 import { useUploadImage } from '../../hooks/useUploadImage';
+import { useAuth } from '../../hooks/useAuth';
+import { trackItemCreated } from '../../lib/aep/events';
 import { useClipboardPaste } from '../../hooks/useClipboardPaste';
 import { useGenerateDescription } from '../../hooks/useGenerateDescription';
 import { fileToBase64DataUri } from '../../utils/imageUpload';
@@ -47,6 +49,7 @@ interface ItemModalProps {
 
 export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalProps) {
   const isEdit = !!editItem;
+  const { user } = useAuth();
   const createMutation = useCreateItem(wishlistId);
   const updateMutation = useUpdateItem(wishlistId);
   const uploadMutation = useUploadImage();
@@ -193,7 +196,22 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
           description: data.description || undefined,
           imageUrl: data.imageUrl || undefined,
         },
-        { onSuccess: () => { onClose(); reset(); } }
+        {
+          onSuccess: (created) => {
+            void trackItemCreated({
+              wishlistId,
+              itemId: created.id,
+              userId: user?.id,
+              email: user?.email,
+              price: created.price,
+              hasUrl: created.url != null,
+              hasImage: created.imageUrl != null,
+              hasDescription: created.description != null,
+            });
+            onClose();
+            reset();
+          },
+        }
       );
     }
   };

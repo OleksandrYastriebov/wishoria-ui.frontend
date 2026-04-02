@@ -13,6 +13,7 @@ import axios from 'axios';
 import { getMe, signIn as apiSignIn, signOut as apiSignOut } from '../api/endpoints';
 import { setAccessToken, setAuthFailureHandler, refreshAccessToken } from '../api/axios';
 import type { SignInRequest, UserProfileDto } from '../types';
+import { trackLogin, trackLogout, getOrCreateDeviceId } from '../lib/aep';
 
 interface AuthContextValue {
   user: UserProfileDto | null;
@@ -65,15 +66,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccessToken(data.jwtToken);
     const me = await getMe();
     setUser(me);
+    // Stitch the identity graph: links ECID + device cookie → CRMID + Email.
+    // All prior anonymous browsing on this browser becomes attributed to this user.
+    const deviceId = getOrCreateDeviceId();
+    void trackLogin({ userId: me.id, email: me.email, deviceId });
   }, []);
 
   const logout = useCallback(async () => {
+    // Track logout before clearing auth state — we still need user.id and user.email.
+    // The event marks all identity namespaces as "loggedOut" in AEP.
+    if (user) {
+      await trackLogout({ userId: user.id, email: user.email });
+    }
     try {
       await apiSignOut();
     } finally {
       clearAuth();
     }
-  }, [clearAuth]);
+  }, [clearAuth, user]);
 
   const updateUser = useCallback((updatedUser: UserProfileDto) => {
     setUser(updatedUser);

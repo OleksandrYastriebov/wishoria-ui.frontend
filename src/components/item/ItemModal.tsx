@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ImageIcon, Loader2, Sparkles, Upload } from 'lucide-react';
+import { Crop, ImageIcon, Loader2, Sparkles, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
+import { ImageCropModal } from '../ui/ImageCropModal';
 import { useCreateItem, useUpdateItem } from '../../hooks/useWishlistItems';
 import { useUploadImage } from '../../hooks/useUploadImage';
 import { useClipboardPaste } from '../../hooks/useClipboardPaste';
@@ -53,6 +54,7 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageRemoved, setImageRemoved] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
   const pendingFileRef = useRef<File | null>(null);
 
   const {
@@ -91,21 +93,50 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
     }
   }, [isOpen, editItem, reset]);
 
-  const handleFile = async (file: File) => {
+  const openCrop = (file: File) => {
     pendingFileRef.current = file;
-    const result = await uploadMutation.mutateAsync(file);
+    const objectUrl = URL.createObjectURL(file);
+    setCropSrc(objectUrl);
+  };
+
+  const handleCropConfirm = async (blob: Blob) => {
+    if (cropSrc) URL.revokeObjectURL(cropSrc);
+    setCropSrc(null);
+    const croppedFile = new File([blob], pendingFileRef.current?.name ?? 'image.jpg', { type: blob.type });
+    pendingFileRef.current = croppedFile;
+    const result = await uploadMutation.mutateAsync(croppedFile);
     setValue('imageUrl', result.url);
     setPreviewUrl(result.url);
     setImageRemoved(false);
   };
 
+  const handleCropCancel = () => {
+    if (cropSrc) URL.revokeObjectURL(cropSrc);
+    setCropSrc(null);
+    pendingFileRef.current = null;
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleCropExisting = async () => {
+    const url = previewUrl ?? imageUrlValue;
+    if (!url) return;
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      setCropSrc(objectUrl);
+    } catch {
+      toast.error('Could not load image for cropping.');
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    void handleFile(file);
+    openCrop(file);
   };
 
-  useClipboardPaste((file) => void handleFile(file), isOpen);
+  useClipboardPaste((file) => openCrop(file), isOpen);
 
   const handleGenerateDescription = async () => {
     const title = titleValue?.trim();
@@ -134,23 +165,36 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
   };
 
   const onSubmit = (data: FormData) => {
-    const payload = {
-      title: data.title,
-      url: data.url || undefined,
-      price: data.price ? parseFloat(data.price) : undefined,
-      description: data.description || undefined,
-      imageUrl: data.imageUrl ? data.imageUrl : (imageRemoved ? '' : undefined),
-    };
+    const clearing = (val: string | undefined) =>
+      isEdit ? (val || '') : (val || undefined);
+
+    const parsedPrice = data.price ? parseFloat(data.price) : undefined;
 
     if (isEdit && editItem) {
       updateMutation.mutate(
-        { itemId: editItem.id, data: payload },
+        {
+          itemId: editItem.id,
+          data: {
+            title: data.title,
+            url: clearing(data.url),
+            price: parsedPrice ?? null,
+            description: clearing(data.description),
+            imageUrl: data.imageUrl ? data.imageUrl : (imageRemoved ? '' : undefined),
+          },
+        },
         { onSuccess: () => { onClose(); reset(); } }
       );
     } else {
-      createMutation.mutate(payload, {
-        onSuccess: () => { onClose(); reset(); },
-      });
+      createMutation.mutate(
+        {
+          title: data.title,
+          url: data.url || undefined,
+          price: parsedPrice,
+          description: data.description || undefined,
+          imageUrl: data.imageUrl || undefined,
+        },
+        { onSuccess: () => { onClose(); reset(); } }
+      );
     }
   };
 
@@ -159,31 +203,48 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
   const canGenerateDescription = !!(titleValue?.trim()) || !!(previewUrl ?? imageUrlValue);
 
   return (
+    <>
+    <ImageCropModal
+      imageSrc={cropSrc}
+      onConfirm={(blob) => void handleCropConfirm(blob)}
+      onCancel={handleCropCancel}
+      previewType="item"
+      previewTitle={titleValue}
+    />
     <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit Item' : 'Add Item'} size="md">
       <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="p-6 space-y-4">
         <div>
           <label className="text-sm font-medium text-stone-700 block mb-2">Image</label>
           {(previewUrl ?? imageUrlValue) ? (
-            <div className="relative w-full h-28 rounded-xl overflow-hidden border border-stone-200 mb-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+            <div className="relative w-full rounded-xl overflow-hidden border border-stone-200 mb-2 bg-stone-100">
               <img
                 src={previewUrl ?? imageUrlValue}
                 alt="Preview"
-                className="w-full h-full object-cover"
+                className="w-full max-h-64 object-contain"
                 onError={() => setPreviewUrl(null)}
               />
-              <button
-                type="button"
-                onClick={() => {
-                  setPreviewUrl(null);
-                  setValue('imageUrl', '');
-                  setImageRemoved(true);
-                  pendingFileRef.current = null;
-                }}
-                className="absolute top-2 right-2 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
-              >
-                Remove
-              </button>
+              <div className="absolute top-2 right-2 flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => void handleCropExisting()}
+                  className="flex items-center gap-1 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
+                >
+                  <Crop size={11} />
+                  Crop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPreviewUrl(null);
+                    setValue('imageUrl', '');
+                    setImageRemoved(true);
+                    pendingFileRef.current = null;
+                  }}
+                  className="p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           ) : (
             <button
@@ -295,5 +356,6 @@ export function ItemModal({ isOpen, onClose, wishlistId, editItem }: ItemModalPr
         </div>
       </form>
     </Modal>
+    </>
   );
 }

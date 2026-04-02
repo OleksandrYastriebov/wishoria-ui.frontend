@@ -117,11 +117,11 @@ export interface CreateItemRequest {
 
 export interface UpdateItemRequest {
   title?: string;
-  url?: string;
-  price?: number;
-  description?: string;
+  url?: string | null;
+  price?: number | null;
+  description?: string | null;
   isChecked?: boolean;
-  imageUrl?: string;
+  imageUrl?: string | null;
 }
 
 export interface ToggleCheckedRequest {

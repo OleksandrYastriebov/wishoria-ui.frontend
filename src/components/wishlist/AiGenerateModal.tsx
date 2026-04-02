@@ -52,7 +52,6 @@ export function AiGenerateModal({ isOpen, onClose }: AiGenerateModalProps) {
       reset();
       generateMutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const onSubmit = (values: FormValues) => {

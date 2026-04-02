@@ -11,7 +11,7 @@ function toOgImageUrl(url: string): string {
   if (idx === -1) return url;
   const base = url.slice(0, idx + uploadMarker.length);
   const rest = url.slice(idx + uploadMarker.length);
-  return `${base}w_1200,h_630,c_fill/${rest}`;
+  return `${base}w_1200,h_630,c_fill,g_auto,q_auto,f_auto/${rest}`;
 }
 
 export async function generateMetadata({

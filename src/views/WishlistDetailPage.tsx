@@ -23,14 +23,6 @@ import type { WishListItemDto } from '../types';
 
 const MAX_ITEMS = 50;
 
-function getBentoClass(index: number): string {
-  return (index % 4 === 0 || index % 4 === 3) ? 'lg:col-span-2 sm:col-span-2' : 'col-span-1';
-}
-
-function isBentoWide(index: number): boolean {
-  return index % 4 === 0 || index % 4 === 3;
-}
-
 export default function WishlistDetailPage() {
   const params = useParams<{ wishlistId: string }>();
   const wishlistId = params?.wishlistId;
@@ -102,7 +94,7 @@ export default function WishlistDetailPage() {
         <div className="space-y-6">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-white/60 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]">
             <div className="relative">
-              <ImageFallback src={wishlist.imageUrl} alt={wishlist.title} className="w-full h-48 sm:h-64" />
+              <ImageFallback src={wishlist.imageUrl} alt={wishlist.title} className="w-full h-[390px]" />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-stone-900/10 to-transparent" />
             </div>
             <div className="p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -136,16 +128,13 @@ export default function WishlistDetailPage() {
               action={isOwner ? <Button onClick={() => setIsAddItemOpen(true)} leftIcon={<Plus size={15} />}>Add first item</Button> : undefined}
             />
           ) : (
-            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4${items.length > 3 ? ' lg:grid-cols-3' : ''}`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <AnimatePresence>
-                {items.map((item, index) => {
-                  const useBento = items.length > 3;
-                  return (
-                    <div key={item.id} className={useBento ? getBentoClass(index) : ''}>
-                      <ItemCard item={item} wishlistId={wishlist.id} isOwner={isOwner} currentUserId={user?.id ?? null} onEdit={(i) => setEditItem(i)} onOpenComments={(i) => setCommentsItem(i)} onRequireAuth={() => setRequireAuthOpen(true)} wide={useBento && isBentoWide(index)} />
+                {items.map((item) => (
+                    <div key={item.id} className="h-full">
+                      <ItemCard item={item} wishlistId={wishlist.id} isOwner={isOwner} currentUserId={user?.id ?? null} onEdit={(i) => setEditItem(i)} onOpenComments={(i) => setCommentsItem(i)} onRequireAuth={() => setRequireAuthOpen(true)} />
                     </div>
-                  );
-                })}
+                  ))}
               </AnimatePresence>
               {isOwner && !atLimit && (
                 <button onClick={() => setIsAddItemOpen(true)} className="rounded-2xl border-2 border-dashed border-stone-200 hover:border-amber-500/60 hover:bg-amber-600/5 transition-all duration-200 flex items-center justify-center gap-2 text-stone-400 hover:text-amber-700 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer">

@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ImageIcon, Upload } from 'lucide-react';
+import { Crop, ImageIcon, Upload } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
+import { ImageCropModal } from '../ui/ImageCropModal';
 import { useCreateWishlist, useUpdateWishlist } from '../../hooks/useWishlists';
 import { useUploadImage } from '../../hooks/useUploadImage';
 import { useClipboardPaste } from '../../hooks/useClipboardPaste';
@@ -35,6 +37,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageRemoved, setImageRemoved] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
 
   const {
     register,
@@ -50,6 +53,7 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
   });
 
   const imageUrlValue = watch('imageUrl');
+  const titleValue = watch('title');
 
   useEffect(() => {
     if (isOpen) {
@@ -68,20 +72,47 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
     }
   }, [isOpen, editWishlist, reset]);
 
-  const handleFile = async (file: File) => {
-    const result = await uploadMutation.mutateAsync(file);
+  const openCrop = (file: File) => {
+    const objectUrl = URL.createObjectURL(file);
+    setCropSrc(objectUrl);
+  };
+
+  const handleCropConfirm = async (blob: Blob) => {
+    if (cropSrc) URL.revokeObjectURL(cropSrc);
+    setCropSrc(null);
+    const croppedFile = new File([blob], 'cover.jpg', { type: blob.type });
+    const result = await uploadMutation.mutateAsync(croppedFile);
     setValue('imageUrl', result.url);
     setPreviewUrl(result.url);
     setImageRemoved(false);
   };
 
+  const handleCropCancel = () => {
+    if (cropSrc) URL.revokeObjectURL(cropSrc);
+    setCropSrc(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleCropExisting = async () => {
+    const url = previewUrl ?? imageUrlValue;
+    if (!url) return;
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      setCropSrc(objectUrl);
+    } catch {
+      toast.error('Could not load image for cropping.');
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    void handleFile(file);
+    openCrop(file);
   };
 
-  useClipboardPaste((file) => void handleFile(file), isOpen);
+  useClipboardPaste((file) => openCrop(file), isOpen);
 
   const onSubmit = async (data: FormData) => {
     const payload = {
@@ -105,31 +136,48 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
   const isLoading = createMutation.isPending || updateMutation.isPending || uploadMutation.isPending;
 
   return (
+    <>
+    <ImageCropModal
+      imageSrc={cropSrc}
+      onConfirm={(blob) => void handleCropConfirm(blob)}
+      onCancel={handleCropCancel}
+      previewType="wishlist"
+      previewTitle={titleValue}
+    />
     <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit Wishlist' : 'New Wishlist'}>
       <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="p-6 space-y-4">
         <div>
           <label className="text-sm font-medium text-stone-800 block mb-2">Cover Image</label>
           <div className="relative">
             {(previewUrl ?? imageUrlValue) ? (
-              <div className="relative w-full h-32 rounded-xl overflow-hidden border border-stone-200 mb-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+              <div className="relative w-full rounded-xl overflow-hidden border border-stone-200 mb-2 bg-stone-100">
                 <img
                   src={previewUrl ?? imageUrlValue}
                   alt="Preview"
-                  className="w-full h-full object-cover"
+                  className="w-full max-h-64 object-contain"
                   onError={() => setPreviewUrl(null)}
                 />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPreviewUrl(null);
-                    setValue('imageUrl', '');
-                    setImageRemoved(true);
-                  }}
-                  className="absolute top-2 right-2 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
-                >
-                  Remove
-                </button>
+                <div className="absolute top-2 right-2 flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => void handleCropExisting()}
+                    className="flex items-center gap-1 p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
+                  >
+                    <Crop size={11} />
+                    Crop
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPreviewUrl(null);
+                      setValue('imageUrl', '');
+                      setImageRemoved(true);
+                    }}
+                    className="p-1 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors text-xs px-2 cursor-pointer"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             ) : (
               <button
@@ -205,5 +253,6 @@ export function WishlistModal({ isOpen, onClose, editWishlist }: WishlistModalPr
         </div>
       </form>
     </Modal>
+    </>
   );
 }

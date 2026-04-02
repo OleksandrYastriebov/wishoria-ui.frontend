@@ -19,12 +19,6 @@ import type { WishListDto } from '../types';
 const MAX_WISHLISTS = 50;
 const PAGE_SIZE = 12;
 
-function getBentoClass(index: number): string {
-  return (index % 4 === 0 || index % 4 === 3)
-    ? 'lg:col-span-2 sm:col-span-2'
-    : 'col-span-1';
-}
-
 export default function WishlistsPage() {
   const { user } = useAuth();
   const [page, setPage] = useState(0);
@@ -54,7 +48,7 @@ export default function WishlistsPage() {
         </div>
 
         {!atLimit && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setIsAiOpen(true)}
               className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-amber-600 to-amber-700 rounded-xl hover:from-amber-500 hover:to-amber-600 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8] shadow-lg shadow-amber-600/20 overflow-hidden cursor-pointer"
@@ -68,17 +62,21 @@ export default function WishlistsPage() {
               <Sparkles size={15} />
               Generate with AI
             </button>
-            <Button onClick={() => setIsCreateOpen(true)} leftIcon={<Plus size={16} />}>
+            <button
+              onClick={() => setIsCreateOpen(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-amber-700 bg-transparent border border-amber-600/60 rounded-xl hover:border-amber-600 hover:bg-amber-50/40 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fefdf8] cursor-pointer"
+            >
+              <Plus size={16} />
               New wishlist
-            </Button>
+            </button>
           </div>
         )}
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <WishlistCardSkeleton key={i} className={getBentoClass(i)} />
+            <WishlistCardSkeleton key={i} />
           ))}
         </div>
       ) : isError ? (
@@ -98,23 +96,18 @@ export default function WishlistsPage() {
         />
       ) : (
         <>
-          <motion.div layout className={`grid grid-cols-1 sm:grid-cols-2 gap-4${wishlists.length > 3 ? ' lg:grid-cols-3' : ''}`}>
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <AnimatePresence>
-              {wishlists.map((wl, index) => {
-                const useBento = wishlists.length > 3;
-                const wide = useBento && (index % 4 === 0 || index % 4 === 3);
-                return (
-                  <div key={wl.id} className={useBento ? getBentoClass(index) : ''}>
+              {wishlists.map((wl) => (
+                  <div key={wl.id} className="h-full">
                     <WishlistCard
                       wishlist={wl}
                       isOwner={wl.userId === user?.id}
                       onEdit={(w) => setEditWishlist(w)}
                       onShare={(w) => setShareWishlist(w)}
-                      wide={wide}
                     />
                   </div>
-                );
-              })}
+                ))}
             </AnimatePresence>
             {!atLimit && totalPages <= 1 && (
               <button

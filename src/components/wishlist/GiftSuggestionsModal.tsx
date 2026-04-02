@@ -22,7 +22,6 @@ export function GiftSuggestionsModal({ isOpen, onClose, userId, userName }: Gift
     } else {
       mutation.reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, userId]);
 
   const suggestions = mutation.data?.suggestions ?? [];

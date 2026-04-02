@@ -66,7 +66,6 @@ export function DatePicker({
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  // Scroll to selected year when year view opens
   useEffect(() => {
     if (view === 'year' && yearListRef.current) {
       const selectedBtn = yearListRef.current.querySelector('[data-selected="true"]');
@@ -144,7 +143,6 @@ export function DatePicker({
 
         {isOpen && (
           <div className="absolute z-50 mt-1.5 w-72 rounded-2xl border border-white/70 bg-white/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-3">
-            {/* Calendar view */}
             {view === 'calendar' && (
               <>
                 <div className="flex items-center justify-between mb-3">
@@ -218,7 +216,6 @@ export function DatePicker({
               </>
             )}
 
-            {/* Month selection view */}
             {view === 'month' && (
               <>
                 <div className="flex items-center justify-between mb-3">
@@ -261,7 +258,6 @@ export function DatePicker({
               </>
             )}
 
-            {/* Year selection view */}
             {view === 'year' && (
               <>
                 <div className="flex items-center justify-between mb-3">
@@ -305,7 +301,6 @@ export function DatePicker({
       </div>
       {hint && !error && <p className="text-xs text-stone-500">{hint}</p>}
       {error && <p className="text-xs text-red-500">{error}</p>}
-      {/* Hidden input for native form compatibility */}
       <input type="hidden" name={name} value={value ?? ''} />
     </div>
   );

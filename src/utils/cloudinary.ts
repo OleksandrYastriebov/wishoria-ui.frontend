@@ -16,5 +16,5 @@ export function withCloudinaryResize(
   const base = url.slice(0, uploadIdx + uploadMarker.length);
   const rest = url.slice(uploadIdx + uploadMarker.length);
 
-  return `${base}w_${w},h_${h},c_fill/${rest}`;
+  return `${base}w_${w},h_${h},c_fill,g_auto,q_auto,f_auto/${rest}`;
 }

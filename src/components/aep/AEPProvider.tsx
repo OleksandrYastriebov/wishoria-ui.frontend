@@ -16,7 +16,7 @@
  * the first page view carries the correct identity (authenticated or anonymous).
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { initAlloy } from '../../lib/aep/alloy';
 import { getOrCreateDeviceId } from '../../lib/aep/device';
@@ -65,10 +65,16 @@ export function AEPProvider({ children }: AEPProviderProps) {
 export function PageViewTracker() {
   const pathname = usePathname();
   const { user, isLoading } = useAuthContext();
+  const trackedKey = useRef<string | null>(null);
 
   useEffect(() => {
     // Wait for auth bootstrap — we want the correct identity in the first event
     if (isLoading) return;
+
+    // Prevent StrictMode double-invoke from sending duplicate page views
+    const key = pathname;
+    if (trackedKey.current === key) return;
+    trackedKey.current = key;
 
     const deviceId = getOrCreateDeviceId();
     const pageUrl = typeof window !== 'undefined' ? window.location.href : pathname;

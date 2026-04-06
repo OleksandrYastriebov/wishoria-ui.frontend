@@ -2,19 +2,32 @@ import type { AEPConfig } from './types';
 
 export function getAEPConfig(): AEPConfig {
   const orgId = process.env.NEXT_PUBLIC_AEP_ORG_ID ?? '';
-  const datastreamId = process.env.NEXT_PUBLIC_AEP_DATASTREAM_ID ?? '';
+  const pageViewDatastreamId = process.env.NEXT_PUBLIC_AEP_DATASTREAM_ID_PAGE_VIEW ?? '';
+  const defaultDatastreamId = process.env.NEXT_PUBLIC_AEP_DATASTREAM_ID ?? pageViewDatastreamId;
+  const authDatastreamId = process.env.NEXT_PUBLIC_AEP_DATASTREAM_ID_AUTH ?? '';
+  const wishlistDatastreamId = process.env.NEXT_PUBLIC_AEP_DATASTREAM_ID_WISHLIST ?? '';
   const edgeDomain = process.env.NEXT_PUBLIC_AEP_EDGE_DOMAIN ?? 'edge.adobedc.net';
   const debugEnabled = process.env.NEXT_PUBLIC_AEP_DEBUG === 'true';
 
-  if (!orgId || !datastreamId) {
+  if (!orgId || !defaultDatastreamId) {
     console.warn(
       '[AEP] Missing configuration: NEXT_PUBLIC_AEP_ORG_ID and/or ' +
         'NEXT_PUBLIC_AEP_DATASTREAM_ID are not set. ' +
-        'AEP tracking is disabled. See AEP_SETUP_GUIDE.md.'
+        'AEP tracking is disabled. See AEP_SETUP_GUIDE_V2.md.'
     );
   }
 
-  return { orgId, datastreamId, edgeDomain, debugEnabled };
+  return {
+    orgId,
+    datastreamId: defaultDatastreamId,
+    datastreamIds: {
+      auth: authDatastreamId,
+      wishlist: wishlistDatastreamId,
+      pageView: pageViewDatastreamId,
+    },
+    edgeDomain,
+    debugEnabled,
+  };
 }
 
 export function isAEPConfigured(config: AEPConfig): boolean {

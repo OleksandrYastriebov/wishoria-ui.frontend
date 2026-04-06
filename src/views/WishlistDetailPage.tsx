@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,9 +36,12 @@ export default function WishlistDetailPage() {
   const { data: wishlist, isLoading: isWishlistLoading, isError } = useWishlistDetail(wishlistId ?? '', !isAuthLoading);
   const isLoading = isAuthLoading || isWishlistLoading;
   const { ref: titleRef, isOverflowing: titleOverflowing } = useIsOverflowing<HTMLDivElement>();
+  const trackedWishlistId = useRef<string | null>(null);
 
   useEffect(() => {
     if (!wishlist || isAuthLoading) return;
+    if (trackedWishlistId.current === wishlist.id) return;
+    trackedWishlistId.current = wishlist.id;
     void trackWishlistView({
       wishlistId: wishlist.id,
       pageType: 'wishlist_detail',

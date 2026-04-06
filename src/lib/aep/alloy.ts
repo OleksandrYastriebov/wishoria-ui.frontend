@@ -1,31 +1,3 @@
-/**
- * Adobe Alloy (AEP Web SDK) — singleton initialization and core operations.
- *
- * BROWSER-ONLY MODULE
- * ───────────────────
- * Alloy is a browser library. This module uses:
- *   1. Lazy dynamic import (`await import('@adobe/alloy')`) — defers the bundle
- *      until runtime, preventing Next.js SSR errors.
- *   2. `typeof window === 'undefined'` guards — no-ops on the server.
- *
- * SINGLETON PATTERN
- * ─────────────────
- * One Alloy instance is created per page session and reused for all events.
- * The instance is stored in module-level variables (not React state) so it
- * survives React tree re-renders.
- *
- * INITIALIZATION SIDE EFFECTS (happen automatically):
- *   - Alloy contacts the Adobe Edge Network and receives/sets the ECID cookie
- *     (cookie name: amcv_<orgId>  or  kndctr_<orgId>_AdobeOrg_identity)
- *   - The ECID is persisted as a first-party cookie for 2 years
- *   - Alloy establishes a cluster hint to optimize future Edge Network routing
- *
- * ANALYTICS MUST NEVER BREAK THE APP
- * ───────────────────────────────────
- * Every public function in this module catches all errors and either returns
- * null or returns void — never throws to the caller.
- */
-
 import type { AlloyInstance, AEPConfig, WishoriaXDMEvent } from './types';
 import { getAEPConfig, isAEPConfigured } from './config';
 
@@ -33,19 +5,6 @@ let alloyInstance: AlloyInstance | null = null;
 /** Prevents duplicate initialization attempts (e.g., React StrictMode double-invoke) */
 let initPromise: Promise<AlloyInstance | null> | null = null;
 
-// ─── Initialization ───────────────────────────────────────────────────────────
-
-/**
- * Initializes the AEP Web SDK (Adobe Alloy) with values from env variables.
- *
- * Safe to call multiple times — returns the existing instance after the first call.
- * Should be called once from <AEPProvider> on application startup.
- *
- * @returns The configured Alloy instance, or null when:
- *   - Running server-side (SSR)
- *   - Required env vars are missing
- *   - Initialization failed (network error, wrong orgId, etc.)
- */
 export async function initAlloy(): Promise<AlloyInstance | null> {
   if (typeof window === 'undefined') return null;
   if (alloyInstance) return alloyInstance;
@@ -67,7 +26,6 @@ async function performInit(): Promise<AlloyInstance | null> {
   }
 
   try {
-    // Dynamic import keeps Alloy out of the SSR bundle entirely
     const { createInstance } = await import('@adobe/alloy');
     const instance = createInstance({ name: 'alloy' }) as AlloyInstance;
 
@@ -90,14 +48,9 @@ async function performInit(): Promise<AlloyInstance | null> {
 /**
  * Maps AEPConfig to the alloy("configure") options object.
  *
- * Key settings explained:
- *   defaultConsent "in"       — assumes user consented. Change to "pending"
- *                               if you add a cookie consent banner, then call
- *                               alloy("setConsent", ...) after user accepts.
- *   idMigrationEnabled true   — reads legacy amcv_ cookies from Visitor API.
- *                               Safe to keep even if you've never used Visitor API.
- *   thirdPartyCookiesEnabled  — false is safer; 3rd-party cookies are blocked
- *   false                       in Firefox/Safari and being phased out in Chrome.
+ * datastreamId here is the PageView datastream — the default for all events
+ * that don't specify an override. Auth and Wishlist events override per-call
+ * via edgeConfigOverrides.datastreamId in sendAEPEvent().
  */
 function buildAlloyConfig(config: AEPConfig): Record<string, unknown> {
   return {
@@ -109,35 +62,25 @@ function buildAlloyConfig(config: AEPConfig): Record<string, unknown> {
     thirdPartyCookiesEnabled: false,
     clickCollectionEnabled: false,
     debugEnabled: config.debugEnabled,
-    /**
-     * onBeforeEventSend — optional hook to inspect/mutate events before sending.
-     * Useful for stripping PII in debug builds or adding global context.
-     * Uncomment and customize if needed:
-     *
-     * onBeforeEventSend: ({ xdm }) => {
-     *   if (process.env.NODE_ENV === 'development') {
-     *     console.debug('[AEP] Sending event:', xdm);
-     *   }
-     * },
-     */
   };
 }
 
 // ─── Event Sending ────────────────────────────────────────────────────────────
 
 /**
- * Sends an XDM ExperienceEvent to AEP via the Adobe Edge Network.
+ * Sends an XDM event via Alloy.
  *
- * Fails silently — never throws. Tracking must not block or crash the app.
- *
- * @param xdm             - The XDM event payload (see WishoriaXDMEvent)
- * @param renderDecisions - Pass true on page views to receive Adobe Target /
- *                          Journey Optimizer personalization decisions.
- *                          Pass false (default) for interaction events.
+ * @param xdm            The XDM event payload.
+ * @param renderDecisions Pass true for page-view events to receive personalization.
+ * @param datastreamId   If provided, routes the event to that specific datastream
+ *                       (Auth / Wishlist / PageView). Uses edgeConfigOverrides.datastreamId
+ *                       which the SDK translates to a datastream URL override.
+ *                       If omitted, the default datastream from configure() is used.
  */
 export async function sendAEPEvent(
   xdm: WishoriaXDMEvent,
-  renderDecisions = false
+  renderDecisions = false,
+  datastreamId?: string
 ): Promise<void> {
   if (typeof window === 'undefined') return;
 
@@ -152,30 +95,34 @@ export async function sendAEPEvent(
     await alloyInstance('sendEvent', {
       xdm: {
         ...xdm,
-        // Ensure timestamp is always present and in ISO 8601 format
         timestamp: xdm.timestamp ?? new Date().toISOString(),
       },
       renderDecisions,
+      ...(datastreamId && { edgeConfigOverrides: { datastreamId } }),
     });
 
     if (process.env.NEXT_PUBLIC_AEP_DEBUG === 'true') {
-      console.debug('[AEP] Event sent:', xdm.eventType, xdm);
+      console.debug('[AEP] Event sent:', xdm.eventType, datastreamId ? `(datastream: ${datastreamId})` : '', xdm);
     }
   } catch (err) {
     console.error('[AEP] sendEvent failed:', err);
   }
 }
 
-// ─── Identity ─────────────────────────────────────────────────────────────────
+// ─── Datastream Resolution ────────────────────────────────────────────────────
 
 /**
- * Returns the ECID (Experience Cloud ID) for the current browser session.
- *
- * The ECID is set automatically by Alloy during initialization and persisted
- * as a first-party cookie (valid for 2 years).
- *
- * @returns The ECID string, or null if Alloy is not initialized.
+ * Returns the datastream ID for the given event domain.
+ * Falls back to the default datastream if the domain-specific ID is not configured.
  */
+export function resolveDatastreamId(domain: 'auth' | 'wishlist' | 'pageView'): string | undefined {
+  const config = getAEPConfig();
+  const id = config.datastreamIds[domain];
+  return id || undefined;
+}
+
+// ─── Identity ─────────────────────────────────────────────────────────────────
+
 export async function getECID(): Promise<string | null> {
   if (!alloyInstance) return null;
 
@@ -190,10 +137,6 @@ export async function getECID(): Promise<string | null> {
   }
 }
 
-/**
- * Returns the current Alloy instance without initializing.
- * Useful for advanced use cases that need direct SDK access.
- */
 export function getAlloy(): AlloyInstance | null {
   return alloyInstance;
 }

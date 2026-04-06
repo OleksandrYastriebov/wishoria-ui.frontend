@@ -1,24 +1,4 @@
-/**
- * High-level AEP event tracking functions.
- *
- * This is the primary API consumed by components and hooks.
- * All functions are async and fail silently — import and call them anywhere
- * without try/catch, they will never propagate errors to the caller.
- *
- * QUICK REFERENCE:
- *   trackPageView()  — call on every route change (via useAEPPageView hook)
- *   trackLogin()     — call immediately after successful authentication
- *   trackLogout()    — call before/after clearing auth state
- *
- * EXTENDING THIS FILE:
- *   To add a new event (e.g., wishlist created, item checked):
- *   1. Add a new XDMEventType value to types.ts if needed
- *   2. Create a new function here following the same pattern
- *   3. Export it from index.ts
- *   4. Optionally add a corresponding hook in src/hooks/
- */
-
-import { sendAEPEvent } from './alloy';
+import { sendAEPEvent, resolveDatastreamId } from './alloy';
 import { getDeviceId } from './device';
 import {
   buildAnonymousIdentityMap,
@@ -33,84 +13,33 @@ import type {
   TrackWishlistCreatedOptions,
   TrackItemCreatedOptions,
   TrackWishlistViewOptions,
-  PageType,
+  TrackWishlistClickedOptions,
+  IdentityMap,
+  UserContextFields,
   WishoriaXDMEvent,
 } from './types';
 
-function getPriceRange(price: number | null | undefined): 'none' | 'low' | 'medium' | 'high' {
-  if (price == null) return 'none';
-  if (price < 50) return 'low';
-  if (price <= 200) return 'medium';
-  return 'high';
-}
+// ─── Page Views → PageView Datastream ────────────────────────────────────────
 
-// ─── Page Views ───────────────────────────────────────────────────────────────
-
-/**
- * Tracks a page view event.
- *
- * Should be called on every route change. The useAEPPageView hook handles
- * this automatically — you rarely need to call this function directly.
- *
- * Sends renderDecisions=true so AEP can respond with personalization content
- * from Adobe Target or Adobe Journey Optimizer In-App Messages.
- *
- * Identity logic:
- *   - If user is authenticated: sends full identity map (CRMID + Email + DEVICE)
- *   - If anonymous: sends only DEVICE identity map
- *   - If no deviceId: sends no identityMap (ECID alone is still captured by Alloy)
- */
 export async function trackPageView(options: TrackPageViewOptions): Promise<void> {
   const { pageName, pageUrl, pageType, userId, email, deviceId } = options;
-
-  const identityMap =
-    userId && email && deviceId
-      ? buildAuthenticatedIdentityMap(userId, email, deviceId)
-      : deviceId
-      ? buildAnonymousIdentityMap(deviceId)
-      : undefined;
 
   const xdm: WishoriaXDMEvent = {
     eventType: 'web.webpagedetails.pageViews',
     timestamp: new Date().toISOString(),
-    identityMap,
-    web: {
-      webPageDetails: {
-        name: pageName,
-        URL: pageUrl,
-      },
-    },
-    _devhandlerptrsd: {
-      wishoria: {
-        pageType,
-        ...(userId != null && { userId: String(userId) }),
-        ...(email && { userEmail: email }),
-      },
+    identityMap: resolveIdentityMap(userId, email, deviceId ?? ''),
+    web: { webPageDetails: { name: pageName, URL: pageUrl } },
+    _adobequaptrsd: {
+      user: userFields(userId, email),
+      page: { pageType },
     },
   };
 
-  await sendAEPEvent(xdm, /* renderDecisions= */ true);
+  await sendAEPEvent(xdm, /* renderDecisions= */ true, resolveDatastreamId('pageView'));
 }
 
-// ─── Authentication ───────────────────────────────────────────────────────────
+// ─── Authentication → Auth Datastream ────────────────────────────────────────
 
-/**
- * Tracks a successful login and stitches the user's identity graph.
- *
- * This is the most important event for AEP identity resolution. When sent:
- *   1. AEP's Identity Service receives: CRMID + Email + WISHORIA_DEVICE
- *   2. It looks up if any of these exist in the identity graph
- *   3. If ECID already exists (from anonymous visit), it links ECID → CRMID
- *   4. All prior anonymous events (page views, clicks) become attributed to this user
- *
- * Call this after the backend confirms login AND after setUser() completes
- * (so you have the full UserProfileDto with id and email).
- *
- * @example
- *   const me = await getMe();
- *   setUser(me);
- *   await trackLogin({ userId: me.id, email: me.email, deviceId });
- */
 export async function trackLogin(options: TrackLoginOptions): Promise<void> {
   const { userId, email, deviceId } = options;
 
@@ -118,38 +47,17 @@ export async function trackLogin(options: TrackLoginOptions): Promise<void> {
     eventType: 'userAccount.login',
     timestamp: new Date().toISOString(),
     identityMap: buildAuthenticatedIdentityMap(userId, email, deviceId),
-    web: {
-      webPageDetails: {
-        name: 'Login',
-        URL: typeof window !== 'undefined' ? window.location.href : '',
-      },
-    },
-    _devhandlerptrsd: {
-      wishoria: {
-        userId: String(userId),
-        userEmail: email,
-        pageType: 'auth',
-      },
+    web: { webPageDetails: { name: 'Login', URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: { userId: String(userId), userEmail: email },
+      auth: { loginMethod: 'email' },
+      page: { pageType: 'auth' },
     },
   };
 
-  await sendAEPEvent(xdm);
+  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 }
 
-/**
- * Tracks a user logout event.
- *
- * Sends identity with authenticatedState="loggedOut" for all namespaces.
- * This signals to AEP Journey analytics that the session has ended.
- * The identity graph itself is NOT deleted — AEP retains all associations
- * for future re-identification (next login).
- *
- * Call this before clearAuth() so you still have user data available.
- *
- * @example
- *   if (user) await trackLogout({ userId: user.id, email: user.email });
- *   clearAuth();
- */
 export async function trackLogout(options: TrackLogoutOptions): Promise<void> {
   const { userId, email } = options;
   const deviceId = getDeviceId() ?? '';
@@ -158,189 +66,179 @@ export async function trackLogout(options: TrackLogoutOptions): Promise<void> {
     eventType: 'userAccount.logout',
     timestamp: new Date().toISOString(),
     identityMap: buildLoggedOutIdentityMap(userId, email, deviceId),
-    web: {
-      webPageDetails: {
-        name: 'Logout',
-        URL: typeof window !== 'undefined' ? window.location.href : '',
-      },
-    },
-    _devhandlerptrsd: {
-      wishoria: {
-        userId: String(userId),
-        userEmail: email,
-        pageType: 'auth',
-      },
+    web: { webPageDetails: { name: 'Logout', URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: { userId: String(userId), userEmail: email },
+      auth: { loginMethod: 'email' },
+      page: { pageType: 'auth' },
     },
   };
 
-  await sendAEPEvent(xdm);
+  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 }
 
-// ─── Wishlist & Item Events ───────────────────────────────────────────────────
+// ─── Wishlist & Item Events → Wishlist Datastream ─────────────────────────────
 
-/**
- * Tracks wishlist creation (manual or AI-generated).
- * Call after the backend confirms the wishlist was created.
- */
 export async function trackWishlistCreated(options: TrackWishlistCreatedOptions): Promise<void> {
   const { wishlistId, userId, email, isAiGenerated, isPublic, hasImage } = options;
   const deviceId = getDeviceId() ?? '';
 
-  const identityMap =
-    userId && email && deviceId
-      ? buildAuthenticatedIdentityMap(userId, email, deviceId)
-      : deviceId
-      ? buildAnonymousIdentityMap(deviceId)
-      : undefined;
-
   const xdm: WishoriaXDMEvent = {
     eventType: isAiGenerated ? 'wishlist.aiGenerated' : 'wishlist.created',
     timestamp: new Date().toISOString(),
-    identityMap,
-    web: {
-      webPageDetails: {
-        name: 'My Wishlists',
-        URL: typeof window !== 'undefined' ? window.location.href : '',
-      },
-    },
-    _devhandlerptrsd: {
-      wishoria: {
+    identityMap: resolveIdentityMap(userId, email, deviceId),
+    web: { webPageDetails: { name: 'My Wishlists', URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: userFields(userId, email),
+      wishlist: {
         wishlistId,
-        pageType: 'wishlists',
         ...(isPublic != null && { wishlistVisibility: isPublic ? 'public' : 'private' }),
         ...(hasImage != null && { wishlistHasImage: hasImage }),
-        ...(userId != null && { userId: String(userId) }),
-        ...(email && { userEmail: email }),
+        ...(isAiGenerated != null && { isAiGenerated }),
       },
+      page: { pageType: 'wishlists' },
     },
   };
 
-  await sendAEPEvent(xdm);
+  await sendAEPEvent(xdm, false, resolveDatastreamId('wishlist'));
 }
 
-/**
- * Tracks wishlist item creation.
- * Call after the backend confirms the item was created.
- */
-export async function trackItemCreated(options: TrackItemCreatedOptions): Promise<void> {
-  const { wishlistId, itemId, userId, email, price, hasUrl, hasImage, hasDescription } = options;
-  const deviceId = getDeviceId() ?? '';
-
-  const identityMap =
-    userId && email && deviceId
-      ? buildAuthenticatedIdentityMap(userId, email, deviceId)
-      : deviceId
-      ? buildAnonymousIdentityMap(deviceId)
-      : undefined;
-
-  const xdm: WishoriaXDMEvent = {
-    eventType: 'wishlist.item.created',
-    timestamp: new Date().toISOString(),
-    identityMap,
-    web: {
-      webPageDetails: {
-        name: `Wishlist ${wishlistId}`,
-        URL: typeof window !== 'undefined' ? window.location.href : '',
-      },
-    },
-    _devhandlerptrsd: {
-      wishoria: {
-        wishlistId,
-        wishlistItemId: itemId,
-        pageType: 'wishlist_detail',
-        itemHasPrice: price != null,
-        itemPriceRange: getPriceRange(price),
-        ...(hasUrl != null && { itemHasUrl: hasUrl }),
-        ...(hasImage != null && { itemHasImage: hasImage }),
-        ...(hasDescription != null && { itemHasDescription: hasDescription }),
-        ...(userId != null && { userId: String(userId) }),
-        ...(email && { userEmail: email }),
-      },
-    },
-  };
-
-  await sendAEPEvent(xdm);
-}
-
-/**
- * Tracks item reservation toggle (reserve / unreserve).
- * Call after the backend confirms the toggle.
- */
-export async function trackItemReservation(options: TrackItemReservationOptions): Promise<void> {
-  const { wishlistId, itemId, isReserved, userId, email, price, hasUrl, hasImage, hasDescription } = options;
-  const deviceId = getDeviceId() ?? '';
-
-  const identityMap =
-    userId && email && deviceId
-      ? buildAuthenticatedIdentityMap(userId, email, deviceId)
-      : deviceId
-      ? buildAnonymousIdentityMap(deviceId)
-      : undefined;
-
-  const xdm: WishoriaXDMEvent = {
-    eventType: isReserved ? 'wishlist.item.reserved' : 'wishlist.item.unreserved',
-    timestamp: new Date().toISOString(),
-    identityMap,
-    web: {
-      webPageDetails: {
-        name: `Wishlist ${wishlistId}`,
-        URL: typeof window !== 'undefined' ? window.location.href : '',
-      },
-    },
-    _devhandlerptrsd: {
-      wishoria: {
-        wishlistId,
-        wishlistItemId: itemId,
-        pageType: 'wishlist_detail',
-        itemHasPrice: price != null,
-        itemPriceRange: getPriceRange(price),
-        ...(hasUrl != null && { itemHasUrl: hasUrl }),
-        ...(hasImage != null && { itemHasImage: hasImage }),
-        ...(hasDescription != null && { itemHasDescription: hasDescription }),
-        ...(userId != null && { userId: String(userId) }),
-        ...(email && { userEmail: email }),
-      },
-    },
-  };
-
-  await sendAEPEvent(xdm);
-}
-
-/**
- * Tracks when a user views a wishlist.
- */
 export async function trackWishlistView(options: TrackWishlistViewOptions): Promise<void> {
   const { wishlistId, userId, email, isPublic, hasImage } = options;
   const deviceId = getDeviceId() ?? '';
 
-  const identityMap =
-    userId && email && deviceId
-      ? buildAuthenticatedIdentityMap(userId, email, deviceId)
-      : deviceId
-      ? buildAnonymousIdentityMap(deviceId)
-      : undefined;
-
   const xdm: WishoriaXDMEvent = {
     eventType: 'commerce.productListOpens',
     timestamp: new Date().toISOString(),
-    identityMap,
-    web: {
-      webPageDetails: {
-        name: `Wishlist ${wishlistId}`,
-        URL: typeof window !== 'undefined' ? window.location.href : '',
-      },
-    },
-    _devhandlerptrsd: {
-      wishoria: {
+    identityMap: resolveIdentityMap(userId, email, deviceId),
+    web: { webPageDetails: { name: `Wishlist ${wishlistId}`, URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: userFields(userId, email),
+      wishlist: {
         wishlistId,
-        pageType: 'wishlist_detail',
         ...(isPublic != null && { wishlistVisibility: isPublic ? 'public' : 'private' }),
         ...(hasImage != null && { wishlistHasImage: hasImage }),
-        ...(userId != null && { userId: String(userId) }),
-        ...(email && { userEmail: email }),
       },
+      page: { pageType: 'wishlist_detail' },
     },
   };
 
-  await sendAEPEvent(xdm);
+  await sendAEPEvent(xdm, false, resolveDatastreamId('wishlist'));
+}
+
+export async function trackWishlistClicked(options: TrackWishlistClickedOptions): Promise<void> {
+  const { wishlistId, wishlistTitle, isPublic, hasImage, userId, email } = options;
+  const deviceId = getDeviceId() ?? '';
+
+  const xdm: WishoriaXDMEvent = {
+    eventType: 'wishlist.clicked',
+    timestamp: new Date().toISOString(),
+    identityMap: resolveIdentityMap(userId, email, deviceId),
+    web: {
+      webInteraction: {
+        name: wishlistTitle,
+        type: 'other',
+        URL: typeof window !== 'undefined' ? `${window.location.origin}/wishlists/${wishlistId}` : '',
+        linkClicks: { value: 1 },
+      },
+    },
+    _adobequaptrsd: {
+      user: userFields(userId, email),
+      wishlist: {
+        wishlistId,
+        ...(isPublic != null && { wishlistVisibility: isPublic ? 'public' : 'private' }),
+        ...(hasImage != null && { wishlistHasImage: hasImage }),
+      },
+      page: { pageType: 'wishlists' },
+    },
+  };
+
+  await sendAEPEvent(xdm, false, resolveDatastreamId('wishlist'));
+}
+
+export async function trackItemCreated(options: TrackItemCreatedOptions): Promise<void> {
+  const { wishlistId, itemId, userId, email, price, hasUrl, hasImage, hasDescription } = options;
+  const deviceId = getDeviceId() ?? '';
+
+  const xdm: WishoriaXDMEvent = {
+    eventType: 'wishlist.item.created',
+    timestamp: new Date().toISOString(),
+    identityMap: resolveIdentityMap(userId, email, deviceId),
+    web: { webPageDetails: { name: `Wishlist ${wishlistId}`, URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: userFields(userId, email),
+      wishlistItem: {
+        wishlistId,
+        wishlistItemId: itemId,
+        itemHasPrice: price != null,
+        itemPriceRange: getPriceRange(price),
+        ...(hasUrl != null && { itemHasUrl: hasUrl }),
+        ...(hasImage != null && { itemHasImage: hasImage }),
+        ...(hasDescription != null && { itemHasDescription: hasDescription }),
+      },
+      page: { pageType: 'wishlist_detail' },
+    },
+  };
+
+  await sendAEPEvent(xdm, false, resolveDatastreamId('wishlist'));
+}
+
+export async function trackItemReservation(options: TrackItemReservationOptions): Promise<void> {
+  const { wishlistId, itemId, isReserved, userId, email, price, hasUrl, hasImage, hasDescription } = options;
+  const deviceId = getDeviceId() ?? '';
+
+  const xdm: WishoriaXDMEvent = {
+    eventType: isReserved ? 'wishlist.item.reserved' : 'wishlist.item.unreserved',
+    timestamp: new Date().toISOString(),
+    identityMap: resolveIdentityMap(userId, email, deviceId),
+    web: { webPageDetails: { name: `Wishlist ${wishlistId}`, URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: userFields(userId, email),
+      wishlistItem: {
+        wishlistId,
+        wishlistItemId: itemId,
+        itemHasPrice: price != null,
+        itemPriceRange: getPriceRange(price),
+        ...(hasUrl != null && { itemHasUrl: hasUrl }),
+        ...(hasImage != null && { itemHasImage: hasImage }),
+        ...(hasDescription != null && { itemHasDescription: hasDescription }),
+      },
+      page: { pageType: 'wishlist_detail' },
+    },
+  };
+
+  await sendAEPEvent(xdm, false, resolveDatastreamId('wishlist'));
+}
+
+// ─── Private helpers ──────────────────────────────────────────────────────────
+
+function currentUrl(): string {
+  return typeof window !== 'undefined' ? window.location.href : '';
+}
+
+function resolveIdentityMap(
+  userId: string | number | null | undefined,
+  email: string | undefined,
+  deviceId: string
+): IdentityMap | undefined {
+  if (userId && email && deviceId) return buildAuthenticatedIdentityMap(userId, email, deviceId);
+  if (deviceId) return buildAnonymousIdentityMap(deviceId);
+  return undefined;
+}
+
+function userFields(
+  userId: string | number | null | undefined,
+  email: string | undefined
+): UserContextFields {
+  return {
+    ...(userId != null && { userId: String(userId) }),
+    ...(email && { userEmail: email }),
+  };
+}
+
+function getPriceRange(price: number | null | undefined): 'none' | 'low' | 'medium' | 'high' {
+  if (price == null) return 'none';
+  if (price < 50) return 'low';
+  if (price <= 200) return 'medium';
+  return 'high';
 }

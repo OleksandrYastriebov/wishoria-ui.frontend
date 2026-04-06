@@ -8,7 +8,6 @@ import type { WishListDto } from '../../types';
 import { ImageFallback } from '../ui/ImageFallback';
 import { ConfirmModal } from '../ui/ConfirmModal';
 import { useDeleteWishlist } from '../../hooks/useWishlists';
-
 interface WishlistCardProps {
   wishlist: WishListDto;
   isOwner: boolean;

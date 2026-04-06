@@ -10,6 +10,11 @@ export type AlloyInstance = (
 export interface AEPConfig {
   orgId: string;
   datastreamId: string;
+  datastreamIds: {
+    auth: string;
+    wishlist: string;
+    pageView: string;
+  };
   edgeDomain: string;
   debugEnabled: boolean;
 }
@@ -38,20 +43,38 @@ export interface WebInteraction {
   linkClicks?: { value: 1 };
 }
 
-// ─── Custom Wishoria XDM Fields ───────────────────────────────────────────────
-
-export interface WishoriaCustomFields {
+/** Shared user context — attached to any event with a known user */
+export interface UserContextFields {
   userId?: string;
   userEmail?: string;
+}
+
+/** Auth domain — userAccount.login, userAccount.logout, userAccount.createProfile */
+export interface AuthEventFields {
+  loginMethod?: 'email' | 'google' | 'facebook';
+}
+
+/** Wishlist lifecycle — wishlist.created, wishlist.aiGenerated, commerce.productListOpens */
+export interface WishlistEventFields {
   wishlistId?: string;
   wishlistVisibility?: 'public' | 'private';
   wishlistHasImage?: boolean;
+  isAiGenerated?: boolean;
+}
+
+/** Wishlist item — wishlist.item.created, wishlist.item.reserved, wishlist.item.unreserved */
+export interface WishlistItemEventFields {
+  wishlistId?: string;
   wishlistItemId?: string;
   itemHasPrice?: boolean;
   itemPriceRange?: 'none' | 'low' | 'medium' | 'high';
   itemHasUrl?: boolean;
   itemHasImage?: boolean;
   itemHasDescription?: boolean;
+}
+
+/** Page context — attached to every event for funnel analysis */
+export interface PageContextFields {
   pageType?: PageType;
 }
 
@@ -63,8 +86,16 @@ export type PageType =
   | 'auth'
   | 'other';
 
-// ─── XDM Event ────────────────────────────────────────────────────────────────
+/** Tenant namespace object — key must match the sandbox tenant (_adobequaptrsd) */
+export interface WishoriaXDMTenantFields {
+  user?: UserContextFields;
+  auth?: AuthEventFields;
+  wishlist?: WishlistEventFields;
+  wishlistItem?: WishlistItemEventFields;
+  page?: PageContextFields;
+}
 
+// ─── XDM Event ────────────────────────────────────────────────────────────────
 
 export interface WishoriaXDMEvent {
   eventType: XDMEventType;
@@ -75,9 +106,7 @@ export interface WishoriaXDMEvent {
     webPageDetails?: WebPageDetails;
     webInteraction?: WebInteraction;
   };
-  _devhandlerptrsd?: {
-    wishoria?: WishoriaCustomFields;
-  };
+  _adobequaptrsd?: WishoriaXDMTenantFields;
 }
 
 export type XDMEventType =
@@ -93,7 +122,8 @@ export type XDMEventType =
   | 'wishlist.aiGenerated'
   | 'wishlist.item.created'
   | 'wishlist.item.reserved'
-  | 'wishlist.item.unreserved';
+  | 'wishlist.item.unreserved'
+  | 'wishlist.clicked';
 
 // ─── Helper result types ──────────────────────────────────────────────────────
 
@@ -137,6 +167,15 @@ export interface TrackItemReservationOptions {
   hasUrl?: boolean;
   hasImage?: boolean;
   hasDescription?: boolean;
+}
+
+export interface TrackWishlistClickedOptions {
+  wishlistId: string;
+  wishlistTitle: string;
+  isPublic?: boolean;
+  hasImage?: boolean;
+  userId?: string | number | null;
+  email?: string;
 }
 
 export interface TrackWishlistViewOptions {

@@ -14,6 +14,7 @@ import { WishlistCardSkeleton } from '../components/ui/SkeletonLoader';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Button } from '../components/ui/Button';
 import { Pagination } from '../components/ui/Pagination';
+import { useAJOBanner } from '../hooks/useAJOBanner';
 import type { WishListDto } from '../types';
 
 const MAX_WISHLISTS = 50;
@@ -32,6 +33,8 @@ export default function WishlistsPage() {
   const totalElements = data?.totalElements ?? 0;
   const totalPages = data?.totalPages ?? 0;
   const atLimit = totalElements >= MAX_WISHLISTS;
+
+  const { html: bannerHtml } = useAJOBanner('/wishlists');
 
   return (
     <Layout>
@@ -72,6 +75,14 @@ export default function WishlistsPage() {
           </div>
         )}
       </div>
+
+      {bannerHtml && (
+        <div
+          className="mb-6 w-full"
+          data-aep-surface="wishlists-banner"
+          dangerouslySetInnerHTML={{ __html: bannerHtml }}
+        />
+      )}
 
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

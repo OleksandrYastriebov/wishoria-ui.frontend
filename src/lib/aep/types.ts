@@ -134,6 +134,32 @@ export interface AlloyIdentityResult {
   };
 }
 
+// ─── AJO Personalization / Propositions ──────────────────────────────────────
+
+export interface AJOPropositionItemData {
+  id: string;
+  format: string;
+  /** Raw content — HTML string or JSON string depending on campaign config */
+  content: string;
+}
+
+export interface AJOPropositionItem {
+  id: string;
+  schema: string;
+  data: AJOPropositionItemData;
+}
+
+export interface AJOProposition {
+  id: string;
+  scope: string;
+  items: AJOPropositionItem[];
+  scopeDetails: Record<string, unknown>;
+}
+
+export interface AlloyEventResult {
+  propositions?: AJOProposition[];
+}
+
 // ─── Event option interfaces ──────────────────────────────────────────────────
 
 export interface TrackLoginOptions {

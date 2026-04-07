@@ -80,6 +80,7 @@ export async function sendAEPEvent(
         timestamp: xdm.timestamp ?? new Date().toISOString(),
       },
       renderDecisions,
+      ...(renderDecisions && { decisionScopes: ['__view__'] }),
       ...(datastreamId && { edgeConfigOverrides: { datastreamId } }),
     });
 

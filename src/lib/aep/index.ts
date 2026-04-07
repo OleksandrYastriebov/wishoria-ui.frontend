@@ -1,4 +1,6 @@
 export { initAlloy, sendAEPEvent, getECID, getAlloy } from './alloy';
+export { ingestProfile } from './ingest';
+export type { IngestProfilePayload } from './ingest';
 export {
   trackPageView,
   trackLogin,

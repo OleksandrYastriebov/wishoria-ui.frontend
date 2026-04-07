@@ -21,7 +21,6 @@ async function performInit(): Promise<AlloyInstance | null> {
   const config = getAEPConfig();
 
   if (!isAEPConfigured(config)) {
-    // Warning already logged in getAEPConfig()
     return null;
   }
 
@@ -40,18 +39,11 @@ async function performInit(): Promise<AlloyInstance | null> {
     return instance;
   } catch (err) {
     console.error('[AEP] Initialization failed:', err);
-    initPromise = null; // Allow retry on next call
+    initPromise = null;
     return null;
   }
 }
 
-/**
- * Maps AEPConfig to the alloy("configure") options object.
- *
- * datastreamId here is the PageView datastream — the default for all events
- * that don't specify an override. Auth and Wishlist events override per-call
- * via edgeConfigOverrides.datastreamId in sendAEPEvent().
- */
 function buildAlloyConfig(config: AEPConfig): Record<string, unknown> {
   return {
     datastreamId: config.datastreamId,
@@ -67,16 +59,6 @@ function buildAlloyConfig(config: AEPConfig): Record<string, unknown> {
 
 // ─── Event Sending ────────────────────────────────────────────────────────────
 
-/**
- * Sends an XDM event via Alloy.
- *
- * @param xdm            The XDM event payload.
- * @param renderDecisions Pass true for page-view events to receive personalization.
- * @param datastreamId   If provided, routes the event to that specific datastream
- *                       (Auth / Wishlist / PageView). Uses edgeConfigOverrides.datastreamId
- *                       which the SDK translates to a datastream URL override.
- *                       If omitted, the default datastream from configure() is used.
- */
 export async function sendAEPEvent(
   xdm: WishoriaXDMEvent,
   renderDecisions = false,
@@ -111,10 +93,6 @@ export async function sendAEPEvent(
 
 // ─── Datastream Resolution ────────────────────────────────────────────────────
 
-/**
- * Returns the datastream ID for the given event domain.
- * Falls back to the default datastream if the domain-specific ID is not configured.
- */
 export function resolveDatastreamId(domain: 'auth' | 'wishlist' | 'pageView'): string | undefined {
   const config = getAEPConfig();
   const id = config.datastreamIds[domain];

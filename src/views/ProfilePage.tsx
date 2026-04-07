@@ -16,6 +16,7 @@ import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { updateMe, changePassword, deleteAccount, deleteAvatar } from '../api/endpoints';
+import { ingestProfile } from '../lib/aep';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { useClipboardPaste } from '../hooks/useClipboardPaste';
 import type { ChangePasswordRequest } from '../types';
@@ -93,6 +94,15 @@ export default function ProfilePage() {
       const updated = await updateMe(data);
       updateUser(updated);
       toast.success('Profile updated!');
+      if (user) {
+        void ingestProfile({
+          userId: user.id,
+          email: user.email,
+          firstName: updated.firstName,
+          lastName: updated.lastName,
+          dateOfBirth: updated.dateOfBirth,
+        });
+      }
     } catch {
       toast.error('Failed to update profile.');
     }

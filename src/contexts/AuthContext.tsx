@@ -13,7 +13,7 @@ import axios from 'axios';
 import { getMe, signIn as apiSignIn, signOut as apiSignOut } from '../api/endpoints';
 import { setAccessToken, setAuthFailureHandler, refreshAccessToken } from '../api/axios';
 import type { SignInRequest, UserProfileDto } from '../types';
-import { trackLogin, trackLogout, getOrCreateDeviceId } from '../lib/aep';
+import { trackLogin, trackLogout, getOrCreateDeviceId, ingestProfile } from '../lib/aep';
 
 interface AuthContextValue {
   user: UserProfileDto | null;
@@ -70,6 +70,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // All prior anonymous browsing on this browser becomes attributed to this user.
     const deviceId = getOrCreateDeviceId();
     void trackLogin({ userId: me.id, email: me.email, deviceId });
+    void ingestProfile({
+      userId: me.id,
+      email: me.email,
+      firstName: me.firstName,
+      lastName: me.lastName,
+      dateOfBirth: me.dateOfBirth,
+    });
   }, []);
 
   const logout = useCallback(async () => {

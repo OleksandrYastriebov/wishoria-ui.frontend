@@ -13,6 +13,8 @@ import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Navbar } from '../components/layout/Navbar';
 import { signUp, resendConfirmationEmail } from '../api/endpoints';
+import { trackSignUp } from '../lib/aep/events';
+import { getOrCreateDeviceId } from '../lib/aep/device';
 
 const schema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50),
@@ -41,6 +43,7 @@ export default function SignUpPage() {
   const onSubmit = async (data: FormData) => {
     try {
       await signUp(data);
+      void trackSignUp({ email: data.email, deviceId: getOrCreateDeviceId() });
       setRegisteredEmail(data.email);
       setSuccess(true);
       setCountdown(RESEND_COOLDOWN);

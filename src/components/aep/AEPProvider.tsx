@@ -20,7 +20,7 @@ import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { initAlloy } from '../../lib/aep/alloy';
 import { getOrCreateDeviceId } from '../../lib/aep/device';
-import { trackPageView } from '../../lib/aep/events';
+import { trackPageView, trackAppLaunch } from '../../lib/aep/events';
 import { useAuthContext } from '../../contexts/AuthContext';
 import type { PageType } from '../../lib/aep/types';
 
@@ -38,7 +38,9 @@ export function AEPProvider({ children }: AEPProviderProps) {
   useEffect(() => {
     // Initialize Alloy (sets ECID cookie, connects to Edge Network).
     // getOrCreateDeviceId() creates the _wishoria_did cookie on first visit.
-    void initAlloy();
+    void initAlloy().then((instance) => {
+      if (instance) void trackAppLaunch();
+    });
     getOrCreateDeviceId();
   }, []); // Run exactly once
 

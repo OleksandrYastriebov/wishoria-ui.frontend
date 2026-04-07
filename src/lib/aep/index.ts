@@ -10,6 +10,8 @@ export {
   trackWishlistClicked,
   trackItemCreated,
   trackItemReservation,
+  trackAppLaunch,
+  trackSignUp,
 } from './events';
 
 // Device identity
@@ -32,6 +34,9 @@ export type {
   WishoriaXDMTenantFields,
   XDMEventType,
   PageType,
+  CommerceDetails,
+  ProductListItem,
+  ApplicationDetails,
   AJOProposition,
   AJOPropositionItem,
   AJOPropositionItemData,

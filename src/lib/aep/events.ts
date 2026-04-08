@@ -35,7 +35,7 @@ export async function trackPageView(options: TrackPageViewOptions): Promise<void
     },
   };
 
-  await sendAEPEvent(xdm, /* renderDecisions= */ true);
+  await sendAEPEvent(xdm, /* renderDecisions= */ true, resolveDatastreamId('pageView'));
 }
 
 // ─── Authentication → Auth Datastream ────────────────────────────────────────

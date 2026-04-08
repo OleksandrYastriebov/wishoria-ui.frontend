@@ -43,29 +43,6 @@ export interface WebInteraction {
   linkClicks?: { value: 1 };
 }
 
-// ─── Commerce ─────────────────────────────────────────────────────────────────
-
-export interface CommerceDetails {
-  productListOpens?: { value: 1 };
-  productListAdds?: { value: 1 };
-  saveForLaters?: { value: 1 };
-}
-
-export interface ProductListItem {
-  SKU: string;
-  name?: string;
-  quantity: number;
-  priceTotal?: number;
-}
-
-// ─── Application ──────────────────────────────────────────────────────────────
-
-export interface ApplicationDetails {
-  name: string;
-  version: string;
-  launches?: { value: 1 };
-}
-
 /** Shared user context — attached to any event with a known user */
 export interface UserContextFields {
   userId?: string;
@@ -128,11 +105,7 @@ export interface WishoriaXDMEvent {
   web?: {
     webPageDetails?: WebPageDetails;
     webInteraction?: WebInteraction;
-    webReferrer?: { URL: string };
   };
-  commerce?: CommerceDetails;
-  productListItems?: ProductListItem[];
-  application?: ApplicationDetails;
   _adobequaptrsd?: WishoriaXDMTenantFields;
 }
 
@@ -145,8 +118,6 @@ export type XDMEventType =
   | 'commerce.productListOpens'
   | 'commerce.productListAdds'
   | 'commerce.saveForLaters'
-  | 'application.launch'
-  | 'decisioning.propositionDisplay'
   | 'wishlist.created'
   | 'wishlist.aiGenerated'
   | 'wishlist.item.created'
@@ -260,7 +231,6 @@ export interface TrackWishlistCreatedOptions {
 export interface TrackItemCreatedOptions {
   wishlistId: string;
   itemId: string;
-  itemTitle?: string;
   userId?: string | number | null;
   email?: string;
   price?: number | null;

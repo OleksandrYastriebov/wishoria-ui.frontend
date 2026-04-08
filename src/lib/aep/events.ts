@@ -1,7 +1,6 @@
 import { sendAEPEvent, resolveDatastreamId } from './alloy';
 import { getDeviceId } from './device';
 import {
-  IDENTITY_NAMESPACES,
   buildAnonymousIdentityMap,
   buildAuthenticatedIdentityMap,
   buildLoggedOutIdentityMap,
@@ -18,7 +17,6 @@ import type {
   IdentityMap,
   UserContextFields,
   WishoriaXDMEvent,
-  ProductListItem,
 } from './types';
 
 // ─── Page Views → PageView Datastream ────────────────────────────────────────
@@ -26,16 +24,11 @@ import type {
 export async function trackPageView(options: TrackPageViewOptions): Promise<void> {
   const { pageName, pageUrl, pageType, userId, email, deviceId } = options;
 
-  const referrer = typeof document !== 'undefined' && document.referrer ? document.referrer : null;
-
   const xdm: WishoriaXDMEvent = {
     eventType: 'web.webpagedetails.pageViews',
     timestamp: new Date().toISOString(),
     identityMap: resolveIdentityMap(userId, email, deviceId ?? ''),
-    web: {
-      webPageDetails: { name: pageName, URL: pageUrl },
-      ...(referrer && { webReferrer: { URL: referrer } }),
-    },
+    web: { webPageDetails: { name: pageName, URL: pageUrl } },
     _adobequaptrsd: {
       user: userFields(userId, email),
       page: { pageType },
@@ -119,7 +112,6 @@ export async function trackWishlistView(options: TrackWishlistViewOptions): Prom
     timestamp: new Date().toISOString(),
     identityMap: resolveIdentityMap(userId, email, deviceId),
     web: { webPageDetails: { name: `Wishlist ${wishlistId}`, URL: currentUrl() } },
-    commerce: { productListOpens: { value: 1 } },
     _adobequaptrsd: {
       user: userFields(userId, email),
       wishlist: {
@@ -165,23 +157,14 @@ export async function trackWishlistClicked(options: TrackWishlistClickedOptions)
 }
 
 export async function trackItemCreated(options: TrackItemCreatedOptions): Promise<void> {
-  const { wishlistId, itemId, itemTitle, userId, email, price, hasUrl, hasImage, hasDescription } = options;
+  const { wishlistId, itemId, userId, email, price, hasUrl, hasImage, hasDescription } = options;
   const deviceId = getDeviceId() ?? '';
-
-  const productItem: ProductListItem = {
-    SKU: itemId,
-    quantity: 1,
-    ...(itemTitle && { name: itemTitle }),
-    ...(price != null && { priceTotal: price }),
-  };
 
   const xdm: WishoriaXDMEvent = {
     eventType: 'wishlist.item.created',
     timestamp: new Date().toISOString(),
     identityMap: resolveIdentityMap(userId, email, deviceId),
     web: { webPageDetails: { name: `Wishlist ${wishlistId}`, URL: currentUrl() } },
-    commerce: { productListAdds: { value: 1 } },
-    productListItems: [productItem],
     _adobequaptrsd: {
       user: userFields(userId, email),
       wishlistItem: {
@@ -201,23 +184,14 @@ export async function trackItemCreated(options: TrackItemCreatedOptions): Promis
 }
 
 export async function trackItemReservation(options: TrackItemReservationOptions): Promise<void> {
-  const { wishlistId, itemId, itemTitle, isReserved, userId, email, price, hasUrl, hasImage, hasDescription } = options;
+  const { wishlistId, itemId, isReserved, userId, email, price, hasUrl, hasImage, hasDescription } = options;
   const deviceId = getDeviceId() ?? '';
-
-  const productItem: ProductListItem = {
-    SKU: itemId,
-    quantity: 1,
-    ...(itemTitle && { name: itemTitle }),
-    ...(price != null && { priceTotal: price }),
-  };
 
   const xdm: WishoriaXDMEvent = {
     eventType: isReserved ? 'wishlist.item.reserved' : 'wishlist.item.unreserved',
     timestamp: new Date().toISOString(),
     identityMap: resolveIdentityMap(userId, email, deviceId),
     web: { webPageDetails: { name: `Wishlist ${wishlistId}`, URL: currentUrl() } },
-    commerce: { saveForLaters: { value: 1 } },
-    productListItems: [productItem],
     _adobequaptrsd: {
       user: userFields(userId, email),
       wishlistItem: {
@@ -234,53 +208,6 @@ export async function trackItemReservation(options: TrackItemReservationOptions)
   };
 
   await sendAEPEvent(xdm, false, resolveDatastreamId('wishlist'));
-}
-
-// ─── Sign Up ──────────────────────────────────────────────────────────────────
-
-export async function trackSignUp(options: { email: string; deviceId?: string }): Promise<void> {
-  const { email, deviceId } = options;
-
-  const xdm: WishoriaXDMEvent = {
-    eventType: 'userAccount.createProfile',
-    timestamp: new Date().toISOString(),
-    identityMap: {
-      [IDENTITY_NAMESPACES.EMAIL]: [{ id: email, primary: true, authenticatedState: 'ambiguous' }],
-      ...(deviceId && {
-        [IDENTITY_NAMESPACES.DEVICE]: [{ id: deviceId, primary: false, authenticatedState: 'ambiguous' }],
-      }),
-    },
-    web: { webPageDetails: { name: 'Sign Up', URL: currentUrl() } },
-    _adobequaptrsd: {
-      user: { userEmail: email },
-      auth: { loginMethod: 'email' },
-      page: { pageType: 'auth' },
-    },
-  };
-
-  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
-}
-
-// ─── Application Lifecycle ────────────────────────────────────────────────────
-
-export async function trackAppLaunch(): Promise<void> {
-  const deviceId = getDeviceId() ?? '';
-
-  const xdm: WishoriaXDMEvent = {
-    eventType: 'application.launch',
-    timestamp: new Date().toISOString(),
-    identityMap: deviceId ? buildAnonymousIdentityMap(deviceId) : undefined,
-    application: {
-      name: 'Wishoria',
-      version: process.env.NEXT_PUBLIC_APP_VERSION ?? '1.0.0',
-      launches: { value: 1 },
-    },
-    _adobequaptrsd: {
-      page: { pageType: 'other' },
-    },
-  };
-
-  await sendAEPEvent(xdm, false, resolveDatastreamId('pageView'));
 }
 
 // ─── Private helpers ──────────────────────────────────────────────────────────

@@ -4,6 +4,17 @@ import { useState, useEffect } from 'react';
 import { initAlloy } from '../lib/aep/alloy';
 import type { AJOProposition, AlloyEventResult } from '../lib/aep/types';
 
+/**
+ * Fetches an AJO Code-Based Experience proposition for the given page path.
+ *
+ * WHY custom code is needed:
+ * Alloy auto-renders only Adobe Target VEC propositions (DOM patches).
+ * For AJO Code-Based Experience, Alloy returns raw HTML/JSON content in
+ * propositions[].items[].data.content — but doesn't know which DOM container
+ * to inject it into. That part is always the developer's responsibility.
+ *
+ * Surface URI format: `web://hostname/path`
+ */
 export function useAJOBanner(path: string): { html: string | null; isLoading: boolean } {
   const [html, setHtml] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);

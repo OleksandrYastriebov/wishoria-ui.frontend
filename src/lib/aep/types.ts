@@ -166,10 +166,16 @@ export interface AlloyIdentityResult {
 // ─── AJO Personalization / Propositions ──────────────────────────────────────
 
 export interface AJOPropositionItemData {
-  id: string;
-  format: string;
-  /** Raw content — HTML string or JSON string depending on campaign config */
-  content: string;
+  id?: string;
+  format?: string;
+  /** Raw content — HTML string, JSON string, or DOM action content depending on campaign config */
+  content?: string;
+  /** DOM action type — only present for web://  (dom-action schema) campaigns */
+  type?: 'insertBefore' | 'insertAfter' | 'setHtml' | 'setStyle' | 'setAttribute' | 'remove';
+  /** CSS selector — only present for dom-action schema */
+  selector?: string;
+  /** Pre-hiding selector — only present for dom-action schema */
+  prehidingSelector?: string;
 }
 
 export interface AJOPropositionItem {

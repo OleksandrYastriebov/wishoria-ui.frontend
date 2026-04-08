@@ -1,4 +1,4 @@
-import type { AlloyInstance, AEPConfig, WishoriaXDMEvent } from './types';
+import type { AlloyInstance, AEPConfig, WishoriaXDMEvent, AJOProposition, AlloyEventResult } from './types';
 import { getAEPConfig, isAEPConfigured } from './config';
 
 let alloyInstance: AlloyInstance | null = null;
@@ -74,7 +74,7 @@ export async function sendAEPEvent(
   }
 
   try {
-    await alloyInstance('sendEvent', {
+    const result = await alloyInstance('sendEvent', {
       xdm: {
         ...xdm,
         timestamp: xdm.timestamp ?? new Date().toISOString(),
@@ -82,13 +82,46 @@ export async function sendAEPEvent(
       renderDecisions,
       ...(renderDecisions && { decisionScopes: ['__view__'] }),
       ...(datastreamId && { edgeConfigOverrides: { datastreamId } }),
-    });
+    }) as AlloyEventResult;
+
+    if (renderDecisions) {
+      const codeBasedPropositions = result?.propositions?.filter(
+        (p) => p.items?.some((item) => item.schema !== 'https://ns.adobe.com/personalization/dom-action')
+      );
+      if (codeBasedPropositions?.length) {
+        setTimeout(() => void sendPropositionDisplayNotification(codeBasedPropositions), 0);
+      }
+    }
 
     if (process.env.NEXT_PUBLIC_AEP_DEBUG === 'true') {
       console.debug('[AEP] Event sent:', xdm.eventType, datastreamId ? `(datastream: ${datastreamId})` : '', xdm);
     }
   } catch (err) {
     console.error('[AEP] sendEvent failed:', err);
+  }
+}
+
+async function sendPropositionDisplayNotification(propositions: AJOProposition[]): Promise<void> {
+  if (!alloyInstance) return;
+  try {
+    await alloyInstance('sendEvent', {
+      xdm: {
+        eventType: 'decisioning.propositionDisplay',
+        timestamp: new Date().toISOString(),
+        _experience: {
+          decisioning: {
+            propositions: propositions.map(({ id, scope, scopeDetails }) => ({
+              id,
+              scope,
+              scopeDetails,
+            })),
+            propositionEventType: { display: 1 },
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.error('[AEP] Proposition display notification failed:', err);
   }
 }
 

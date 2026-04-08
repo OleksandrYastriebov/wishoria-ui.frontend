@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getAlloy } from '../lib/aep/alloy';
+import { initAlloy } from '../lib/aep/alloy';
 import type { AJOProposition, AlloyEventResult } from '../lib/aep/types';
 
 export function useAJOBanner(path: string): { html: string | null; isLoading: boolean } {
@@ -14,7 +14,7 @@ export function useAJOBanner(path: string): { html: string | null; isLoading: bo
     async function load() {
       if (typeof window === 'undefined') { setIsLoading(false); return; }
 
-      const alloy = getAlloy();
+      const alloy = await initAlloy();
       if (!alloy) { setIsLoading(false); return; }
 
       const surface =

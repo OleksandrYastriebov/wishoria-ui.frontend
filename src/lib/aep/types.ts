@@ -47,6 +47,7 @@ export interface WebInteraction {
 export interface UserContextFields {
   userId?: string;
   userEmail?: string;
+  isWishoriaUser?: boolean;
 }
 
 /** Auth domain — userAccount.login, userAccount.logout, userAccount.createProfile */

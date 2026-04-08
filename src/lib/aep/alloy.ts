@@ -89,7 +89,7 @@ export async function sendAEPEvent(
         (p) => p.items?.some((item) => item.schema !== 'https://ns.adobe.com/personalization/dom-action')
       );
       if (codeBasedPropositions?.length) {
-        setTimeout(() => void sendPropositionDisplayNotification(codeBasedPropositions), 0);
+        setTimeout(() => void sendPropositionDisplayNotification(codeBasedPropositions), 1);
       }
     }
 

@@ -231,6 +231,7 @@ function userFields(
   email: string | undefined
 ): UserContextFields {
   return {
+    isWishoriaUser: true,
     ...(userId != null && { userId: String(userId) }),
     ...(email && { userEmail: email }),
   };

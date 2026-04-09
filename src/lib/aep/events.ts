@@ -1,4 +1,5 @@
 import { sendAEPEvent, resolveDatastreamId } from './alloy';
+import { ingestProfile } from './ingest';
 import { getDeviceId } from './device';
 import {
   buildAnonymousIdentityMap,
@@ -24,7 +25,7 @@ import type {
 // ─── Registration → Auth Datastream ──────────────────────────────────────────
 
 export async function trackSignUp(options: TrackSignUpOptions): Promise<void> {
-  const { email, firstName, lastName, deviceId } = options;
+  const { userId, email, firstName, lastName, deviceId } = options;
 
   const dedupKey = `aep_signup:${email}`;
   if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(dedupKey)) return;
@@ -32,19 +33,20 @@ export async function trackSignUp(options: TrackSignUpOptions): Promise<void> {
   const xdm: WishoriaXDMEvent = {
     eventType: 'userAccount.createProfile',
     timestamp: new Date().toISOString(),
-    // Email is primary at registration — no CRMID yet (API returns void, userId unknown)
     identityMap: buildRegistrationIdentityMap(email, deviceId),
     web: { webPageDetails: { name: 'Sign Up', URL: currentUrl() } },
     _adobequaptrsd: {
-      user: { userEmail: email, isWishoriaUser: true },
+      user: { userId: String(userId), userEmail: email, isWishoriaUser: true },
       auth: { loginMethod: 'email' },
       page: { pageType: 'auth' },
     },
   };
 
-  const profileData = { firstName, lastName, email };
+  // XDM event → data lake (Experience Events dataset)
+  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 
-  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'), profileData);
+  // Batch ingestion → RTCP profile attributes (same pattern as login)
+  await ingestProfile({ userId, email, firstName, lastName });
 
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem(dedupKey, '1');

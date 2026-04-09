@@ -42,8 +42,9 @@ export default function SignUpPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await signUp(data);
+      const { userId } = await signUp(data);
       void trackSignUp({
+        userId,
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,

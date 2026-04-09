@@ -21,6 +21,11 @@ export interface MessageResponse {
   message: string;
 }
 
+export interface SignUpResponse {
+  message: string;
+  userId: number;
+}
+
 export interface RefreshTokenResponse {
   accessToken: string;
   tokenType: string;

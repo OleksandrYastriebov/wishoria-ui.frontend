@@ -3,6 +3,7 @@ import type {
   SignInRequest,
   SignInResponse,
   SignUpRequest,
+  SignUpResponse,
   MessageResponse,
   UserProfileDto,
   UpdateProfileRequest,
@@ -36,7 +37,7 @@ export const signIn = (data: SignInRequest) =>
   api.post<SignInResponse>('/sign-in', data).then((r) => r.data);
 
 export const signUp = (data: SignUpRequest) =>
-  api.post<MessageResponse>('/sign-up', data).then((r) => r.data);
+  api.post<SignUpResponse>('/sign-up', data).then((r) => r.data);
 
 export const signOut = () =>
   api.post<MessageResponse>('/sign-out').then((r) => r.data);

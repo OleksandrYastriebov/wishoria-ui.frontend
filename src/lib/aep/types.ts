@@ -170,6 +170,7 @@ export interface AlloyEventResult {
 // ─── Event option interfaces ──────────────────────────────────────────────────
 
 export interface TrackSignUpOptions {
+  userId: number;
   email: string;
   firstName: string;
   lastName: string;

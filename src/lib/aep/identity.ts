@@ -33,6 +33,16 @@ export function buildAuthenticatedIdentityMap(
   };
 }
 
+export function buildRegistrationIdentityMap(
+  email: string,
+  deviceId: string
+): IdentityMap {
+  return {
+    [IDENTITY_NAMESPACES.EMAIL]: makeEntry(email, true, 'authenticated'),
+    [IDENTITY_NAMESPACES.DEVICE]: makeEntry(deviceId, false, 'ambiguous'),
+  };
+}
+
 export function buildLoggedOutIdentityMap(
   userId: string | number,
   email: string,

@@ -2,6 +2,7 @@ export { initAlloy, sendAEPEvent, getECID, getAlloy } from './alloy';
 export { ingestProfile } from './ingest';
 export type { IngestProfilePayload } from './ingest';
 export {
+  trackSignUp,
   trackPageView,
   trackLogin,
   trackLogout,
@@ -20,6 +21,7 @@ export {
   IDENTITY_NAMESPACES,
   buildAnonymousIdentityMap,
   buildAuthenticatedIdentityMap,
+  buildRegistrationIdentityMap,
   buildLoggedOutIdentityMap,
 } from './identity';
 
@@ -36,6 +38,7 @@ export type {
   AJOPropositionItem,
   AJOPropositionItemData,
   AlloyEventResult,
+  TrackSignUpOptions,
   TrackLoginOptions,
   TrackLogoutOptions,
   TrackPageViewOptions,

@@ -62,7 +62,8 @@ function buildAlloyConfig(config: AEPConfig): Record<string, unknown> {
 export async function sendAEPEvent(
   xdm: WishoriaXDMEvent,
   renderDecisions = false,
-  datastreamId?: string
+  datastreamId?: string,
+  data?: Record<string, unknown>
 ): Promise<void> {
   if (typeof window === 'undefined') return;
 
@@ -79,6 +80,7 @@ export async function sendAEPEvent(
         ...xdm,
         timestamp: xdm.timestamp ?? new Date().toISOString(),
       },
+      ...(data && { data }),
       renderDecisions,
       ...(renderDecisions && { decisionScopes: ['__view__'] }),
       ...(datastreamId && { edgeConfigOverrides: { datastreamId } }),

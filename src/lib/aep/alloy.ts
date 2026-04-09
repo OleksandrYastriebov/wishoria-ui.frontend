@@ -179,6 +179,7 @@ export async function setAEPConsent(emailConsentVal: 'y' | 'n'): Promise<void> {
           version: '2.0',
           value: {
             marketing: {
+              preferred: 'email',
               email: { val: emailConsentVal },
             },
           },

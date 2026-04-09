@@ -1,8 +1,9 @@
-export { initAlloy, sendAEPEvent, getECID, getAlloy } from './alloy';
+export { initAlloy, sendAEPEvent, getECID, getAlloy, setAEPConsent } from './alloy';
 export { ingestProfile } from './ingest';
 export type { IngestProfilePayload } from './ingest';
 export {
   trackSignUp,
+  trackEmailConsent,
   trackPageView,
   trackLogin,
   trackLogout,
@@ -47,4 +48,5 @@ export type {
   TrackItemCreatedOptions,
   TrackWishlistViewOptions,
   TrackWishlistClickedOptions,
+  TrackEmailConsentOptions,
 } from './types';

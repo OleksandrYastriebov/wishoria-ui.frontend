@@ -41,6 +41,7 @@ export interface UserProfileDto {
   profileDescription: string | null;
   isPrivate: boolean;
   dateOfBirth: string | null;
+  emailMarketingConsent: boolean;
 }
 
 export interface UpdateProfileRequest {
@@ -50,6 +51,7 @@ export interface UpdateProfileRequest {
   profileDescription?: string;
   isPrivate?: boolean;
   dateOfBirth?: string | null;
+  emailMarketingConsent?: boolean;
 }
 
 export interface ChangePasswordRequest {

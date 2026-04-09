@@ -124,7 +124,8 @@ export type XDMEventType =
   | 'wishlist.item.created'
   | 'wishlist.item.reserved'
   | 'wishlist.item.unreserved'
-  | 'wishlist.clicked';
+  | 'wishlist.clicked'
+  | 'userAccount.updateConsent';
 
 // ─── Helper result types ──────────────────────────────────────────────────────
 
@@ -175,6 +176,15 @@ export interface TrackSignUpOptions {
   firstName: string;
   lastName: string;
   deviceId: string;
+  emailMarketingConsent: boolean;
+}
+
+export interface TrackEmailConsentOptions {
+  userId: string | number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  emailMarketingConsent: boolean;
 }
 
 export interface TrackLoginOptions {

@@ -154,3 +154,42 @@ export async function getECID(): Promise<string | null> {
 export function getAlloy(): AlloyInstance | null {
   return alloyInstance;
 }
+
+// ─── Consent ──────────────────────────────────────────────────────────────────
+
+/**
+ * Updates email marketing consent in AEP via Alloy setConsent command.
+ * Uses Adobe consent standard 2.0 — sets consents.marketing.email.val
+ */
+export async function setAEPConsent(emailConsentVal: 'y' | 'n'): Promise<void> {
+  if (typeof window === 'undefined') return;
+
+  if (!alloyInstance) {
+    if (process.env.NODE_ENV === 'development') {
+      console.debug('[AEP] setConsent skipped (Alloy not initialized)');
+    }
+    return;
+  }
+
+  try {
+    await alloyInstance('setConsent', {
+      consent: [
+        {
+          standard: 'Adobe',
+          version: '2.0',
+          value: {
+            marketing: {
+              email: { val: emailConsentVal },
+            },
+          },
+        },
+      ],
+    });
+
+    if (process.env.NEXT_PUBLIC_AEP_DEBUG === 'true') {
+      console.debug('[AEP] setConsent sent: marketing.email.val =', emailConsentVal);
+    }
+  } catch (err) {
+    console.error('[AEP] setConsent failed:', err);
+  }
+}

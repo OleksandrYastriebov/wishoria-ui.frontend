@@ -46,12 +46,13 @@ function aepHeaders(token: string, contentType = 'application/json'): Record<str
 }
 
 export async function POST(req: NextRequest) {
-  const { userId, email, firstName, lastName, dateOfBirth } = (await req.json()) as {
+  const { userId, email, firstName, lastName, dateOfBirth, emailMarketingConsent } = (await req.json()) as {
     userId: string;
     email: string;
     firstName: string;
     lastName: string;
     dateOfBirth?: string | null;
+    emailMarketingConsent?: boolean;
   };
 
   const datasetId = process.env.AEP_PROFILE_DATASET_ID;
@@ -95,6 +96,13 @@ export async function POST(req: NextRequest) {
       ...(dateOfBirth ? { birthDayAndMonth: dateOfBirth.slice(5) } : {}),
     },
     personalEmail: { address: email },
+    ...(emailMarketingConsent !== undefined && {
+      consents: {
+        marketing: {
+          email: { val: emailMarketingConsent ? 'y' : 'n' },
+        },
+      },
+    }),
   };
 
   // 3. Upload record (newline-delimited JSON file)

@@ -38,7 +38,7 @@ export function buildRegistrationIdentityMap(
   deviceId: string
 ): IdentityMap {
   return {
-    [IDENTITY_NAMESPACES.EMAIL]: makeEntry(email, true, 'authenticated'),
+    [IDENTITY_NAMESPACES.EMAIL]: makeEntry(email, true, 'ambiguous'),
     [IDENTITY_NAMESPACES.DEVICE]: makeEntry(deviceId, false, 'ambiguous'),
   };
 }

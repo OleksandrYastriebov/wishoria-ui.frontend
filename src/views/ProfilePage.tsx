@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Camera, Key, Trash2, AlertTriangle, Trash, Globe, Lock } from 'lucide-react';
+import { Camera, Key, Trash2, AlertTriangle, Trash, Globe, Lock, BellRing, BellOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { Layout } from '../components/layout/Layout';
@@ -16,7 +16,7 @@ import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { updateMe, changePassword, deleteAccount, deleteAvatar } from '../api/endpoints';
-import { ingestProfile } from '../lib/aep';
+import { ingestProfile, trackEmailConsent } from '../lib/aep';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { useClipboardPaste } from '../hooks/useClipboardPaste';
 import type { ChangePasswordRequest } from '../types';
@@ -60,6 +60,7 @@ export default function ProfilePage() {
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeletingAvatar, setIsDeletingAvatar] = useState(false);
+  const [consentUpdating, setConsentUpdating] = useState(false);
 
   const {
     register: regProfile,
@@ -105,6 +106,28 @@ export default function ProfilePage() {
       }
     } catch {
       toast.error('Failed to update profile.');
+    }
+  };
+
+  const handleConsentToggle = async () => {
+    if (!user || consentUpdating) return;
+    const newConsent = !user.emailMarketingConsent;
+    setConsentUpdating(true);
+    try {
+      const updated = await updateMe({ emailMarketingConsent: newConsent });
+      updateUser(updated);
+      void trackEmailConsent({
+        userId: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        emailMarketingConsent: newConsent,
+      });
+      toast.success(newConsent ? 'Marketing emails enabled.' : 'Marketing emails disabled.');
+    } catch {
+      toast.error('Failed to update email preference.');
+    } finally {
+      setConsentUpdating(false);
     }
   };
 
@@ -362,6 +385,48 @@ export default function ProfilePage() {
           transition={{ duration: 0.3, delay: 0.15 }}
           className="bg-white/50 backdrop-blur-2xl rounded-2xl border border-stone-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.95)] p-6"
         >
+          <h2 className="text-base font-semibold text-stone-900 mb-4">Email Preferences</h2>
+          <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-200/80 bg-white/50 backdrop-blur-sm">
+            <div className="flex items-center gap-3">
+              {user.emailMarketingConsent ? (
+                <BellRing size={16} className="text-amber-500 flex-shrink-0" />
+              ) : (
+                <BellOff size={16} className="text-stone-400 flex-shrink-0" />
+              )}
+              <div>
+                <p className="text-sm font-medium text-stone-900">Marketing emails</p>
+                <p className="text-xs text-stone-600">
+                  {user.emailMarketingConsent
+                    ? 'You are receiving wishlist tips and reminders'
+                    : 'You have opted out of marketing emails'}
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={user.emailMarketingConsent}
+              onClick={() => void handleConsentToggle()}
+              disabled={consentUpdating}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
+                user.emailMarketingConsent ? 'bg-amber-600' : 'bg-stone-200'
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform transition-transform duration-200 ${
+                  user.emailMarketingConsent ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.25 }}
+          className="bg-white/50 backdrop-blur-2xl rounded-2xl border border-stone-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.95)] p-6"
+        >
           <h2 className="text-base font-semibold text-stone-900 mb-1">Security</h2>
           <p className="text-sm text-stone-600 mb-4">Manage your password</p>
           <Button
@@ -376,7 +441,7 @@ export default function ProfilePage() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
           className="bg-red-500/5 rounded-2xl border border-red-500/20 p-6"
         >
           <div className="flex items-center gap-2 mb-1">

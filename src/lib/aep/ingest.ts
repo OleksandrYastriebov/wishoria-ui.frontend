@@ -4,6 +4,7 @@ export interface IngestProfilePayload {
   firstName: string;
   lastName: string;
   dateOfBirth?: string | null;
+  emailMarketingConsent?: boolean;
 }
 
 /**
@@ -16,7 +17,11 @@ export async function ingestProfile(payload: IngestProfilePayload): Promise<void
     await fetch('/api/aep/ingest-profile', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, userId: String(payload.userId) }),
+      body: JSON.stringify({
+        ...payload,
+        userId: String(payload.userId),
+        emailMarketingConsent: payload.emailMarketingConsent ?? true,
+      }),
     });
   } catch (err) {
     console.warn('[AEP] Profile ingestion failed:', err);

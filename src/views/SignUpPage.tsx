@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, RefreshCw } from 'lucide-react';
+import { Mail, RefreshCw, BellRing, BellOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { isAxiosError } from 'axios';
 import { useState, useEffect } from 'react';
@@ -31,6 +31,7 @@ export default function SignUpPage() {
   const [registeredEmail, setRegisteredEmail] = useState('');
   const [countdown, setCountdown] = useState(0);
   const [resending, setResending] = useState(false);
+  const [emailMarketingConsent, setEmailMarketingConsent] = useState(true);
 
   const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) });
 
@@ -49,6 +50,7 @@ export default function SignUpPage() {
         firstName: data.firstName,
         lastName: data.lastName,
         deviceId: getOrCreateDeviceId(),
+        emailMarketingConsent,
       });
       setRegisteredEmail(data.email);
       setSuccess(true);
@@ -105,6 +107,34 @@ export default function SignUpPage() {
                     </div>
                     <Input label="Email" type="email" autoComplete="email" placeholder="you@example.com" error={errors.email?.message} {...register('email')} />
                     <Input label="Password" type="password" autoComplete="new-password" placeholder="Min 8 characters" error={errors.password?.message} {...register('password')} />
+                    <div className="flex items-center justify-between p-3 rounded-xl border border-stone-200/80 bg-white/40">
+                      <div className="flex items-center gap-2.5">
+                        {emailMarketingConsent ? (
+                          <BellRing size={15} className="text-amber-500 flex-shrink-0" />
+                        ) : (
+                          <BellOff size={15} className="text-stone-400 flex-shrink-0" />
+                        )}
+                        <div>
+                          <p className="text-sm font-medium text-stone-900">Marketing emails</p>
+                          <p className="text-xs text-stone-500">Tips, updates, and wishlist reminders</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={emailMarketingConsent}
+                        onClick={() => setEmailMarketingConsent((v) => !v)}
+                        className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer ${
+                          emailMarketingConsent ? 'bg-amber-600' : 'bg-stone-200'
+                        }`}
+                      >
+                        <span
+                          className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform transition-transform duration-200 ${
+                            emailMarketingConsent ? 'translate-x-5' : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
+                    </div>
                     <Button type="submit" className="w-full" size="lg" isLoading={isSubmitting}>Create account</Button>
                   </form>
                   <p className="text-sm text-stone-500 text-center mt-5">Already have an account?{' '}<Link href="/sign-in" className="text-amber-700 font-medium hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded">Sign in</Link></p>

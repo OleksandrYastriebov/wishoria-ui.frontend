@@ -1,4 +1,4 @@
-import { sendAEPEvent, resolveDatastreamId } from './alloy';
+import { sendAEPEvent, resolveDatastreamId, setAEPConsent } from './alloy';
 import { ingestProfile } from './ingest';
 import { getDeviceId } from './device';
 import {
@@ -9,6 +9,7 @@ import {
 } from './identity';
 import type {
   TrackSignUpOptions,
+  TrackEmailConsentOptions,
   TrackLoginOptions,
   TrackLogoutOptions,
   TrackPageViewOptions,
@@ -25,7 +26,7 @@ import type {
 // ─── Registration → Auth Datastream ──────────────────────────────────────────
 
 export async function trackSignUp(options: TrackSignUpOptions): Promise<void> {
-  const { userId, email, firstName, lastName, deviceId } = options;
+  const { userId, email, firstName, lastName, deviceId, emailMarketingConsent } = options;
 
   const dedupKey = `aep_signup:${email}`;
   if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(dedupKey)) return;
@@ -45,12 +46,42 @@ export async function trackSignUp(options: TrackSignUpOptions): Promise<void> {
   // XDM event → data lake (Experience Events dataset)
   await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 
-  // Batch ingestion → RTCP profile attributes (same pattern as login)
-  await ingestProfile({ userId, email, firstName, lastName });
+  // Consent update → Edge Network (consents.marketing.email.val)
+  await setAEPConsent(emailMarketingConsent ? 'y' : 'n');
+
+  // Batch ingestion → RTCP profile attributes (includes consent)
+  await ingestProfile({ userId, email, firstName, lastName, emailMarketingConsent });
 
   if (typeof sessionStorage !== 'undefined') {
     sessionStorage.setItem(dedupKey, '1');
   }
+}
+
+// ─── Email Consent Update → Auth Datastream ──────────────────────────────────
+
+export async function trackEmailConsent(options: TrackEmailConsentOptions): Promise<void> {
+  const { userId, email, firstName, lastName, emailMarketingConsent } = options;
+  const deviceId = getDeviceId() ?? '';
+
+  const xdm: WishoriaXDMEvent = {
+    eventType: 'userAccount.updateConsent',
+    timestamp: new Date().toISOString(),
+    identityMap: buildAuthenticatedIdentityMap(userId, email, deviceId),
+    web: { webPageDetails: { name: 'Profile', URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: { userId: String(userId), userEmail: email, isWishoriaUser: true },
+      page: { pageType: 'profile' },
+    },
+  };
+
+  // XDM event → data lake
+  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
+
+  // Consent update → Edge Network (consents.marketing.email.val)
+  await setAEPConsent(emailMarketingConsent ? 'y' : 'n');
+
+  // Batch ingestion → RTCP profile (persists consent to profile)
+  await ingestProfile({ userId, email, firstName, lastName, emailMarketingConsent });
 }
 
 // ─── Page Views → PageView Datastream ────────────────────────────────────────

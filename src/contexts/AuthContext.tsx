@@ -71,7 +71,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const deviceId = getOrCreateDeviceId();
     void trackLogin({ userId: me.id, email: me.email, deviceId });
     // Sync consent state with Alloy on every login
-    void setAEPConsent(me.emailMarketingConsent ? 'y' : 'n');
+    void setAEPConsent({
+      email: me.emailMarketingConsent ? 'y' : 'n',
+      ...(me.phoneMarketingConsent !== undefined && { sms: me.phoneMarketingConsent ? 'y' : 'n' }),
+    });
     void ingestProfile({
       userId: me.id,
       email: me.email,
@@ -79,6 +82,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       lastName: me.lastName,
       dateOfBirth: me.dateOfBirth,
       emailMarketingConsent: me.emailMarketingConsent,
+      phoneNumber: me.phoneNumber,
+      phoneMarketingConsent: me.phoneMarketingConsent,
     });
   }, []);
 

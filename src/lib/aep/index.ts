@@ -1,4 +1,5 @@
 export { initAlloy, sendAEPEvent, getECID, getAlloy, setAEPConsent } from './alloy';
+export type { ConsentValues } from './alloy';
 export { ingestProfile } from './ingest';
 export type { IngestProfilePayload } from './ingest';
 export {

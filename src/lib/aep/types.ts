@@ -186,6 +186,8 @@ export interface TrackEmailConsentOptions {
   firstName: string;
   lastName: string;
   emailMarketingConsent: boolean;
+  phoneNumber?: string | null;
+  phoneMarketingConsent?: boolean;
 }
 
 export interface TrackPhoneConsentOptions {
@@ -195,6 +197,7 @@ export interface TrackPhoneConsentOptions {
   lastName: string;
   phoneNumber: string;
   phoneMarketingConsent: boolean;
+  emailMarketingConsent: boolean;
 }
 
 export interface TrackPhoneLinkedOptions {

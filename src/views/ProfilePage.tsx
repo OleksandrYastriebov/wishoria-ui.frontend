@@ -142,6 +142,8 @@ export default function ProfilePage() {
         firstName: user.firstName,
         lastName: user.lastName,
         emailMarketingConsent: newConsent,
+        phoneNumber: user.phoneNumber,
+        phoneMarketingConsent: user.phoneMarketingConsent,
       });
       toast.success(newConsent ? 'Marketing emails enabled.' : 'Marketing emails disabled.');
     } catch {
@@ -166,6 +168,7 @@ export default function ProfilePage() {
           lastName: user.lastName,
           phoneNumber: user.phoneNumber,
           phoneMarketingConsent: newConsent,
+          emailMarketingConsent: user.emailMarketingConsent,
         });
       }
       toast.success(newConsent ? 'SMS notifications enabled.' : 'SMS notifications disabled.');

@@ -157,11 +157,17 @@ export function getAlloy(): AlloyInstance | null {
 
 // ─── Consent ──────────────────────────────────────────────────────────────────
 
+export interface ConsentValues {
+  email: 'y' | 'n';
+  sms?: 'y' | 'n';
+}
+
 /**
- * Updates email marketing consent in AEP via Alloy setConsent command.
- * Uses Adobe consent standard 2.0 — sets consents.marketing.email.val
+ * Updates marketing consent in AEP via Alloy setConsent command.
+ * Always sends all known consent channels together so they don't overwrite each other.
+ * Uses Adobe consent standard 2.0.
  */
-export async function setAEPConsent(emailConsentVal: 'y' | 'n'): Promise<void> {
+export async function setAEPConsent(consent: ConsentValues): Promise<void> {
   if (typeof window === 'undefined') return;
 
   if (!alloyInstance) {
@@ -172,6 +178,14 @@ export async function setAEPConsent(emailConsentVal: 'y' | 'n'): Promise<void> {
   }
 
   try {
+    const marketing: Record<string, unknown> = {
+      preferred: 'email',
+      email: { val: consent.email },
+    };
+    if (consent.sms !== undefined) {
+      marketing['sms'] = { val: consent.sms };
+    }
+
     await alloyInstance('setConsent', {
       consent: [
         {
@@ -179,17 +193,14 @@ export async function setAEPConsent(emailConsentVal: 'y' | 'n'): Promise<void> {
           version: '2.0',
           value: {
             collect: { val: 'y' },
-            marketing: {
-              preferred: 'email',
-              email: { val: emailConsentVal },
-            },
+            marketing,
           },
         },
       ],
     });
 
     if (process.env.NEXT_PUBLIC_AEP_DEBUG === 'true') {
-      console.debug('[AEP] setConsent sent: marketing.email.val =', emailConsentVal);
+      console.debug('[AEP] setConsent sent:', consent);
     }
   } catch (err) {
     console.error('[AEP] setConsent failed:', err);

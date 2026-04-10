@@ -50,7 +50,7 @@ export async function trackSignUp(options: TrackSignUpOptions): Promise<void> {
   await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 
   // Consent update → Edge Network (consents.marketing.email.val)
-  await setAEPConsent(emailMarketingConsent ? 'y' : 'n');
+  await setAEPConsent({ email: emailMarketingConsent ? 'y' : 'n' });
 
   // Batch ingestion → RTCP profile attributes (includes consent)
   await ingestProfile({ userId, email, firstName, lastName, emailMarketingConsent });
@@ -63,13 +63,20 @@ export async function trackSignUp(options: TrackSignUpOptions): Promise<void> {
 // ─── Email Consent Update → Auth Datastream ──────────────────────────────────
 
 export async function trackEmailConsent(options: TrackEmailConsentOptions): Promise<void> {
-  const { userId, email, firstName, lastName, emailMarketingConsent } = options;
+  const { userId, email, firstName, lastName, emailMarketingConsent, phoneNumber, phoneMarketingConsent } = options;
   const deviceId = getDeviceId() ?? '';
+
+  const identityMap = phoneNumber
+    ? {
+        ...buildAuthenticatedIdentityMap(userId, email, deviceId),
+        [IDENTITY_NAMESPACES.PHONE]: [{ id: phoneNumber, primary: false, authenticatedState: 'authenticated' as const }],
+      }
+    : buildAuthenticatedIdentityMap(userId, email, deviceId);
 
   const xdm: WishoriaXDMEvent = {
     eventType: 'userAccount.updateConsent',
     timestamp: new Date().toISOString(),
-    identityMap: buildAuthenticatedIdentityMap(userId, email, deviceId),
+    identityMap,
     web: { webPageDetails: { name: 'Profile', URL: currentUrl() } },
     _adobequaptrsd: {
       user: { userId: String(userId), userEmail: email, isWishoriaUser: true },
@@ -77,20 +84,20 @@ export async function trackEmailConsent(options: TrackEmailConsentOptions): Prom
     },
   };
 
-  // XDM event → data lake
   await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 
-  // Consent update → Edge Network (consents.marketing.email.val)
-  await setAEPConsent(emailMarketingConsent ? 'y' : 'n');
+  await setAEPConsent({
+    email: emailMarketingConsent ? 'y' : 'n',
+    ...(phoneMarketingConsent !== undefined && { sms: phoneMarketingConsent ? 'y' : 'n' }),
+  });
 
-  // Batch ingestion → RTCP profile (persists consent to profile)
-  await ingestProfile({ userId, email, firstName, lastName, emailMarketingConsent });
+  await ingestProfile({ userId, email, firstName, lastName, emailMarketingConsent, phoneNumber, phoneMarketingConsent });
 }
 
 // ─── Phone Consent Update → Auth Datastream ──────────────────────────────────
 
 export async function trackPhoneConsent(options: TrackPhoneConsentOptions): Promise<void> {
-  const { userId, email, firstName, lastName, phoneNumber, phoneMarketingConsent } = options;
+  const { userId, email, firstName, lastName, phoneNumber, phoneMarketingConsent, emailMarketingConsent } = options;
   const deviceId = getDeviceId() ?? '';
 
   const xdm: WishoriaXDMEvent = {
@@ -109,7 +116,12 @@ export async function trackPhoneConsent(options: TrackPhoneConsentOptions): Prom
 
   await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 
-  await ingestProfile({ userId, email, firstName, lastName, phoneNumber, phoneMarketingConsent });
+  await setAEPConsent({
+    email: emailMarketingConsent ? 'y' : 'n',
+    sms: phoneMarketingConsent ? 'y' : 'n',
+  });
+
+  await ingestProfile({ userId, email, firstName, lastName, phoneNumber, phoneMarketingConsent, emailMarketingConsent });
 }
 
 // ─── Phone Linked (set/changed) → Auth Datastream ────────────────────────────

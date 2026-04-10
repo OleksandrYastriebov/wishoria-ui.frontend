@@ -5,6 +5,7 @@ export {
   trackSignUp,
   trackEmailConsent,
   trackPhoneConsent,
+  trackPhoneLinked,
   trackPageView,
   trackLogin,
   trackLogout,
@@ -51,4 +52,5 @@ export type {
   TrackWishlistClickedOptions,
   TrackEmailConsentOptions,
   TrackPhoneConsentOptions,
+  TrackPhoneLinkedOptions,
 } from './types';

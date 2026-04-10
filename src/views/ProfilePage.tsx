@@ -16,7 +16,7 @@ import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { updateMe, changePassword, deleteAccount, deleteAvatar } from '../api/endpoints';
-import { ingestProfile, trackEmailConsent, trackPhoneConsent } from '../lib/aep';
+import { ingestProfile, trackEmailConsent, trackPhoneConsent, trackPhoneLinked } from '../lib/aep';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { useClipboardPaste } from '../hooks/useClipboardPaste';
 import type { ChangePasswordRequest } from '../types';
@@ -116,6 +116,13 @@ export default function ProfilePage() {
           dateOfBirth: updated.dateOfBirth,
           phoneNumber: updated.phoneNumber,
         });
+        if (updated.phoneNumber && updated.phoneNumber !== user.phoneNumber) {
+          void trackPhoneLinked({
+            userId: user.id,
+            email: user.email,
+            phoneNumber: updated.phoneNumber,
+          });
+        }
       }
     } catch {
       toast.error('Failed to update profile.');

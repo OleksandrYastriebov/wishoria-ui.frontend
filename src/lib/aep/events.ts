@@ -2,6 +2,7 @@ import { sendAEPEvent, resolveDatastreamId, setAEPConsent } from './alloy';
 import { ingestProfile } from './ingest';
 import { getDeviceId } from './device';
 import {
+  IDENTITY_NAMESPACES,
   buildAnonymousIdentityMap,
   buildAuthenticatedIdentityMap,
   buildLoggedOutIdentityMap,
@@ -11,6 +12,7 @@ import type {
   TrackSignUpOptions,
   TrackEmailConsentOptions,
   TrackPhoneConsentOptions,
+  TrackPhoneLinkedOptions,
   TrackLoginOptions,
   TrackLogoutOptions,
   TrackPageViewOptions,
@@ -94,7 +96,10 @@ export async function trackPhoneConsent(options: TrackPhoneConsentOptions): Prom
   const xdm: WishoriaXDMEvent = {
     eventType: 'userAccount.updateConsent',
     timestamp: new Date().toISOString(),
-    identityMap: buildAuthenticatedIdentityMap(userId, email, deviceId),
+    identityMap: {
+      ...buildAuthenticatedIdentityMap(userId, email, deviceId),
+      [IDENTITY_NAMESPACES.PHONE]: [{ id: phoneNumber, primary: false, authenticatedState: 'authenticated' }],
+    },
     web: { webPageDetails: { name: 'Profile', URL: currentUrl() } },
     _adobequaptrsd: {
       user: { userId: String(userId), userEmail: email, isWishoriaUser: true },
@@ -105,6 +110,29 @@ export async function trackPhoneConsent(options: TrackPhoneConsentOptions): Prom
   await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 
   await ingestProfile({ userId, email, firstName, lastName, phoneNumber, phoneMarketingConsent });
+}
+
+// ─── Phone Linked (set/changed) → Auth Datastream ────────────────────────────
+
+export async function trackPhoneLinked(options: TrackPhoneLinkedOptions): Promise<void> {
+  const { userId, email, phoneNumber } = options;
+  const deviceId = getDeviceId() ?? '';
+
+  const xdm: WishoriaXDMEvent = {
+    eventType: 'userAccount.updateProfile',
+    timestamp: new Date().toISOString(),
+    identityMap: {
+      ...buildAuthenticatedIdentityMap(userId, email, deviceId),
+      [IDENTITY_NAMESPACES.PHONE]: [{ id: phoneNumber, primary: false, authenticatedState: 'authenticated' }],
+    },
+    web: { webPageDetails: { name: 'Profile', URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: { userId: String(userId), userEmail: email, isWishoriaUser: true },
+      page: { pageType: 'profile' },
+    },
+  };
+
+  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
 }
 
 // ─── Page Views → PageView Datastream ────────────────────────────────────────

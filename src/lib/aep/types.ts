@@ -116,6 +116,7 @@ export type XDMEventType =
   | 'userAccount.login'
   | 'userAccount.logout'
   | 'userAccount.createProfile'
+  | 'userAccount.updateProfile'
   | 'commerce.productListOpens'
   | 'commerce.productListAdds'
   | 'commerce.saveForLaters'
@@ -194,6 +195,12 @@ export interface TrackPhoneConsentOptions {
   lastName: string;
   phoneNumber: string;
   phoneMarketingConsent: boolean;
+}
+
+export interface TrackPhoneLinkedOptions {
+  userId: string | number;
+  email: string;
+  phoneNumber: string;
 }
 
 export interface TrackLoginOptions {

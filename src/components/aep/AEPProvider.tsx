@@ -66,9 +66,9 @@ export function PageViewTracker() {
   const pathname = usePathname();
   const { user, isLoading } = useAuthContext();
   const trackedKey = useRef<string | null>(null);
+  const stitchedUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Wait for auth bootstrap — we want the correct identity in the first event
     if (isLoading) return;
 
     // Prevent StrictMode double-invoke from sending duplicate page views
@@ -93,9 +93,27 @@ export function PageViewTracker() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, isLoading]);
-  // Note: `user` intentionally excluded — we don't want to re-fire the page
-  // view event when only the user object updates (e.g., profile edit).
-  // The login trackLogin() in AuthContext handles the identity stitch.
+
+  useEffect(() => {
+    if (isLoading || !user) return;
+    if (stitchedUserIdRef.current === String(user.id)) return;
+    stitchedUserIdRef.current = String(user.id);
+
+    const deviceId = getOrCreateDeviceId();
+    const pageUrl = typeof window !== 'undefined' ? window.location.href : pathname;
+    const pageName =
+      typeof document !== 'undefined' && document.title ? document.title : pathname;
+
+    void trackPageView({
+      pageName,
+      pageUrl,
+      pageType: inferPageType(pathname),
+      userId: user.id,
+      email: user.email,
+      deviceId,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, isLoading]);
 
   return null;
 }

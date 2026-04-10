@@ -3,6 +3,7 @@ import type { IdentityMap, IdentityMapEntry } from './types';
 export const IDENTITY_NAMESPACES = {
   ECID: 'ECID',
   EMAIL: 'Email',
+  PHONE: 'Phone',
   CRMID: 'WISHORIA_CRMID',
   DEVICE: 'WISHORIA_DEVICE',
 } as const;

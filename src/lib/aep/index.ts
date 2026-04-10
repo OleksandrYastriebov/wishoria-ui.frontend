@@ -4,6 +4,7 @@ export type { IngestProfilePayload } from './ingest';
 export {
   trackSignUp,
   trackEmailConsent,
+  trackPhoneConsent,
   trackPageView,
   trackLogin,
   trackLogout,
@@ -49,4 +50,5 @@ export type {
   TrackWishlistViewOptions,
   TrackWishlistClickedOptions,
   TrackEmailConsentOptions,
+  TrackPhoneConsentOptions,
 } from './types';

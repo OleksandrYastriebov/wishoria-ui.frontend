@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Camera, Key, Trash2, AlertTriangle, Trash, Globe, Lock, BellRing, BellOff } from 'lucide-react';
+import { Camera, Key, Trash2, AlertTriangle, Trash, Globe, Lock, BellRing, BellOff, Phone } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { Layout } from '../components/layout/Layout';
@@ -16,7 +16,7 @@ import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { updateMe, changePassword, deleteAccount, deleteAvatar } from '../api/endpoints';
-import { ingestProfile, trackEmailConsent } from '../lib/aep';
+import { ingestProfile, trackEmailConsent, trackPhoneConsent } from '../lib/aep';
 import { useUploadImage } from '../hooks/useUploadImage';
 import { useClipboardPaste } from '../hooks/useClipboardPaste';
 import type { ChangePasswordRequest } from '../types';
@@ -33,6 +33,12 @@ const profileSchema = z.object({
     })
     .nullable()
     .optional(),
+  phoneNumber: z
+    .string()
+    .regex(/^\+[1-9]\d{1,14}$/, 'Must be in E.164 format (e.g. +14155552671)')
+    .nullable()
+    .optional()
+    .or(z.literal('')),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -61,6 +67,7 @@ export default function ProfilePage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeletingAvatar, setIsDeletingAvatar] = useState(false);
   const [consentUpdating, setConsentUpdating] = useState(false);
+  const [phoneConsentUpdating, setPhoneConsentUpdating] = useState(false);
 
   const {
     register: regProfile,
@@ -77,6 +84,7 @@ export default function ProfilePage() {
       profileDescription: user?.profileDescription ?? '',
       isPrivate: user?.isPrivate ?? false,
       dateOfBirth: user?.dateOfBirth ?? null,
+      phoneNumber: user?.phoneNumber ?? '',
     },
   });
 
@@ -92,7 +100,11 @@ export default function ProfilePage() {
 
   const onProfileSave = async (data: ProfileFormData) => {
     try {
-      const updated = await updateMe(data);
+      const payload = {
+        ...data,
+        phoneNumber: data.phoneNumber || null,
+      };
+      const updated = await updateMe(payload);
       updateUser(updated);
       toast.success('Profile updated!');
       if (user) {
@@ -102,6 +114,7 @@ export default function ProfilePage() {
           firstName: updated.firstName,
           lastName: updated.lastName,
           dateOfBirth: updated.dateOfBirth,
+          phoneNumber: updated.phoneNumber,
         });
       }
     } catch {
@@ -128,6 +141,31 @@ export default function ProfilePage() {
       toast.error('Failed to update email preference.');
     } finally {
       setConsentUpdating(false);
+    }
+  };
+
+  const handlePhoneConsentToggle = async () => {
+    if (!user || phoneConsentUpdating) return;
+    const newConsent = !user.phoneMarketingConsent;
+    setPhoneConsentUpdating(true);
+    try {
+      const updated = await updateMe({ phoneMarketingConsent: newConsent });
+      updateUser(updated);
+      if (user.phoneNumber) {
+        void trackPhoneConsent({
+          userId: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phoneNumber: user.phoneNumber,
+          phoneMarketingConsent: newConsent,
+        });
+      }
+      toast.success(newConsent ? 'SMS notifications enabled.' : 'SMS notifications disabled.');
+    } catch {
+      toast.error('Failed to update phone preference.');
+    } finally {
+      setPhoneConsentUpdating(false);
     }
   };
 
@@ -308,6 +346,13 @@ export default function ProfilePage() {
               disabled
               hint="Email cannot be changed."
             />
+            <Input
+              label="Phone number"
+              placeholder="+14155552671"
+              error={profileErrors.phoneNumber?.message}
+              hint="Optional — E.164 format (e.g. +14155552671)."
+              {...regProfile('phoneNumber')}
+            />
             <Controller
               control={control}
               name="dateOfBirth"
@@ -385,39 +430,72 @@ export default function ProfilePage() {
           transition={{ duration: 0.3, delay: 0.15 }}
           className="bg-white/50 backdrop-blur-2xl rounded-2xl border border-stone-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.95)] p-6"
         >
-          <h2 className="text-base font-semibold text-stone-900 mb-4">Email Preferences</h2>
-          <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-200/80 bg-white/50 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              {user.emailMarketingConsent ? (
-                <BellRing size={16} className="text-amber-500 flex-shrink-0" />
-              ) : (
-                <BellOff size={16} className="text-stone-400 flex-shrink-0" />
-              )}
-              <div>
-                <p className="text-sm font-medium text-stone-900">Marketing emails</p>
-                <p className="text-xs text-stone-600">
-                  {user.emailMarketingConsent
-                    ? 'You are receiving wishlist tips and reminders'
-                    : 'You have opted out of marketing emails'}
-                </p>
+          <h2 className="text-base font-semibold text-stone-900 mb-4">Communication Preferences</h2>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-200/80 bg-white/50 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                {user.emailMarketingConsent ? (
+                  <BellRing size={16} className="text-amber-500 flex-shrink-0" />
+                ) : (
+                  <BellOff size={16} className="text-stone-400 flex-shrink-0" />
+                )}
+                <div>
+                  <p className="text-sm font-medium text-stone-900">Marketing emails</p>
+                  <p className="text-xs text-stone-600">
+                    {user.emailMarketingConsent
+                      ? 'You are receiving wishlist tips and reminders'
+                      : 'You have opted out of marketing emails'}
+                  </p>
+                </div>
               </div>
-            </div>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={user.emailMarketingConsent}
-              onClick={() => void handleConsentToggle()}
-              disabled={consentUpdating}
-              className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
-                user.emailMarketingConsent ? 'bg-amber-600' : 'bg-stone-200'
-              }`}
-            >
-              <span
-                className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform transition-transform duration-200 ${
-                  user.emailMarketingConsent ? 'translate-x-5' : 'translate-x-0'
+              <button
+                type="button"
+                role="switch"
+                aria-checked={user.emailMarketingConsent}
+                onClick={() => void handleConsentToggle()}
+                disabled={consentUpdating}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
+                  user.emailMarketingConsent ? 'bg-amber-600' : 'bg-stone-200'
                 }`}
-              />
-            </button>
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform transition-transform duration-200 ${
+                    user.emailMarketingConsent ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+            <div className="flex items-center justify-between p-3.5 rounded-xl border border-stone-200/80 bg-white/50 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <Phone size={16} className={user.phoneMarketingConsent ? 'text-amber-500 flex-shrink-0' : 'text-stone-400 flex-shrink-0'} />
+                <div>
+                  <p className="text-sm font-medium text-stone-900">SMS notifications</p>
+                  <p className="text-xs text-stone-600">
+                    {!user.phoneNumber
+                      ? 'Add a phone number above to enable SMS'
+                      : user.phoneMarketingConsent
+                        ? 'You are receiving SMS notifications'
+                        : 'You have opted out of SMS notifications'}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={user.phoneMarketingConsent}
+                onClick={() => void handlePhoneConsentToggle()}
+                disabled={phoneConsentUpdating || !user.phoneNumber}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
+                  user.phoneMarketingConsent && user.phoneNumber ? 'bg-amber-600' : 'bg-stone-200'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform transition-transform duration-200 ${
+                    user.phoneMarketingConsent && user.phoneNumber ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
         </motion.div>
 

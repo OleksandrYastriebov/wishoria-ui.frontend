@@ -10,6 +10,7 @@ import {
 import type {
   TrackSignUpOptions,
   TrackEmailConsentOptions,
+  TrackPhoneConsentOptions,
   TrackLoginOptions,
   TrackLogoutOptions,
   TrackPageViewOptions,
@@ -82,6 +83,28 @@ export async function trackEmailConsent(options: TrackEmailConsentOptions): Prom
 
   // Batch ingestion → RTCP profile (persists consent to profile)
   await ingestProfile({ userId, email, firstName, lastName, emailMarketingConsent });
+}
+
+// ─── Phone Consent Update → Auth Datastream ──────────────────────────────────
+
+export async function trackPhoneConsent(options: TrackPhoneConsentOptions): Promise<void> {
+  const { userId, email, firstName, lastName, phoneNumber, phoneMarketingConsent } = options;
+  const deviceId = getDeviceId() ?? '';
+
+  const xdm: WishoriaXDMEvent = {
+    eventType: 'userAccount.updateConsent',
+    timestamp: new Date().toISOString(),
+    identityMap: buildAuthenticatedIdentityMap(userId, email, deviceId),
+    web: { webPageDetails: { name: 'Profile', URL: currentUrl() } },
+    _adobequaptrsd: {
+      user: { userId: String(userId), userEmail: email, isWishoriaUser: true },
+      page: { pageType: 'profile' },
+    },
+  };
+
+  await sendAEPEvent(xdm, false, resolveDatastreamId('auth'));
+
+  await ingestProfile({ userId, email, firstName, lastName, phoneNumber, phoneMarketingConsent });
 }
 
 // ─── Page Views → PageView Datastream ────────────────────────────────────────

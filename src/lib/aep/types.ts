@@ -187,6 +187,15 @@ export interface TrackEmailConsentOptions {
   emailMarketingConsent: boolean;
 }
 
+export interface TrackPhoneConsentOptions {
+  userId: string | number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  phoneMarketingConsent: boolean;
+}
+
 export interface TrackLoginOptions {
   userId: string | number;
   email: string;

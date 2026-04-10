@@ -5,6 +5,8 @@ export interface IngestProfilePayload {
   lastName: string;
   dateOfBirth?: string | null;
   emailMarketingConsent?: boolean;
+  phoneNumber?: string | null;
+  phoneMarketingConsent?: boolean;
 }
 
 /**

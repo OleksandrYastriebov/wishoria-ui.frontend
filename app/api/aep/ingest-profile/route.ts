@@ -46,13 +46,15 @@ function aepHeaders(token: string, contentType = 'application/json'): Record<str
 }
 
 export async function POST(req: NextRequest) {
-  const { userId, email, firstName, lastName, dateOfBirth, emailMarketingConsent } = (await req.json()) as {
+  const { userId, email, firstName, lastName, dateOfBirth, emailMarketingConsent, phoneNumber, phoneMarketingConsent } = (await req.json()) as {
     userId: string;
     email: string;
     firstName: string;
     lastName: string;
     dateOfBirth?: string | null;
     emailMarketingConsent?: boolean;
+    phoneNumber?: string | null;
+    phoneMarketingConsent?: boolean;
   };
 
   const datasetId = process.env.AEP_PROFILE_DATASET_ID;
@@ -85,23 +87,31 @@ export async function POST(req: NextRequest) {
   const { id: batchId } = (await batchRes.json()) as { id: string };
 
   // 2. Build XDM Individual Profile record
+  const identityMap: Record<string, unknown> = {
+    WISHORIA_CRMID: [{ id: String(userId), primary: true, authenticatedState: 'authenticated' }],
+    Email: [{ id: email, primary: false, authenticatedState: 'authenticated' }],
+    ...(phoneNumber ? { Phone: [{ id: phoneNumber, primary: false, authenticatedState: 'authenticated' }] } : {}),
+  };
+
+  const marketingConsents: Record<string, unknown> = {};
+  if (emailMarketingConsent !== undefined) {
+    marketingConsents['email'] = { val: emailMarketingConsent ? 'y' : 'n' };
+  }
+  if (phoneMarketingConsent !== undefined) {
+    marketingConsents['sms'] = { val: phoneMarketingConsent ? 'y' : 'n' };
+  }
+
   const xdmRecord: Record<string, unknown> = {
     _id: String(userId),
-    identityMap: {
-      WISHORIA_CRMID: [{ id: String(userId), primary: true, authenticatedState: 'authenticated' }],
-      Email: [{ id: email, primary: false, authenticatedState: 'authenticated' }],
-    },
+    identityMap,
     person: {
       name: { firstName, lastName },
       ...(dateOfBirth ? { birthDayAndMonth: dateOfBirth.slice(5) } : {}),
     },
     personalEmail: { address: email },
-    ...(emailMarketingConsent !== undefined && {
-      consents: {
-        marketing: {
-          email: { val: emailMarketingConsent ? 'y' : 'n' },
-        },
-      },
+    ...(phoneNumber ? { mobilePhone: { number: phoneNumber } } : {}),
+    ...(Object.keys(marketingConsents).length > 0 && {
+      consents: { marketing: marketingConsents },
     }),
   };
 

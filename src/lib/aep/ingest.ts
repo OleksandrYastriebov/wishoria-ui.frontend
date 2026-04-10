@@ -20,7 +20,6 @@ export async function ingestProfile(payload: IngestProfilePayload): Promise<void
       body: JSON.stringify({
         ...payload,
         userId: String(payload.userId),
-        emailMarketingConsent: payload.emailMarketingConsent ?? true,
       }),
     });
   } catch (err) {

@@ -178,7 +178,7 @@ export async function setAEPConsent(emailConsentVal: 'y' | 'n'): Promise<void> {
           standard: 'Adobe',
           version: '2.0',
           value: {
-            collect: { val: emailConsentVal },
+            collect: { val: 'y' },
             marketing: {
               preferred: 'email',
               email: { val: emailConsentVal },

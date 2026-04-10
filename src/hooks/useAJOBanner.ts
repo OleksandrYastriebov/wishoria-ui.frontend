@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { initAlloy } from '../lib/aep/alloy';
+import { buildAuthenticatedIdentityMap, buildAnonymousIdentityMap } from '../lib/aep/identity';
+import { getOrCreateDeviceId } from '../lib/aep/device';
 import type { AJOProposition, AlloyEventResult } from '../lib/aep/types';
+
+interface BannerUser {
+  id: string | number;
+  email: string;
+}
 
 /**
  * Fetches an AJO Code-Based Experience proposition for the given page path.
@@ -15,7 +22,7 @@ import type { AJOProposition, AlloyEventResult } from '../lib/aep/types';
  *
  * Surface URI format: `web://hostname/path`
  */
-export function useAJOBanner(path: string): { html: string | null; isLoading: boolean } {
+export function useAJOBanner(path: string, user?: BannerUser): { html: string | null; isLoading: boolean } {
   const [html, setHtml] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,9 +39,15 @@ export function useAJOBanner(path: string): { html: string | null; isLoading: bo
         process.env.NEXT_PUBLIC_AEP_WISHLISTS_SURFACE ??
         `web://${window.location.host}${path}`;
 
+      const deviceId = getOrCreateDeviceId();
+      const identityMap = user
+        ? buildAuthenticatedIdentityMap(user.id, user.email, deviceId)
+        : buildAnonymousIdentityMap(deviceId);
+
       try {
         const result = (await alloy('sendEvent', {
           renderDecisions: true,
+          xdm: { identityMap },
           personalization: { surfaces: [surface] },
         })) as AlloyEventResult;
 
@@ -49,7 +62,7 @@ export function useAJOBanner(path: string): { html: string | null; isLoading: bo
 
     load();
     return () => { cancelled = true; };
-  }, [path]);
+  }, [path, user?.id]);
 
   return { html, isLoading };
 }

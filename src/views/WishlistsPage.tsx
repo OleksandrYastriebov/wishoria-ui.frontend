@@ -34,7 +34,7 @@ export default function WishlistsPage() {
   const totalPages = data?.totalPages ?? 0;
   const atLimit = totalElements >= MAX_WISHLISTS;
 
-  const { html: bannerHtml } = useAJOBanner('/wishlists');
+  const { html: bannerHtml } = useAJOBanner('/wishlists', user ?? undefined);
 
   return (
     <Layout>

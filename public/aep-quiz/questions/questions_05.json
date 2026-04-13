@@ -11,7 +11,7 @@
         "Distributed Unified Logging Environment"
       ],
       "correct": 1,
-      "explanation": "DULE stands for Data Usage Labelling and Enforcement — AEP's data governance framework. It enables organizations to label data with usage classifications (C, I, S labels), define policies specifying allowed marketing actions, and enforce those policies across all data access patterns including Custom Actions in AJO journeys."
+      "explanation": "DULE stands for Data Usage Labelling and Enforcement - AEP's data governance framework. It enables organizations to label data with usage classifications (C, I, S labels), define policies specifying allowed marketing actions, and enforce those policies across all data access patterns including Custom Actions in AJO journeys."
     },
     {
       "id": 202,
@@ -47,7 +47,7 @@
         "Tagging data that requires a legal contract review before processing"
       ],
       "correct": 1,
-      "explanation": "'C' (Contract) labels are applied to data with contractual obligations — for example, data that was collected under specific terms of service, data covered by third-party data provider agreements, or data governed by customer-specific data handling policies. They enforce that this data is only used in ways permitted by those contractual commitments."
+      "explanation": "'C' (Contract) labels are applied to data with contractual obligations - for example, data that was collected under specific terms of service, data covered by third-party data provider agreements, or data governed by customer-specific data handling policies. They enforce that this data is only used in ways permitted by those contractual commitments."
     },
     {
       "id": 205,
@@ -95,7 +95,7 @@
         "Marketing Policies and Analytics Policies"
       ],
       "correct": 1,
-      "explanation": "AEP has two policy types: Data Governance Policies (restrict data activation based on the marketing action being performed and the data usage labels on the data — preventing data from being used in prohibited ways), and Consent Policies (filter profiles based on customer consent or preferences — ensuring marketing only reaches customers who have opted in)."
+      "explanation": "AEP has two policy types: Data Governance Policies (restrict data activation based on the marketing action being performed and the data usage labels on the data - preventing data from being used in prohibited ways), and Consent Policies (filter profiles based on customer consent or preferences - ensuring marketing only reaches customers who have opted in)."
     },
     {
       "id": 209,
@@ -107,7 +107,7 @@
         "A campaign type in AJO that requires additional governance approval"
       ],
       "correct": 1,
-      "explanation": "In AEP data governance, a 'Marketing Action' defines HOW data is being used — examples include 'Email Marketing,' 'Personalization Across Sites,' 'Analytics,' 'Export to third-party.' Data governance policies link marketing actions to data labels: 'Data labeled C2 cannot be used for Email Marketing.' This enables flexible, intent-based governance rather than blanket restrictions."
+      "explanation": "In AEP data governance, a 'Marketing Action' defines HOW data is being used - examples include 'Email Marketing,' 'Personalization Across Sites,' 'Analytics,' 'Export to third-party.' Data governance policies link marketing actions to data labels: 'Data labeled C2 cannot be used for Email Marketing.' This enables flexible, intent-based governance rather than blanket restrictions."
     },
     {
       "id": 210,
@@ -191,7 +191,7 @@
         "Organizing governance labels for data returned by the external API"
       ],
       "correct": 1,
-      "explanation": "In AJO External Data Source configuration, Field Groups define each 'endpoint call' you want to make to the external API — specifying the fields returned and the required request parameters. For example, a weather API might have a Field Group called 'currentWeather' with parameters {lat, long} that returns {temperature, conditions, humidity}."
+      "explanation": "In AJO External Data Source configuration, Field Groups define each 'endpoint call' you want to make to the external API - specifying the fields returned and the required request parameters. For example, a weather API might have a Field Group called 'currentWeather' with parameters {lat, long} that returns {temperature, conditions, humidity}."
     },
     {
       "id": 217,
@@ -227,7 +227,7 @@
         "The Host and Connection headers are protected system headers"
       ],
       "correct": 1,
-      "explanation": "In AJO Custom Action configuration, when adding header fields, the documentation notes that 'header 1 and 2 cannot be modified' — these are the first two predefined header slots which AJO reserves for internal use. Additional custom headers can be added freely using the 'Add a header field' button."
+      "explanation": "In AJO Custom Action configuration, when adding header fields, the documentation notes that 'header 1 and 2 cannot be modified' - these are the first two predefined header slots which AJO reserves for internal use. Additional custom headers can be added freely using the 'Add a header field' button."
     },
     {
       "id": 220,
@@ -260,7 +260,7 @@
         "Throttling is available for both data sources and custom actions",
         "Throttling is available only for custom actions, not data sources",
         "Throttling is available only for data sources, not custom actions",
-        "Throttling is not available in AJO — only Capping is supported"
+        "Throttling is not available in AJO - only Capping is supported"
       ],
       "correct": 1,
       "explanation": "According to AJO documentation: Capping is available on BOTH data sources and custom actions. Throttling is available ONLY on custom actions. This means if you need rate-limiting for external data source calls, you can only use Capping (drop excess calls). Throttling (queue excess calls) is an option only for custom action API calls."
@@ -275,7 +275,7 @@
         "At campaign level; rules apply only to messages sent through that campaign"
       ],
       "correct": 1,
-      "explanation": "Capping/Throttling rules in AJO are configured at the SANDBOX level, tied to a specific endpoint URL. This means the rate limit applies globally to ALL journeys within that sandbox that call the same endpoint. If 50 journeys all call the same CRM endpoint, they collectively share the configured rate limit — preventing any one endpoint from being overwhelmed."
+      "explanation": "Capping/Throttling rules in AJO are configured at the SANDBOX level, tied to a specific endpoint URL. This means the rate limit applies globally to ALL journeys within that sandbox that call the same endpoint. If 50 journeys all call the same CRM endpoint, they collectively share the configured rate limit - preventing any one endpoint from being overwhelmed."
     },
     {
       "id": 224,
@@ -323,7 +323,7 @@
         "Manually reviews and approves data access requests that involve sensitive labeled data"
       ],
       "correct": 1,
-      "explanation": "The Enforcement element of AEP's Data Governance framework is the active layer that applies governance policies across data access patterns — including segment activation, Custom Action calls in AJO, API requests, and destination exports. When a data access violates a policy (e.g., using C2 labeled data for email marketing when prohibited), Enforcement blocks or advises against the action."
+      "explanation": "The Enforcement element of AEP's Data Governance framework is the active layer that applies governance policies across data access patterns - including segment activation, Custom Action calls in AJO, API requests, and destination exports. When a data access violates a policy (e.g., using C2 labeled data for email marketing when prohibited), Enforcement blocks or advises against the action."
     },
     {
       "id": 228,
@@ -359,7 +359,7 @@
         "The data collection channel that provides event data to trigger the custom action"
       ],
       "correct": 1,
-      "explanation": "In AJO Custom Action configuration, the 'Channel' field defines what type of communication the custom action relates to — for example, is this action related to an email process? A push notification workflow? An SMS system? This classification helps organize custom actions and enables appropriate governance policies to be applied based on channel type."
+      "explanation": "In AJO Custom Action configuration, the 'Channel' field defines what type of communication the custom action relates to - for example, is this action related to an email process? A push notification workflow? An SMS system? This classification helps organize custom actions and enables appropriate governance policies to be applied based on channel type."
     },
     {
       "id": 231,
@@ -383,7 +383,7 @@
         "Schema extension points where custom field groups can be added to standard XDM schemas"
       ],
       "correct": 1,
-      "explanation": "Extension Points in AJO refer to the predefined places within the standard journey workflow where users can inject Custom Actions. These are the integration points where the standard journey capabilities 'end' and custom external logic 'begins' — providing defined, governed interfaces for connecting journeys to external systems at specific workflow stages."
+      "explanation": "Extension Points in AJO refer to the predefined places within the standard journey workflow where users can inject Custom Actions. These are the integration points where the standard journey capabilities 'end' and custom external logic 'begins' - providing defined, governed interfaces for connecting journeys to external systems at specific workflow stages."
     },
     {
       "id": 233,
@@ -401,7 +401,7 @@
       "id": 234,
       "question": "What is the impact of Data Governance labels on AJO's ability to publish journeys?",
       "options": [
-        "Labels have no impact on journey publication — they only affect data exports to destinations",
+        "Labels have no impact on journey publication - they only affect data exports to destinations",
         "If labeled fields are used in Custom Actions violating governance policies, journey publication is blocked",
         "Labels slow down journey publication by triggering a mandatory compliance review",
         "Labels automatically encrypt sensitive fields, which may delay message delivery"
@@ -431,7 +431,7 @@
         "A custom namespace must be created to store external data source values"
       ],
       "correct": 1,
-      "explanation": "To use an External Data Source in journey conditions, you must configure Field Groups for that data source — specifying which API parameters are needed and what fields are returned. When a profile reaches the relevant journey step, AJO makes the API call with the profile's parameter values and makes the returned fields available for condition evaluation and personalization."
+      "explanation": "To use an External Data Source in journey conditions, you must configure Field Groups for that data source - specifying which API parameters are needed and what fields are returned. When a profile reaches the relevant journey step, AJO makes the API call with the profile's parameter values and makes the returned fields available for condition evaluation and personalization."
     },
     {
       "id": 237,
@@ -443,7 +443,7 @@
         "External Data Sources are for B2B integrations; Custom Actions are for B2C integrations"
       ],
       "correct": 0,
-      "explanation": "The primary distinction: External Data Sources are READ operations — they retrieve contextual data (like weather, inventory, CRM attributes) to enrich journey logic. Custom Actions are WRITE/TRIGGER operations — they send data to external systems, trigger processes, or execute actions (like updating a CRM record, sending to a custom notification system, calling an external loyalty platform)."
+      "explanation": "The primary distinction: External Data Sources are READ operations - they retrieve contextual data (like weather, inventory, CRM attributes) to enrich journey logic. Custom Actions are WRITE/TRIGGER operations - they send data to external systems, trigger processes, or execute actions (like updating a CRM record, sending to a custom notification system, calling an external loyalty platform)."
     },
     {
       "id": 238,
@@ -455,7 +455,7 @@
         "Only when data is exported to external advertising destinations"
       ],
       "correct": 1,
-      "explanation": "AEP's data governance Enforcement element applies policies across ALL data access patterns — segment activation (to destinations), API-level data access (Query Service, Profile API), AJO Custom Actions (preventing export of restricted fields), and data exports. This comprehensive enforcement ensures governance is upheld wherever data moves within and outside AEP."
+      "explanation": "AEP's data governance Enforcement element applies policies across ALL data access patterns - segment activation (to destinations), API-level data access (Query Service, Profile API), AJO Custom Actions (preventing export of restricted fields), and data exports. This comprehensive enforcement ensures governance is upheld wherever data moves within and outside AEP."
     },
     {
       "id": 239,
@@ -503,7 +503,7 @@
         "Custom Actions trigger based on time-based cron schedules configured in AJO settings"
       ],
       "correct": 1,
-      "explanation": "Custom Actions are triggered contextually by events or conditions within the journey flow. When a profile reaches the Custom Action node — due to whatever event, condition, or sequence brought them there — the external API call is executed. The trigger could be a specific user behavior event, the result of a condition evaluation, or a scheduled journey entry."
+      "explanation": "Custom Actions are triggered contextually by events or conditions within the journey flow. When a profile reaches the Custom Action node - due to whatever event, condition, or sequence brought them there - the external API call is executed. The trigger could be a specific user behavior event, the result of a condition evaluation, or a scheduled journey entry."
     },
     {
       "id": 243,
@@ -522,12 +522,12 @@
       "question": "In AJO, what happens when the rate limit is exceeded for a Custom Action with Capping configured?",
       "options": [
         "The journey pauses and waits until the rate limit window resets",
-        "The excess calls are discarded and not processed — they are simply dropped",
+        "The excess calls are discarded and not processed - they are simply dropped",
         "The calls are queued and processed in order when capacity becomes available",
         "The journey routes the affected profiles to an error path defined in the journey canvas"
       ],
       "correct": 1,
-      "explanation": "With CAPPING: when the maximum rate is reached, excess calls are DISCARDED — they are dropped and not processed. This is the key difference from Throttling: Capping sacrifices completeness (some calls are lost) to protect the external system from overload. The journey profiles whose calls are discarded may not receive the intended external action."
+      "explanation": "With CAPPING: when the maximum rate is reached, excess calls are DISCARDED - they are dropped and not processed. This is the key difference from Throttling: Capping sacrifices completeness (some calls are lost) to protect the external system from overload. The journey profiles whose calls are discarded may not receive the intended external action."
     },
     {
       "id": 245,
@@ -551,7 +551,7 @@
         "Policies contain labels; Marketing Actions reference policies for compliance checking"
       ],
       "correct": 0,
-      "explanation": "The governance chain: DATA LABELS are applied to schema fields (e.g., 'I2' = email address can identify a person). POLICIES define prohibited combinations (e.g., 'C2 labeled data CANNOT be used for Email Marketing'). MARKETING ACTIONS define the intended use (e.g., 'this campaign uses Email Marketing'). When all three align — labeled data + prohibited policy + matching marketing action — enforcement blocks the operation."
+      "explanation": "The governance chain: DATA LABELS are applied to schema fields (e.g., 'I2' = email address can identify a person). POLICIES define prohibited combinations (e.g., 'C2 labeled data CANNOT be used for Email Marketing'). MARKETING ACTIONS define the intended use (e.g., 'this campaign uses Email Marketing'). When all three align - labeled data + prohibited policy + matching marketing action - enforcement blocks the operation."
     },
     {
       "id": 247,
@@ -582,24 +582,24 @@
       "question": "What is the purpose of 'Basic' authentication in AJO External Data Source configuration?",
       "options": [
         "A simplified configuration mode for beginner users that auto-populates common settings",
-        "HTTP Basic Auth — passing a username and password encoded in the Authorization header",
+        "HTTP Basic Auth - passing a username and password encoded in the Authorization header",
         "A basic API key implementation using only a single parameter",
         "The default authentication mode that AJO uses when no other auth is specified"
       ],
       "correct": 1,
-      "explanation": "Basic authentication for AJO External Data Sources implements standard HTTP Basic Authentication — the username and password are Base64-encoded and passed in the `Authorization: Basic <credentials>` header with each API request. This is the standard authentication mechanism for many REST APIs that don't use OAuth or API keys."
+      "explanation": "Basic authentication for AJO External Data Sources implements standard HTTP Basic Authentication - the username and password are Base64-encoded and passed in the `Authorization: Basic <credentials>` header with each API request. This is the standard authentication mechanism for many REST APIs that don't use OAuth or API keys."
     },
     {
       "id": 250,
       "question": "After configuring an External Data Source in AJO, what is the next step to make it usable in journey conditions?",
       "options": [
         "The data source must be reviewed and approved by an AJO admin before it can be used",
-        "Save the data source — it is then configured and ready to be used in journeys",
+        "Save the data source - it is then configured and ready to be used in journeys",
         "Activate the data source to a specific sandbox environment for testing",
         "Create a corresponding dataset in AEP to store the retrieved data"
       ],
       "correct": 1,
-      "explanation": "After completing all External Data Source configuration steps (name, URL, authentication, field groups, parameters) in AJO, clicking 'Save' makes the data source immediately configured and available for use in journeys. There is no additional activation step — saved data sources can be referenced in journey conditions and personalization expressions."
+      "explanation": "After completing all External Data Source configuration steps (name, URL, authentication, field groups, parameters) in AJO, clicking 'Save' makes the data source immediately configured and available for use in journeys. There is no additional activation step - saved data sources can be referenced in journey conditions and personalization expressions."
     }
   ]
 }

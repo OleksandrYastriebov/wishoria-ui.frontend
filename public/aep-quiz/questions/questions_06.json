@@ -11,7 +11,7 @@
         "Personalization based on pre-defined customer segments and loyalty tiers"
       ],
       "correct": 1,
-      "explanation": "Contextual personalization in AJO uses real-time situational attributes — Physical/Temporal (location, time of day), Environmental (weather, traffic), and Technical/Social (device type, social trends). These attributes allow content to adjust dynamically to the user's current situation, creating 'thoughtful automation' that considers the customer's present reality, not just their historical profile."
+      "explanation": "Contextual personalization in AJO uses real-time situational attributes - Physical/Temporal (location, time of day), Environmental (weather, traffic), and Technical/Social (device type, social trends). These attributes allow content to adjust dynamically to the user's current situation, creating 'thoughtful automation' that considers the customer's present reality, not just their historical profile."
     },
     {
       "id": 252,
@@ -35,7 +35,7 @@
         "ISP bounce feedback and spam complaint reports for email deliverability management"
       ],
       "correct": 1,
-      "explanation": "The Email Tracking Experience Event Dataset stores interaction-level logs for the Email channel: what end-users did with emails after receiving them — opens, clicks on specific links, unsubscribes, etc. This dataset powers AJO's email engagement reporting and enables building audiences of engaged email users."
+      "explanation": "The Email Tracking Experience Event Dataset stores interaction-level logs for the Email channel: what end-users did with emails after receiving them - opens, clicks on specific links, unsubscribes, etc. This dataset powers AJO's email engagement reporting and enables building audiences of engaged email users."
     },
     {
       "id": 254,
@@ -59,7 +59,7 @@
         "Device token registration and management logs for push notification targeting"
       ],
       "correct": 1,
-      "explanation": "The Push Tracking Experience Event Dataset captures end-user interactions with push notifications — whether they opened the notification, dismissed it, or took a specific action. This interaction data drives push channel reporting in AJO and enables building audiences based on push engagement behavior."
+      "explanation": "The Push Tracking Experience Event Dataset captures end-user interactions with push notifications - whether they opened the notification, dismissed it, or took a specific action. This interaction data drives push channel reporting in AJO and enables building audiences based on push engagement behavior."
     },
     {
       "id": 256,
@@ -95,7 +95,7 @@
         "Ad-hoc queries access the Profile Store; dataset-populating queries access the Data Lake"
       ],
       "correct": 1,
-      "explanation": "Ad-hoc (interactive) queries in AEP Query Service are for exploration, validation, and analysis — they execute SELECT queries and display results but DON'T persist data anywhere (results not stored in the Data Lake). Non-interactive queries are configured to write their output to a new AEP dataset, creating persistent, queryable results for downstream use."
+      "explanation": "Ad-hoc (interactive) queries in AEP Query Service are for exploration, validation, and analysis - they execute SELECT queries and display results but DON'T persist data anywhere (results not stored in the Data Lake). Non-interactive queries are configured to write their output to a new AEP dataset, creating persistent, queryable results for downstream use."
     },
     {
       "id": 259,
@@ -107,7 +107,7 @@
         "Offer Decisioning with AI ranking to automatically select winning content variants"
       ],
       "correct": 1,
-      "explanation": "Web Content Experimentation in AJO enables controlled experiments on web channels — running multiple content variants simultaneously against different audience segments and measuring which approach drives the best results (engagement, conversion, revenue). This enables data-driven content optimization rather than relying on assumptions."
+      "explanation": "Web Content Experimentation in AJO enables controlled experiments on web channels - running multiple content variants simultaneously against different audience segments and measuring which approach drives the best results (engagement, conversion, revenue). This enables data-driven content optimization rather than relying on assumptions."
     },
     {
       "id": 260,
@@ -263,7 +263,7 @@
         "Journey performance metrics and KPI benchmarks for executive reporting"
       ],
       "correct": 1,
-      "explanation": "The 'Journeys' dataset in AJO stores metadata about the journey structure itself — information about each step/activity in the journey, its configuration, and its position in the flow. This metadata dataset is linked to the Journey Step Event Dataset, enabling you to join execution events with journey structure data for comprehensive analytics."
+      "explanation": "The 'Journeys' dataset in AJO stores metadata about the journey structure itself - information about each step/activity in the journey, its configuration, and its position in the flow. This metadata dataset is linked to the Journey Step Event Dataset, enabling you to join execution events with journey structure data for comprehensive analytics."
     },
     {
       "id": 273,
@@ -281,13 +281,13 @@
       "id": 274,
       "question": "What is the maximum ad-hoc SQL query execution time enforced by AEP Query Service?",
       "options": [
-        "5 minutes — queries exceeding this time are moved to the batch queue",
-        "10 minutes — queries exceeding this time trigger error code 53400",
-        "30 minutes — the maximum for complex analytical queries",
-        "60 minutes — the standard timeout for enterprise data warehouse queries"
+        "5 minutes - queries exceeding this time are moved to the batch queue",
+        "10 minutes - queries exceeding this time trigger error code 53400",
+        "30 minutes - the maximum for complex analytical queries",
+        "60 minutes - the standard timeout for enterprise data warehouse queries"
       ],
       "correct": 1,
-      "explanation": "AEP Query Service enforces a 10-minute maximum execution time for ad-hoc interactive queries (used for exploration and validation via the Query Editor). If a query surpasses 10 minutes, it's terminated and returns error code 53400. This is a System-enforced (hard) limit — not a soft performance guideline."
+      "explanation": "AEP Query Service enforces a 10-minute maximum execution time for ad-hoc interactive queries (used for exploration and validation via the Query Editor). If a query surpasses 10 minutes, it's terminated and returns error code 53400. This is a System-enforced (hard) limit - not a soft performance guideline."
     },
     {
       "id": 275,
@@ -299,7 +299,7 @@
         "The Query Editor session timed out due to inactivity"
       ],
       "correct": 1,
-      "explanation": "The 'Session Limit Reached' error in AEP Query Service indicates that the maximum number of concurrent Query Service users for the organization has been exceeded. This is a System-enforced limit — the exact number depends on the purchased product package, with additional capacity available through 'Ad hoc query users add-on packs' (+5 concurrent sessions per pack)."
+      "explanation": "The 'Session Limit Reached' error in AEP Query Service indicates that the maximum number of concurrent Query Service users for the organization has been exceeded. This is a System-enforced limit - the exact number depends on the purchased product package, with additional capacity available through 'Ad hoc query users add-on packs' (+5 concurrent sessions per pack)."
     },
     {
       "id": 276,
@@ -347,7 +347,7 @@
         "Immediately updating profile attributes to reflect real-time behavioral changes"
       ],
       "correct": 1,
-      "explanation": "Immediate Relevance is about making content situationally appropriate: the message addresses the customer's CURRENT reality, not just their historical preferences. For example, showing a 'Stay warm with our new jacket line' message when it's currently cold at the customer's location creates immediate relevance — the offer matters RIGHT NOW, driving higher engagement."
+      "explanation": "Immediate Relevance is about making content situationally appropriate: the message addresses the customer's CURRENT reality, not just their historical preferences. For example, showing a 'Stay warm with our new jacket line' message when it's currently cold at the customer's location creates immediate relevance - the offer matters RIGHT NOW, driving higher engagement."
     },
     {
       "id": 280,
@@ -359,7 +359,7 @@
         "Increasing loyalty card usage frequency through contextually triggered bonus point offers"
       ],
       "correct": 1,
-      "explanation": "According to AJO documentation on contextual personalization, the 'Loyalty' business impact refers to fostering a stronger emotional connection through 'thoughtful automation' — when a brand demonstrates awareness of a customer's current situation (weather, location, time), it signals that the brand 'gets them,' creating trust and emotional connection that builds long-term loyalty."
+      "explanation": "According to AJO documentation on contextual personalization, the 'Loyalty' business impact refers to fostering a stronger emotional connection through 'thoughtful automation' - when a brand demonstrates awareness of a customer's current situation (weather, location, time), it signals that the brand 'gets them,' creating trust and emotional connection that builds long-term loyalty."
     },
     {
       "id": 281,
@@ -371,7 +371,7 @@
         "Configure a Campaign that automatically switches content based on a location-based weather tag"
       ],
       "correct": 1,
-      "explanation": "The weather customization use case in AJO works as follows: (1) Configure an External Data Source connected to a weather API, (2) In the journey, add a condition that evaluates the weather data field (e.g., if temperature > 30°C), and (3) Route profiles to different message content paths based on the condition result — sending a 'hot weather' email vs. a standard one."
+      "explanation": "The weather customization use case in AJO works as follows: (1) Configure an External Data Source connected to a weather API, (2) In the journey, add a condition that evaluates the weather data field (e.g., if temperature > 30°C), and (3) Route profiles to different message content paths based on the condition result - sending a 'hot weather' email vs. a standard one."
     },
     {
       "id": 282,
@@ -419,7 +419,7 @@
         "Expression Fragments are text-only; Content Fragments support rich media including images"
       ],
       "correct": 1,
-      "explanation": "Expression Fragments are saved personalization expressions (code/logic) stored in the Expression Editor library — like a saved `{{#if profile.loyaltyTier == 'Gold'}} ... {{/if}}` block. Content Fragments are complete content blocks (visual HTML components like headers, footers). Expression Fragments = reusable LOGIC; Content Fragments = reusable VISUAL CONTENT."
+      "explanation": "Expression Fragments are saved personalization expressions (code/logic) stored in the Expression Editor library - like a saved `{{#if profile.loyaltyTier == 'Gold'}} ... {{/if}}` block. Content Fragments are complete content blocks (visual HTML components like headers, footers). Expression Fragments = reusable LOGIC; Content Fragments = reusable VISUAL CONTENT."
     },
     {
       "id": 286,
@@ -431,7 +431,7 @@
         "Synchronizing message delivery across channels to create a simultaneous multi-channel experience"
       ],
       "correct": 1,
-      "explanation": "Timeliness in contextual personalization means the MESSAGE IS APPROPRIATE FOR THE MOMENT — not just sent quickly, but contextually appropriate for what's happening right now. A 'happy hour' drink offer is only timely between 4-7pm. A snow gear offer is only timely in winter. Contextual attributes (time of day, season, weather) ensure messages are situationally timely."
+      "explanation": "Timeliness in contextual personalization means the MESSAGE IS APPROPRIATE FOR THE MOMENT - not just sent quickly, but contextually appropriate for what's happening right now. A 'happy hour' drink offer is only timely between 4-7pm. A snow gear offer is only timely in winter. Contextual attributes (time of day, season, weather) ensure messages are situationally timely."
     },
     {
       "id": 287,
@@ -467,7 +467,7 @@
         "Rounding and formatting numbers for display in message content"
       ],
       "correct": 1,
-      "explanation": "Arithmetic Helper Functions in AJO's Expression Editor perform basic mathematical operations on numerical values: Add, Subtract, Multiply, and Divide. These enable calculations directly within personalization expressions — for example, calculating a discount amount `{{Multiply(profile.loyaltyPoints, 0.01)}}` to show customers their available discount value."
+      "explanation": "Arithmetic Helper Functions in AJO's Expression Editor perform basic mathematical operations on numerical values: Add, Subtract, Multiply, and Divide. These enable calculations directly within personalization expressions - for example, calculating a discount amount `{{Multiply(profile.loyaltyPoints, 0.01)}}` to show customers their available discount value."
     },
     {
       "id": 290,
@@ -522,7 +522,7 @@
       "question": "In AJO, what is the 'Comparison' category of Helper Functions used for?",
       "options": [
         "Comparing offer performance metrics to identify the best performing offer variant",
-        "Comparing expression values — checking equality, greater than, less than, etc.",
+        "Comparing expression values - checking equality, greater than, less than, etc.",
         "Comparing audience segment sizes to prioritize which segments to target",
         "Comparing profile attribute data against external reference data from lookup schemas"
       ],
@@ -539,7 +539,7 @@
         "Reducing the need for audience segmentation by personalizing at an individual level"
       ],
       "correct": 1,
-      "explanation": "Contextual Attributes serve to transform what would otherwise be static, pre-planned marketing into dynamic, situation-aware experiences. Instead of sending the same message to all 'age 25-35 in London' customers, contextual attributes enable the message to adapt to each customer's CURRENT situation — their actual weather, time, location, and device — creating unique, relevant experiences."
+      "explanation": "Contextual Attributes serve to transform what would otherwise be static, pre-planned marketing into dynamic, situation-aware experiences. Instead of sending the same message to all 'age 25-35 in London' customers, contextual attributes enable the message to adapt to each customer's CURRENT situation - their actual weather, time, location, and device - creating unique, relevant experiences."
     },
     {
       "id": 296,

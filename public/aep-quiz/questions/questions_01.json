@@ -35,7 +35,7 @@
         "Nodes represent datasets; edges represent data lineage between source systems"
       ],
       "correct": 2,
-      "explanation": "In AEP's Identity Graph, nodes store data about a particular entity — for example, a specific email address or CRM ID. Edges represent the relationships between those entities, linking different identifiers that belong to the same person."
+      "explanation": "In AEP's Identity Graph, nodes store data about a particular entity - for example, a specific email address or CRM ID. Edges represent the relationships between those entities, linking different identifiers that belong to the same person."
     },
     {
       "id": 4,
@@ -67,7 +67,7 @@
       "options": [
         "Experience Events are locked for 30 days and cannot be deleted",
         "Experience Events cannot be associated with a specific customer identity",
-        "Experience Events cannot be restated — they appear in an appended list rather than being merged",
+        "Experience Events cannot be restated - they appear in an appended list rather than being merged",
         "Experience Events are stored in read-only datasets that require admin access to query"
       ],
       "correct": 2,
@@ -83,7 +83,7 @@
         "To store time-series behavioral data as a secondary fallback for Experience Events"
       ],
       "correct": 2,
-      "explanation": "Dimensional entities (supporting entities) do not define a person — they provide additional context, such as product catalog details or store locations. They are used to enrich audience rules during batch segmentation, allowing marketers to segment on attributes like 'bought product in category X' or 'visited store in city Y'."
+      "explanation": "Dimensional entities (supporting entities) do not define a person - they provide additional context, such as product catalog details or store locations. They are used to enrich audience rules during batch segmentation, allowing marketers to segment on attributes like 'bought product in category X' or 'visited store in city Y'."
     },
     {
       "id": 8,
@@ -95,7 +95,7 @@
         "When the Identity Graph identifies a new identity relationship for a known profile"
       ],
       "correct": 2,
-      "explanation": "AEP never creates a pre-built 'golden record.' The unified profile is assembled on demand — only when an activation system requests it, when a segmentation job needs to evaluate it, or when a user explicitly views a profile. This on-demand assembly uses Identity Graph + Profile Fragments + the configured Merge Policy."
+      "explanation": "AEP never creates a pre-built 'golden record.' The unified profile is assembled on demand - only when an activation system requests it, when a segmentation job needs to evaluate it, or when a user explicitly views a profile. This on-demand assembly uses Identity Graph + Profile Fragments + the configured Merge Policy."
     },
     {
       "id": 9,
@@ -107,7 +107,7 @@
         "Namespace Labels and Dataset Identifier Tags"
       ],
       "correct": 1,
-      "explanation": "For batch ingestion (CRM, loyalty data, etc.), there are two methods: Identity Descriptors (labels on individual fields that signal identity fields — the recommended approach because they are visible in the schema UI) and IdentityMap (a complex JSON object for special cases like multiple historical identifiers or switching primary identities)."
+      "explanation": "For batch ingestion (CRM, loyalty data, etc.), there are two methods: Identity Descriptors (labels on individual fields that signal identity fields - the recommended approach because they are visible in the schema UI) and IdentityMap (a complex JSON object for special cases like multiple historical identifiers or switching primary identities)."
     },
     {
       "id": 10,
@@ -131,7 +131,7 @@
         "To specify how multiple audience segments are combined into a single composite audience"
       ],
       "correct": 1,
-      "explanation": "A Merge Policy is a set of rules that determines how AEP resolves conflicts and combines profile fragments from different source datasets into a unified customer view. It controls what happens when two sources have different values for the same field — determining which source 'wins.'"
+      "explanation": "A Merge Policy is a set of rules that determines how AEP resolves conflicts and combines profile fragments from different source datasets into a unified customer view. It controls what happens when two sources have different values for the same field - determining which source 'wins.'"
     },
     {
       "id": 12,
@@ -143,7 +143,7 @@
         "Identity Graph Priority and Profile Fragment Recency"
       ],
       "correct": 2,
-      "explanation": "AEP offers two merge methods: Dataset Precedence (you manually rank datasets by trustworthiness — the highest-ranked dataset's value wins for conflicting fields) and Timestamp Ordered (the most recently ingested record wins regardless of source, ensuring the profile always reflects the latest known data)."
+      "explanation": "AEP offers two merge methods: Dataset Precedence (you manually rank datasets by trustworthiness - the highest-ranked dataset's value wins for conflicting fields) and Timestamp Ordered (the most recently ingested record wins regardless of source, ensuring the profile always reflects the latest known data)."
     },
     {
       "id": 13,
@@ -155,7 +155,7 @@
         "Identity stitching runs only during batch segmentation, not during streaming ingestion"
       ],
       "correct": 2,
-      "explanation": "With Identity Stitching set to 'None,' AEP performs no linking of fragmented identities. If one person has three email addresses across different systems, they will have three separate, disconnected profiles — leading to redundant marketing messages and inaccurate segmentation results."
+      "explanation": "With Identity Stitching set to 'None,' AEP performs no linking of fragmented identities. If one person has three email addresses across different systems, they will have three separate, disconnected profiles - leading to redundant marketing messages and inaccurate segmentation results."
     },
     {
       "id": 14,
@@ -191,7 +191,7 @@
         "A schema-level view displaying the combined field structure of all XDM schemas in one class"
       ],
       "correct": 1,
-      "explanation": "The Union View is the assembled, on-demand customer profile. When requested, AEP uses the Identity Graph to identify all identity fragments belonging to that person, then applies the Merge Policy to combine those fragments into the final unified representation — the Union View."
+      "explanation": "The Union View is the assembled, on-demand customer profile. When requested, AEP uses the Identity Graph to identify all identity fragments belonging to that person, then applies the Merge Policy to combine those fragments into the final unified representation - the Union View."
     },
     {
       "id": 17,
@@ -203,7 +203,7 @@
         "Standard People namespace with the primary identity flag enabled"
       ],
       "correct": 2,
-      "explanation": "Ad-hoc schemas store reference data (products, stores, promo codes) — not people. They require a custom 'Non-people identifier' Identity Namespace, which signals to AEP that the primary identity is an entity identifier (like productSKU or storeID), not a person identifier."
+      "explanation": "Ad-hoc schemas store reference data (products, stores, promo codes) - not people. They require a custom 'Non-people identifier' Identity Namespace, which signals to AEP that the primary identity is an entity identifier (like productSKU or storeID), not a person identifier."
     },
     {
       "id": 18,
@@ -227,7 +227,7 @@
         "Enables the web SDK to bypass the datastream configuration for faster content delivery"
       ],
       "correct": 0,
-      "explanation": "The 'Active-On-Edge' merge policy option allows profile data to be stored at the globally distributed Adobe Experience Edge Network. This is required for web channel experiences — it enables personalization decisions to be made at the edge (near the user) without round-trips to the central AEP infrastructure, ensuring sub-second personalization."
+      "explanation": "The 'Active-On-Edge' merge policy option allows profile data to be stored at the globally distributed Adobe Experience Edge Network. This is required for web channel experiences - it enables personalization decisions to be made at the edge (near the user) without round-trips to the central AEP infrastructure, ensuring sub-second personalization."
     },
     {
       "id": 20,
@@ -239,7 +239,7 @@
         "Individual Profile schemas support relationships; Experience Event schemas do not"
       ],
       "correct": 1,
-      "explanation": "During Union Schema assembly: XDM Individual Profile fields from multiple datasets are merged — if two datasets have the same field, Merge Policy determines which wins. XDM Experience Events are immutable and are appended in chronological order, building a complete behavioral timeline without overwriting any historical events."
+      "explanation": "During Union Schema assembly: XDM Individual Profile fields from multiple datasets are merged - if two datasets have the same field, Merge Policy determines which wins. XDM Experience Events are immutable and are appended in chronological order, building a complete behavioral timeline without overwriting any historical events."
     },
     {
       "id": 21,
@@ -311,7 +311,7 @@
         "The Identity Namespace to use as the primary identity for the dataset"
       ],
       "correct": 1,
-      "explanation": "In the Catalog API POST request to `/data/foundation/catalog/dataSets`, the `schemaRef.$id` field contains the `$id` URL of the XDM schema (retrieved beforehand). This tells AEP which schema validates and interprets the data being ingested — defining field names, types, and the class behavior (record vs. time-series)."
+      "explanation": "In the Catalog API POST request to `/data/foundation/catalog/dataSets`, the `schemaRef.$id` field contains the `$id` URL of the XDM schema (retrieved beforehand). This tells AEP which schema validates and interprets the data being ingested - defining field names, types, and the class behavior (record vs. time-series)."
     },
     {
       "id": 27,
@@ -347,7 +347,7 @@
         "Performance Guardrails apply to ad-hoc queries only; System-enforced Guardrails apply to scheduled queries"
       ],
       "correct": 1,
-      "explanation": "Performance Guardrails (soft limits) are usage guidelines — exceeding them may result in performance degradation and latency, but the query still runs. System-enforced Guardrails (hard limits) are absolute limits enforced by the UI and API — when exceeded, the system blocks the action or returns an error (e.g., error code 53400 for exceeding the 10-minute ad-hoc query time limit)."
+      "explanation": "Performance Guardrails (soft limits) are usage guidelines - exceeding them may result in performance degradation and latency, but the query still runs. System-enforced Guardrails (hard limits) are absolute limits enforced by the UI and API - when exceeded, the system blocks the action or returns an error (e.g., error code 53400 for exceeding the 10-minute ad-hoc query time limit)."
     },
     {
       "id": 30,
@@ -407,7 +407,7 @@
         "5 MB per request (same as file uploads)"
       ],
       "correct": 1,
-      "explanation": "AJO imposes a 50 KB limit on the total size of contextual attributes in a single API-triggered journey request. Additionally, all contextual attributes are treated as strings regardless of the data type passed, and contextual data is not persisted in the Real-Time Customer Profile — it exists only for the duration of that journey execution."
+      "explanation": "AJO imposes a 50 KB limit on the total size of contextual attributes in a single API-triggered journey request. Additionally, all contextual attributes are treated as strings regardless of the data type passed, and contextual data is not persisted in the Real-Time Customer Profile - it exists only for the duration of that journey execution."
     },
     {
       "id": 35,
@@ -415,7 +415,7 @@
       "options": [
         "They are stored in the Real-Time Customer Profile for 30 days and then purged",
         "They are written to the Message Feedback Event Dataset for reporting purposes",
-        "They are not persisted anywhere — contextual data exists only for that specific execution",
+        "They are not persisted anywhere - contextual data exists only for that specific execution",
         "They are stored in the Journey Step Event Dataset tied to the journey metadata"
       ],
       "correct": 2,
@@ -449,10 +449,10 @@
       "id": 38,
       "question": "What data type does AJO assign to ALL contextual attributes passed via the API payload, regardless of the actual data type sent?",
       "options": [
-        "JSON Object — all attributes are parsed as structured JSON",
-        "Number — all values are coerced to floating point for calculations",
-        "String — all contextual attributes are strictly treated as strings",
-        "Boolean — all values are evaluated as truthy/falsy conditions"
+        "JSON Object - all attributes are parsed as structured JSON",
+        "Number - all values are coerced to floating point for calculations",
+        "String - all contextual attributes are strictly treated as strings",
+        "Boolean - all values are evaluated as truthy/falsy conditions"
       ],
       "correct": 2,
       "explanation": "This is a critical AJO constraint: all contextual attributes are strictly treated as Strings, even if you pass a number, boolean, or date. For example, passing `quantity: 5` in the API payload means AJO treats it as the string '5', not the integer 5. This affects how you handle comparisons and calculations in personalization logic."
@@ -503,7 +503,7 @@
         "Data Lake is for external storage exports; Profile Store handles all real-time ingestion"
       ],
       "correct": 1,
-      "explanation": "The Data Lake in AEP stores ALL ingested data — raw files, complete event history, dimensional data — and is the source for Query Service. The Profile Store (Profile Service) is a specialized, optimized store that holds only data from profile-enabled datasets, used exclusively for assembling Real-Time Customer Profiles on demand."
+      "explanation": "The Data Lake in AEP stores ALL ingested data - raw files, complete event history, dimensional data - and is the source for Query Service. The Profile Store (Profile Service) is a specialized, optimized store that holds only data from profile-enabled datasets, used exclusively for assembling Real-Time Customer Profiles on demand."
     },
     {
       "id": 43,
@@ -515,7 +515,7 @@
         "Segmentation manages identity stitching; the Profile handles audience activation"
       ],
       "correct": 1,
-      "explanation": "In AEP, the Real-Time Customer Profile is the data source — it holds assembled profile data (traits + behavioral history). The Segmentation Service evaluates segment definitions (rules) against Profile data to determine which profiles belong to which audiences. The Profile provides the 'what we know'; Segmentation determines 'who qualifies.'"
+      "explanation": "In AEP, the Real-Time Customer Profile is the data source - it holds assembled profile data (traits + behavioral history). The Segmentation Service evaluates segment definitions (rules) against Profile data to determine which profiles belong to which audiences. The Profile provides the 'what we know'; Segmentation determines 'who qualifies.'"
     },
     {
       "id": 44,
@@ -527,7 +527,7 @@
         "It defines the lookback window (in days) for Streaming Segmentation evaluation"
       ],
       "correct": 1,
-      "explanation": "The `ttlInDays` field in the segment definition API request specifies the Time-To-Live in days for that segment definition — how long it remains active in the system before being automatically deleted. This is useful for managing temporary segments created for one-time campaigns or experiments."
+      "explanation": "The `ttlInDays` field in the segment definition API request specifies the Time-To-Live in days for that segment definition - how long it remains active in the system before being automatically deleted. This is useful for managing temporary segments created for one-time campaigns or experiments."
     },
     {
       "id": 45,
@@ -551,7 +551,7 @@
         "Profile data supports custom classes; Experience Events only support standard Adobe classes"
       ],
       "correct": 1,
-      "explanation": "In the Union Schema: XDM Individual Profile (trait data) fields from multiple datasets are merged into single field values — conflicts resolved by Merge Policy. XDM Experience Events are appended chronologically and never merged, since they represent immutable historical moments. This duality lets AEP answer both 'who is this person?' (traits) and 'what have they done?' (events)."
+      "explanation": "In the Union Schema: XDM Individual Profile (trait data) fields from multiple datasets are merged into single field values - conflicts resolved by Merge Policy. XDM Experience Events are appended chronologically and never merged, since they represent immutable historical moments. This duality lets AEP answer both 'who is this person?' (traits) and 'what have they done?' (events)."
     },
     {
       "id": 47,
@@ -563,7 +563,7 @@
         "Enable the 'Identity Debug Mode' in the datastream configuration"
       ],
       "correct": 1,
-      "explanation": "IdentityMap is a complex JSON object within the XDM schema — its contents (specific identity values and namespaces) are not visible or browsable from within the Schema Editor UI. To inspect what values are stored in an IdentityMap, you must execute a SQL query against the Data Lake using Query Service."
+      "explanation": "IdentityMap is a complex JSON object within the XDM schema - its contents (specific identity values and namespaces) are not visible or browsable from within the Schema Editor UI. To inspect what values are stored in an IdentityMap, you must execute a SQL query against the Data Lake using Query Service."
     },
     {
       "id": 48,
@@ -575,7 +575,7 @@
         "Segmentation Service, by evaluating identity fields in segment rule conditions"
       ],
       "correct": 2,
-      "explanation": "The Identity Service is responsible for building and maintaining the Identity Graph — a map of all known relationships between different identifiers (email, CRM ID, ECID, phone, etc.) that belong to the same person. It determines deterministically which identities are the same person, enabling the Profile Service to assemble a complete unified profile."
+      "explanation": "The Identity Service is responsible for building and maintaining the Identity Graph - a map of all known relationships between different identifiers (email, CRM ID, ECID, phone, etc.) that belong to the same person. It determines deterministically which identities are the same person, enabling the Profile Service to assemble a complete unified profile."
     },
     {
       "id": 49,

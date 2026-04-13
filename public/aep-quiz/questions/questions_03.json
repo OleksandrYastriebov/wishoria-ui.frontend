@@ -30,7 +30,7 @@
       "question": "What channel implementation is required to enable authoring and delivery of Web Channel campaigns in AJO?",
       "options": [
         "A server-side rendering framework like Next.js with SSR enabled",
-        "Adobe Experience Platform Web SDK (Alloy.js) on the website — client-side only or hybrid mode",
+        "Adobe Experience Platform Web SDK (Alloy.js) on the website - client-side only or hybrid mode",
         "Adobe Analytics tags with the Journey Optimizer extension installed",
         "A dedicated AJO mobile SDK installed on the web server"
       ],
@@ -107,7 +107,7 @@
         "Fragments are created by admins; Templates can be created by any marketing user"
       ],
       "correct": 1,
-      "explanation": "In AJO: Content Fragments are smaller reusable BUILDING BLOCKS (like a header or footer component) embedded within a larger message. Content Templates are full content FRAMEWORKS for an entire message — a complete email layout that can be reused and adapted. Templates = whole message structure; Fragments = reusable components within a message."
+      "explanation": "In AJO: Content Fragments are smaller reusable BUILDING BLOCKS (like a header or footer component) embedded within a larger message. Content Templates are full content FRAMEWORKS for an entire message - a complete email layout that can be reused and adapted. Templates = whole message structure; Fragments = reusable components within a message."
     },
     {
       "id": 110,
@@ -167,7 +167,7 @@
         "Using templates eliminates the need for HTML knowledge in the email designer"
       ],
       "correct": 1,
-      "explanation": "AJO Content Templates enable a collaborative workflow: content designers/specialists can build and maintain templates outside of journeys or campaigns (as standalone assets). Marketing users can then select, reuse, and customize these templates when building their journeys/campaigns — accelerating creation and ensuring brand consistency without duplication."
+      "explanation": "AJO Content Templates enable a collaborative workflow: content designers/specialists can build and maintain templates outside of journeys or campaigns (as standalone assets). Marketing users can then select, reuse, and customize these templates when building their journeys/campaigns - accelerating creation and ensuring brand consistency without duplication."
     },
     {
       "id": 115,
@@ -215,7 +215,7 @@
         "Creating custom email templates using proprietary HTML frameworks"
       ],
       "correct": 1,
-      "explanation": "Custom Actions in AJO are integration connectors that allow journeys to communicate with external systems (3rd-party CRMs, loyalty platforms, external APIs) via REST API calls. They extend AJO's capabilities beyond built-in channels — for example, triggering a CRM update, calling a weather API, or posting to a custom notification system."
+      "explanation": "Custom Actions in AJO are integration connectors that allow journeys to communicate with external systems (3rd-party CRMs, loyalty platforms, external APIs) via REST API calls. They extend AJO's capabilities beyond built-in channels - for example, triggering a CRM update, calling a weather API, or posting to a custom notification system."
     },
     {
       "id": 119,
@@ -239,7 +239,7 @@
         "The error handling fallback paths that activate when a Custom Action fails"
       ],
       "correct": 1,
-      "explanation": "Integration Points are the specific nodes on the journey canvas where AJO calls external systems. Each Custom Action node on the canvas IS an integration point — when a profile reaches that node, AJO invokes the configured REST endpoint (URL, method, auth, headers, payload) to connect the journey to the downstream external system."
+      "explanation": "Integration Points are the specific nodes on the journey canvas where AJO calls external systems. Each Custom Action node on the canvas IS an integration point - when a profile reaches that node, AJO invokes the configured REST endpoint (URL, method, auth, headers, payload) to connect the journey to the downstream external system."
     },
     {
       "id": 121,
@@ -263,7 +263,7 @@
         "At the channel level; rules apply to all messages sent through a specific channel type"
       ],
       "correct": 1,
-      "explanation": "Capping and Throttling rules are configured at the SANDBOX level for a specific endpoint URL. They are global within that sandbox — all journeys calling the same endpoint share the same rate limit. This ensures that even if 100 journeys call the same external CRM endpoint, the total rate across all of them is capped/throttled."
+      "explanation": "Capping and Throttling rules are configured at the SANDBOX level for a specific endpoint URL. They are global within that sandbox - all journeys calling the same endpoint share the same rate limit. This ensures that even if 100 journeys call the same external CRM endpoint, the total rate across all of them is capped/throttled."
     },
     {
       "id": 123,
@@ -272,7 +272,7 @@
         "Throttling (queue-based rate limiting)",
         "Capping (discard-based rate limiting)",
         "Both Capping and Throttling are available for both",
-        "Neither — Data Sources have their own separate rate limiting mechanism"
+        "Neither - Data Sources have their own separate rate limiting mechanism"
       ],
       "correct": 1,
       "explanation": "In AJO, Capping is available for BOTH data sources and custom actions. Throttling is available ONLY for custom actions. This distinction matters: if you need to protect an external data source (like a weather API), you can use Capping; if you need to protect a custom action endpoint with queue-based rate limiting, use Throttling."
@@ -311,7 +311,7 @@
         "A 'Response Mapper' activity must be added after every Custom Action to make data available"
       ],
       "correct": 1,
-      "explanation": "After a Custom Action node, to use response data in a Condition, you add a Condition activity and use 'Advanced Mode' within it to access the Context menu — from there you can select payload fields from the Custom Action's response. For example, using a temperature value from a weather API response to route profiles to different content paths."
+      "explanation": "After a Custom Action node, to use response data in a Condition, you add a Condition activity and use 'Advanced Mode' within it to access the Context menu - from there you can select payload fields from the Custom Action's response. For example, using a temperature value from a weather API response to route profiles to different content paths."
     },
     {
       "id": 127,
@@ -335,7 +335,7 @@
         "Looping through arrays of items to render dynamic product lists in emails"
       ],
       "correct": 1,
-      "explanation": "The If/Unless Helper in AJO enables conditional content blocks within messages. `{{#if condition}}...{{else}}...{{/if}}` renders different content based on whether the condition evaluates to true. `unless` is the inverse (renders when condition is false). This is fundamental for dynamic personalization — showing different offers to Gold vs. Standard members, for example."
+      "explanation": "The If/Unless Helper in AJO enables conditional content blocks within messages. `{{#if condition}}...{{else}}...{{/if}}` renders different content based on whether the condition evaluates to true. `unless` is the inverse (renders when condition is false). This is fundamental for dynamic personalization - showing different offers to Gold vs. Standard members, for example."
     },
     {
       "id": 129,
@@ -347,7 +347,7 @@
         "Evaluates each condition in a switch-case block independently"
       ],
       "correct": 0,
-      "explanation": "The `Each` Helper in AJO templates iterates through arrays, rendering a content block for each item. For example, `{{#each purchasedItems}}...{{/each}}` would loop through all items in a customer's recent order and render a product block for each one — enabling dynamic product recommendation emails."
+      "explanation": "The `Each` Helper in AJO templates iterates through arrays, rendering a content block for each item. For example, `{{#each purchasedItems}}...{{/each}}` would loop through all items in a customer's recent order and render a product block for each one - enabling dynamic product recommendation emails."
     },
     {
       "id": 130,
@@ -359,7 +359,7 @@
         "Permitting access to restricted profile fields in compliance with governance policies"
       ],
       "correct": 1,
-      "explanation": "The `Let` Helper allows storing a complex expression as a named variable that can be reused in multiple places within the template. Instead of repeating `{{profile.person.name.firstName}}` throughout a template, you can assign it to `{{let firstName = profile.person.name.firstName}}` and reference `{{firstName}}` everywhere — making templates more readable and maintainable."
+      "explanation": "The `Let` Helper allows storing a complex expression as a named variable that can be reused in multiple places within the template. Instead of repeating `{{profile.person.name.firstName}}` throughout a template, you can assign it to `{{let firstName = profile.person.name.firstName}}` and reference `{{firstName}}` everywhere - making templates more readable and maintainable."
     },
     {
       "id": 131,
@@ -383,7 +383,7 @@
         "Defining a default merge policy when the active merge policy has no matching data"
       ],
       "correct": 1,
-      "explanation": "The Default Fallback Value Helper in AJO renders a specified default value when a profile variable is empty or undefined. For example, `{{profile.person.name.firstName | default: 'Valued Customer'}}` would display 'Valued Customer' if the profile doesn't have a first name — preventing blank gaps in personalized messages."
+      "explanation": "The Default Fallback Value Helper in AJO renders a specified default value when a profile variable is empty or undefined. For example, `{{profile.person.name.firstName | default: 'Valued Customer'}}` would display 'Valued Customer' if the profile doesn't have a first name - preventing blank gaps in personalized messages."
     },
     {
       "id": 133,
@@ -395,7 +395,7 @@
         "Experimenting with different merge policies to improve profile completeness"
       ],
       "correct": 1,
-      "explanation": "Web Content Experimentation in AJO allows businesses to run controlled content experiments on their web properties — testing different versions of content, layouts, offers, or messaging to identify which approach drives the best engagement and conversion metrics. Results inform which content strategy to scale for the full audience."
+      "explanation": "Web Content Experimentation in AJO allows businesses to run controlled content experiments on their web properties - testing different versions of content, layouts, offers, or messaging to identify which approach drives the best engagement and conversion metrics. Results inform which content strategy to scale for the full audience."
     },
     {
       "id": 134,
@@ -419,7 +419,7 @@
         "Creating dynamic conditions that control when a journey branch is executed"
       ],
       "correct": 1,
-      "explanation": "AJO's Expression Editor allows saving personalization expressions (like complex date calculations, conditional logic, or reusable data transformations) as 'expression fragments.' These saved expressions are then available in the Expression Editor for building personalized content — enabling complex logic to be written once and reused across multiple messages."
+      "explanation": "AJO's Expression Editor allows saving personalization expressions (like complex date calculations, conditional logic, or reusable data transformations) as 'expression fragments.' These saved expressions are then available in the Expression Editor for building personalized content - enabling complex logic to be written once and reused across multiple messages."
     },
     {
       "id": 136,
@@ -443,7 +443,7 @@
         "Journeys are created by admins; Campaigns are created by marketing users"
       ],
       "correct": 1,
-      "explanation": "In AJO, Journeys are multi-step orchestration flows that guide individual profiles through personalized experiences triggered by events or on a schedule — with branching, waits, and conditions. Campaigns are broadcast communications — one-time or recurring messages sent to an entire audience segment at a specific time without multi-step logic."
+      "explanation": "In AJO, Journeys are multi-step orchestration flows that guide individual profiles through personalized experiences triggered by events or on a schedule - with branching, waits, and conditions. Campaigns are broadcast communications - one-time or recurring messages sent to an entire audience segment at a specific time without multi-step logic."
     },
     {
       "id": 138,
@@ -467,7 +467,7 @@
         "The Journey Canvas with drag-and-drop content blocks"
       ],
       "correct": 1,
-      "explanation": "The AJO Web Channel includes a visual interface (Web Designer) that provides a WYSIWYG (What You See Is What You Get) editing experience. Marketers can directly manipulate web page elements — text, images, buttons, layouts — without writing code, by clicking and editing elements directly on a live preview of the web page."
+      "explanation": "The AJO Web Channel includes a visual interface (Web Designer) that provides a WYSIWYG (What You See Is What You Get) editing experience. Marketers can directly manipulate web page elements - text, images, buttons, layouts - without writing code, by clicking and editing elements directly on a live preview of the web page."
     },
     {
       "id": 140,
@@ -491,19 +491,19 @@
         "It continuously monitors segment membership and enters new qualifiers as they are added"
       ],
       "correct": 1,
-      "explanation": "The 'Read Segment' entry node (audience-based journey) enters all profiles that currently qualify for a specified segment into the journey at a scheduled execution time. Unlike event-triggered entries (unitary journeys), Read Segment journeys are executed in bulk — all qualifying profiles enter at once, making them suitable for scheduled campaigns and batch communications."
+      "explanation": "The 'Read Segment' entry node (audience-based journey) enters all profiles that currently qualify for a specified segment into the journey at a scheduled execution time. Unlike event-triggered entries (unitary journeys), Read Segment journeys are executed in bulk - all qualifying profiles enter at once, making them suitable for scheduled campaigns and batch communications."
     },
     {
       "id": 142,
       "question": "What is the purpose of the 'Publish' action for a journey in AJO?",
       "options": [
         "Saves the journey as a draft for future editing without making it live",
-        "Makes the journey live and active — new profiles can now enter the journey",
+        "Makes the journey live and active - new profiles can now enter the journey",
         "Shares the journey configuration with other sandbox environments",
         "Publishes a performance report of the journey to the reporting dashboard"
       ],
       "correct": 1,
-      "explanation": "Publishing a journey in AJO activates it — making it live and allowing profiles to enter and progress through it. Before publishing, a journey is in Draft mode and no profiles can enter. Publishing is an important milestone that triggers governance policy checks — if any sensitive data fields are used in custom actions that violate policies, publishing is blocked with an error."
+      "explanation": "Publishing a journey in AJO activates it - making it live and allowing profiles to enter and progress through it. Before publishing, a journey is in Draft mode and no profiles can enter. Publishing is an important milestone that triggers governance policy checks - if any sensitive data fields are used in custom actions that violate policies, publishing is blocked with an error."
     },
     {
       "id": 143,
@@ -539,7 +539,7 @@
         "The priority rank assigned to an offer within a specific decision container"
       ],
       "correct": 1,
-      "explanation": "An Offer Placement defines WHERE an offer will be displayed — a combination of a channel (email, mobile, web, or other) and a specific location within that channel (e.g., 'hero banner,' 'product recommendation slot,' 'email top section'). Since one offer can appear in multiple placements, a single offer can have multiple representation configurations across different channels."
+      "explanation": "An Offer Placement defines WHERE an offer will be displayed - a combination of a channel (email, mobile, web, or other) and a specific location within that channel (e.g., 'hero banner,' 'product recommendation slot,' 'email top section'). Since one offer can appear in multiple placements, a single offer can have multiple representation configurations across different channels."
     },
     {
       "id": 146,
@@ -551,7 +551,7 @@
         "Event entries are for B2B journeys; Read Segment entries are for B2C journeys"
       ],
       "correct": 1,
-      "explanation": "Event-triggered entries (Unitary journeys) enter one profile at a time in real-time when that specific profile triggers the configured event (e.g., a purchase, a form submission). Read Segment entries (Audience-based journeys) bulk-enter ALL profiles currently in a segment at a scheduled time — more like a campaign blast to an entire audience."
+      "explanation": "Event-triggered entries (Unitary journeys) enter one profile at a time in real-time when that specific profile triggers the configured event (e.g., a purchase, a form submission). Read Segment entries (Audience-based journeys) bulk-enter ALL profiles currently in a segment at a scheduled time - more like a campaign blast to an entire audience."
     },
     {
       "id": 147,
@@ -563,7 +563,7 @@
         "Defines the eligibility rules and audience criteria for the offer"
       ],
       "correct": 1,
-      "explanation": "An offer Representation is the combination of a channel and a placement within that channel — it defines WHERE and HOW the offer's content is delivered. One offer can have multiple representations (e.g., a summer sale offer with an email banner representation AND a web hero banner representation), allowing the same offer to appear appropriately formatted across different touchpoints."
+      "explanation": "An offer Representation is the combination of a channel and a placement within that channel - it defines WHERE and HOW the offer's content is delivered. One offer can have multiple representations (e.g., a summer sale offer with an email banner representation AND a web hero banner representation), allowing the same offer to appear appropriately formatted across different touchpoints."
     },
     {
       "id": 148,
@@ -587,7 +587,7 @@
         "It restricts the number of users who can create and manage offers in the Offer Library"
       ],
       "correct": 1,
-      "explanation": "In AJO Offer Management, Capping defines the maximum number of times an offer can be presented — either in total across all customers (global cap) or per individual customer (per-profile cap). This prevents over-solicitation (showing the same offer too many times), which protects customer experience and avoids offer fatigue."
+      "explanation": "In AJO Offer Management, Capping defines the maximum number of times an offer can be presented - either in total across all customers (global cap) or per individual customer (per-profile cap). This prevents over-solicitation (showing the same offer too many times), which protects customer experience and avoids offer fatigue."
     },
     {
       "id": 150,
@@ -599,7 +599,7 @@
         "Ranking offers by expected revenue contribution for budget allocation purposes"
       ],
       "correct": 1,
-      "explanation": "Offer Priority in AJO resolves conflicts when a customer qualifies for multiple offers at the same time. The offer with the highest priority number wins and is presented to the customer. This enables marketers to strategically control which offers take precedence — for example, always showing the premium loyalty offer over a generic promotional offer."
+      "explanation": "Offer Priority in AJO resolves conflicts when a customer qualifies for multiple offers at the same time. The offer with the highest priority number wins and is presented to the customer. This enables marketers to strategically control which offers take precedence - for example, always showing the premium loyalty offer over a generic promotional offer."
     }
   ]
 }

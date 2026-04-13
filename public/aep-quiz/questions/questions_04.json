@@ -35,7 +35,7 @@
         "A backup offer used when the Offer Library API experiences downtime"
       ],
       "correct": 1,
-      "explanation": "A Fallback Offer is a 'catch-all' generic offer that is displayed when no personalized offers in the Decision qualify for a specific customer. It ensures that customers always see something relevant — rather than a blank offer slot — even if they don't meet any eligibility criteria for the targeted offers."
+      "explanation": "A Fallback Offer is a 'catch-all' generic offer that is displayed when no personalized offers in the Decision qualify for a specific customer. It ensures that customers always see something relevant - rather than a blank offer slot - even if they don't meet any eligibility criteria for the targeted offers."
     },
     {
       "id": 154,
@@ -83,7 +83,7 @@
         "It pre-computes personalized offers overnight so they can be displayed without runtime processing"
       ],
       "correct": 1,
-      "explanation": "A key workflow benefit of Offer Decisioning is that marketers can create ONE delivery/campaign and vary the offers in different parts of the template for different customers — instead of creating 10 campaigns for 10 different offers. This dramatically reduces campaign management overhead while delivering highly personalized experiences."
+      "explanation": "A key workflow benefit of Offer Decisioning is that marketers can create ONE delivery/campaign and vary the offers in different parts of the template for different customers - instead of creating 10 campaigns for 10 different offers. This dramatically reduces campaign management overhead while delivering highly personalized experiences."
     },
     {
       "id": 158,
@@ -95,7 +95,7 @@
         "An approval policy requiring manager sign-off before offers can be activated"
       ],
       "correct": 1,
-      "explanation": "A Decision Policy brings together: an Offer Collection (which offers to consider), a Ranking strategy (how to prioritize competing eligible offers — by priority score, ranking formula, or AI model), and Fallback Offer (what to show if nothing qualifies). The Decision Engine applies the policy to pick the single best offer for each profile."
+      "explanation": "A Decision Policy brings together: an Offer Collection (which offers to consider), a Ranking strategy (how to prioritize competing eligible offers - by priority score, ranking formula, or AI model), and Fallback Offer (what to show if nothing qualifies). The Decision Engine applies the policy to pick the single best offer for each profile."
     },
     {
       "id": 159,
@@ -131,7 +131,7 @@
         "Web analytics data including page details, referrer information, and session data"
       ],
       "correct": 1,
-      "explanation": "The 'Experience Event – Proposition Interactions' field group captures when a customer takes an action in response to a proposition (an offer or personalized experience). Each decision has a unique ID sent with the experience event, tracking which specific offer/decision the customer interacted with — critical for measuring offer performance."
+      "explanation": "The 'Experience Event – Proposition Interactions' field group captures when a customer takes an action in response to a proposition (an offer or personalized experience). Each decision has a unique ID sent with the experience event, tracking which specific offer/decision the customer interacted with - critical for measuring offer performance."
     },
     {
       "id": 162,
@@ -139,11 +139,11 @@
       "options": [
         "Decisions are created first; offers are added to decisions as child components",
         "Offers are created in the Offer Library; Decisions are containers that use offers to pick the best one per profile",
-        "Decisions define the audience; Offers define the content — they are completely independent",
+        "Decisions define the audience; Offers define the content - they are completely independent",
         "Each Offer automatically generates a Decision with default settings upon creation"
       ],
       "correct": 1,
-      "explanation": "The flow is: first create Offers in the Offer Library (with content, eligibility, constraints). Then create Decisions — containers that organize offers into the Decision Engine. When a Decision is evaluated for a profile, it searches through the associated offers, applies eligibility rules and ranking, and returns the single best matching offer."
+      "explanation": "The flow is: first create Offers in the Offer Library (with content, eligibility, constraints). Then create Decisions - containers that organize offers into the Decision Engine. When a Decision is evaluated for a profile, it searches through the associated offers, applies eligibility rules and ranking, and returns the single best matching offer."
     },
     {
       "id": 163,
@@ -167,7 +167,7 @@
         "Placements define eligibility criteria; Representations define the offer reward/value"
       ],
       "correct": 1,
-      "explanation": "A Placement defines WHERE an offer can appear (channel + location, e.g., 'Email → Hero Banner'). A Representation is an offer's actual content configured for a specific Placement — since one offer can appear in multiple places, you add multiple Representations (one per Placement). Each Representation contains the appropriately sized/formatted content for that channel and location."
+      "explanation": "A Placement defines WHERE an offer can appear (channel + location, e.g., 'Email → Hero Banner'). A Representation is an offer's actual content configured for a specific Placement - since one offer can appear in multiple places, you add multiple Representations (one per Placement). Each Representation contains the appropriately sized/formatted content for that channel and location."
     },
     {
       "id": 165,
@@ -179,7 +179,7 @@
         "The Offer Decision Engine uses machine learning to automatically reduce over-shown offers"
       ],
       "correct": 1,
-      "explanation": "Offer Decisioning gives granular control through Capping: you set a maximum number of times an offer can be presented — globally (total impressions across all customers) and/or per profile (maximum times any one customer sees the same offer). This prevents 'offer fatigue' and respects marketing frequency policies."
+      "explanation": "Offer Decisioning gives granular control through Capping: you set a maximum number of times an offer can be presented - globally (total impressions across all customers) and/or per profile (maximum times any one customer sees the same offer). This prevents 'offer fatigue' and respects marketing frequency policies."
     },
     {
       "id": 166,
@@ -215,7 +215,7 @@
         "They control when the offer becomes visible to marketing users in the library"
       ],
       "correct": 1,
-      "explanation": "The Start and End Date constraints on an offer define the active window during which the offer can be selected by the Offer Decision Engine and delivered to customers. Outside this date range, the offer is automatically excluded from consideration — enabling seasonal promotions, time-limited deals, and event-specific offers to automatically activate and expire."
+      "explanation": "The Start and End Date constraints on an offer define the active window during which the offer can be selected by the Offer Decision Engine and delivered to customers. Outside this date range, the offer is automatically excluded from consideration - enabling seasonal promotions, time-limited deals, and event-specific offers to automatically activate and expire."
     },
     {
       "id": 169,
@@ -263,7 +263,7 @@
         "Version tags that identify which iteration of an offer is currently active"
       ],
       "correct": 1,
-      "explanation": "Offer Tags are metadata labels attached to offers in the Offer Library. They are used for organization and filtering — enabling marketers to group offers by category (e.g., 'Summer 2025,' 'Electronics,' 'VIP') and use these tags to define Offer Collections that feed into specific Decisions."
+      "explanation": "Offer Tags are metadata labels attached to offers in the Offer Library. They are used for organization and filtering - enabling marketers to group offers by category (e.g., 'Summer 2025,' 'Electronics,' 'VIP') and use these tags to define Offer Collections that feed into specific Decisions."
     },
     {
       "id": 173,
@@ -275,7 +275,7 @@
         "Digital, physical, and hybrid channel classifications"
       ],
       "correct": 1,
-      "explanation": "An AJO Offer Placement specifies a channel type — the options include: Email (email messages), Mobile (app/push), Web (websites), or Other (custom channels like kiosks, connected devices, call centers). Selecting the correct channel ensures the offer content (size, format, interactions) is appropriate for the delivery medium."
+      "explanation": "An AJO Offer Placement specifies a channel type - the options include: Email (email messages), Mobile (app/push), Web (websites), or Other (custom channels like kiosks, connected devices, call centers). Selecting the correct channel ensures the offer content (size, format, interactions) is appropriate for the delivery medium."
     },
     {
       "id": 174,
@@ -299,7 +299,7 @@
         "Offer Decisioning eliminates the need for audience segmentation before sending"
       ],
       "correct": 1,
-      "explanation": "With Offer Decisioning, one campaign/delivery can serve thousands of different offer variations to different customers — each person sees the best offer for them. Without it, marketers would need to create separate campaigns for each offer variant (10 offers = 10 campaigns). This dramatically reduces campaign management overhead while improving personalization."
+      "explanation": "With Offer Decisioning, one campaign/delivery can serve thousands of different offer variations to different customers - each person sees the best offer for them. Without it, marketers would need to create separate campaigns for each offer variant (10 offers = 10 campaigns). This dramatically reduces campaign management overhead while improving personalization."
     },
     {
       "id": 176,
@@ -311,7 +311,7 @@
         "When a customer explicitly rejects the primary offer and requests an alternative"
       ],
       "correct": 1,
-      "explanation": "A Fallback Offer is the 'last resort' — it's displayed ONLY when the Offer Decision Engine cannot find any personalized, eligible offers for a specific profile. This ensures customers always see SOME offer content rather than an empty slot. The Fallback is typically a generic brand offer with no eligibility restrictions."
+      "explanation": "A Fallback Offer is the 'last resort' - it's displayed ONLY when the Offer Decision Engine cannot find any personalized, eligible offers for a specific profile. This ensures customers always see SOME offer content rather than an empty slot. The Fallback is typically a generic brand offer with no eligibility restrictions."
     },
     {
       "id": 177,
@@ -347,7 +347,7 @@
         "Automatically segmenting the audience into groups before offer eligibility evaluation"
       ],
       "correct": 1,
-      "explanation": "AI Ranking models in AJO Offer Decisioning use machine learning to score eligible offers for each individual profile. The model is trained on historical interaction data (e.g., which offers were clicked/redeemed by similar customers) and predicts the probability of engagement for each offer-profile combination — selecting the offer with the highest predicted conversion rate."
+      "explanation": "AI Ranking models in AJO Offer Decisioning use machine learning to score eligible offers for each individual profile. The model is trained on historical interaction data (e.g., which offers were clicked/redeemed by similar customers) and predicts the probability of engagement for each offer-profile combination - selecting the offer with the highest predicted conversion rate."
     },
     {
       "id": 180,
@@ -378,12 +378,12 @@
       "question": "How does AJO's Offer Decisioning support 'multi-channel offer delivery'?",
       "options": [
         "By automatically translating offer content into the native format of each channel",
-        "By allowing one offer to have multiple Representations — one per channel/placement combination",
+        "By allowing one offer to have multiple Representations - one per channel/placement combination",
         "By broadcasting the same offer simultaneously across all channels without configuration",
         "By maintaining separate offer libraries for each channel type"
       ],
       "correct": 1,
-      "explanation": "AJO supports multi-channel offers through multiple Representations. One offer definition can have different Representations for email, mobile, and web — each with appropriately formatted content and creative for that channel. The same underlying offer (same eligibility, priority, capping) can thus appear correctly across all customer touchpoints."
+      "explanation": "AJO supports multi-channel offers through multiple Representations. One offer definition can have different Representations for email, mobile, and web - each with appropriately formatted content and creative for that channel. The same underlying offer (same eligibility, priority, capping) can thus appear correctly across all customer touchpoints."
     },
     {
       "id": 183,
@@ -395,16 +395,16 @@
         "Priority works for email channel only; Ranking Formula works for all channels"
       ],
       "correct": 1,
-      "explanation": "Offer Priority is a simple static number assigned to an offer — higher number = higher priority. A Ranking Formula is a dynamic mathematical expression that evaluates offer and profile attributes at runtime (e.g., `offer.value * profile.loyaltyScore`) to compute a score. Formulas enable more nuanced, context-aware ranking than a fixed priority number."
+      "explanation": "Offer Priority is a simple static number assigned to an offer - higher number = higher priority. A Ranking Formula is a dynamic mathematical expression that evaluates offer and profile attributes at runtime (e.g., `offer.value * profile.loyaltyScore`) to compute a score. Formulas enable more nuanced, context-aware ranking than a fixed priority number."
     },
     {
       "id": 184,
       "question": "In the offer creation process in AJO, what is added multiple times if an offer is used in multiple channels and placements?",
       "options": [
-        "Eligibility rules — one rule set per channel for channel-specific audience targeting",
-        "Representations — one Representation per channel/placement combination",
-        "Capping constraints — separate caps are required for each channel",
-        "Decision policies — one policy per channel to manage independent offer selection"
+        "Eligibility rules - one rule set per channel for channel-specific audience targeting",
+        "Representations - one Representation per channel/placement combination",
+        "Capping constraints - separate caps are required for each channel",
+        "Decision policies - one policy per channel to manage independent offer selection"
       ],
       "correct": 1,
       "explanation": "When creating an offer in AJO that will appear across multiple channels/placements, you add multiple Representations to that single offer. Each Representation specifies a channel (email, mobile, web) and a placement within that channel, along with the content appropriate for that context. The offer's core attributes (eligibility, priority, capping) are shared across all Representations."
@@ -431,7 +431,7 @@
         "Tags are internal metadata; Collections are customer-facing offer groupings"
       ],
       "correct": 1,
-      "explanation": "The workflow is: first tag offers with relevant labels (e.g., 'Holiday2025,' 'Electronics,' 'Premium'). Then create Offer Collections that include offers matching specific tags. This tag-based filtering makes collection management dynamic — adding a tag to a new offer automatically includes it in collections using that tag, without manually updating every collection."
+      "explanation": "The workflow is: first tag offers with relevant labels (e.g., 'Holiday2025,' 'Electronics,' 'Premium'). Then create Offer Collections that include offers matching specific tags. This tag-based filtering makes collection management dynamic - adding a tag to a new offer automatically includes it in collections using that tag, without manually updating every collection."
     },
     {
       "id": 187,
@@ -491,7 +491,7 @@
         "Journeys are for B2B offers; Campaigns are for B2C consumer offers"
       ],
       "correct": 1,
-      "explanation": "In Journeys, offers are triggered reactively — a specific event (purchase, abandonment, milestone) triggers the journey and the offer is delivered in context of that event, personalized in real-time. In Campaigns, offers are delivered at a scheduled time to an entire audience segment — more like a broadcast promotion to all eligible customers simultaneously."
+      "explanation": "In Journeys, offers are triggered reactively - a specific event (purchase, abandonment, milestone) triggers the journey and the offer is delivered in context of that event, personalized in real-time. In Campaigns, offers are delivered at a scheduled time to an entire audience segment - more like a broadcast promotion to all eligible customers simultaneously."
     },
     {
       "id": 192,
@@ -503,7 +503,7 @@
         "Using AI ranking models automatically optimizes campaign schedules for peak open times"
       ],
       "correct": 1,
-      "explanation": "According to AJO documentation, Offer Decisioning improves campaign performance by delivering personalized offers across multiple channels. When each customer receives the offer most relevant to them (vs. a generic broadcast), engagement rates, conversion rates, and revenue per campaign all improve — this is the core value proposition of personalized offer decisioning."
+      "explanation": "According to AJO documentation, Offer Decisioning improves campaign performance by delivering personalized offers across multiple channels. When each customer receives the offer most relevant to them (vs. a generic broadcast), engagement rates, conversion rates, and revenue per campaign all improve - this is the core value proposition of personalized offer decisioning."
     },
     {
       "id": 193,
@@ -515,7 +515,7 @@
         "A security container that restricts offer access to specific user roles"
       ],
       "correct": 1,
-      "explanation": "A 'Decision' in AJO (sometimes historically referred to as a 'Decision Container' in documentation) is the object that holds the offer collections, ranking strategy, and fallback offer together. This container is what the Offer Decision Engine references to determine which offer to select for each profile — it's the 'configuration' for a decisioning scenario."
+      "explanation": "A 'Decision' in AJO (sometimes historically referred to as a 'Decision Container' in documentation) is the object that holds the offer collections, ranking strategy, and fallback offer together. This container is what the Offer Decision Engine references to determine which offer to select for each profile - it's the 'configuration' for a decisioning scenario."
     },
     {
       "id": 194,
@@ -575,7 +575,7 @@
         "Offer Decisioning is evaluated at journey entry; Personalization is evaluated at message rendering time"
       ],
       "correct": 1,
-      "explanation": "Standard AJO personalization uses profile attributes to customize pre-defined content (e.g., inserting a name or loyalty tier into a template). Offer Decisioning goes further: it dynamically SELECTS WHICH CONTENT to show from a pool of offers based on eligibility, ranking, and constraints — the content itself varies per individual, not just the variable values within a fixed template."
+      "explanation": "Standard AJO personalization uses profile attributes to customize pre-defined content (e.g., inserting a name or loyalty tier into a template). Offer Decisioning goes further: it dynamically SELECTS WHICH CONTENT to show from a pool of offers based on eligibility, ranking, and constraints - the content itself varies per individual, not just the variable values within a fixed template."
     },
     {
       "id": 199,
@@ -587,7 +587,7 @@
         "It serves as the single source of truth for all brand assets used in offers"
       ],
       "correct": 1,
-      "explanation": "The central Offer Library is the single repository for all offer assets — create an offer once and reuse it across multiple journeys, campaigns, and Decisions. This prevents offer duplication, ensures consistency, and simplifies updates: change an offer's content in the Library and the update propagates to all active campaigns using that offer."
+      "explanation": "The central Offer Library is the single repository for all offer assets - create an offer once and reuse it across multiple journeys, campaigns, and Decisions. This prevents offer duplication, ensures consistency, and simplifies updates: change an offer's content in the Library and the update propagates to all active campaigns using that offer."
     },
     {
       "id": 200,

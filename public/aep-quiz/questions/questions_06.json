@@ -1,0 +1,605 @@
+{
+  "title": "Reporting, Personalization & Advanced Configuration",
+  "questions": [
+    {
+      "id": 251,
+      "question": "What is 'Contextual Personalization' in AJO and what types of attributes does it leverage?",
+      "options": [
+        "Personalization based only on historical purchase data stored in the customer profile",
+        "Personalization based on real-time situational attributes like location, weather, device type, and time of day",
+        "Personalization driven by AI models that predict future customer behavior",
+        "Personalization based on pre-defined customer segments and loyalty tiers"
+      ],
+      "correct": 1,
+      "explanation": "Contextual personalization in AJO uses real-time situational attributes — Physical/Temporal (location, time of day), Environmental (weather, traffic), and Technical/Social (device type, social trends). These attributes allow content to adjust dynamically to the user's current situation, creating 'thoughtful automation' that considers the customer's present reality, not just their historical profile."
+    },
+    {
+      "id": 252,
+      "question": "In AJO, where are contextual attributes (location, weather, device type) typically passed when using alloy.js?",
+      "options": [
+        "In the XDM Experience Event's `_experiencePlat.context` field group",
+        "Via the XDM placeContext and environment fields in alloy.js or Server-side API calls",
+        "In the Profile Service as temporary session attributes",
+        "Through the Identity Service as contextual identity extensions"
+      ],
+      "correct": 1,
+      "explanation": "In the AEP/AJO ecosystem, contextual attributes are passed via the XDM data model's `placeContext` (for location, timezone, geo coordinates) and `environment` (for device type, browser, connection type) fields within alloy.js `sendEvent` calls or Server-side API requests. These standardized XDM fields ensure contextual data is properly structured and accessible in AJO."
+    },
+    {
+      "id": 253,
+      "question": "What is AJO's reporting dataset 'Email Tracking Experience Event Dataset' used for?",
+      "options": [
+        "Storing raw email HTML content for archival and compliance purposes",
+        "Interaction logs for Email channel showing opens, clicks, and other end-user actions",
+        "Delivery confirmation logs for all outbound email messages sent through AJO",
+        "ISP bounce feedback and spam complaint reports for email deliverability management"
+      ],
+      "correct": 1,
+      "explanation": "The Email Tracking Experience Event Dataset stores interaction-level logs for the Email channel: what end-users did with emails after receiving them — opens, clicks on specific links, unsubscribes, etc. This dataset powers AJO's email engagement reporting and enables building audiences of engaged email users."
+    },
+    {
+      "id": 254,
+      "question": "What datasets are used for Journey Optimizer reporting and analytics in Customer Journey Analytics?",
+      "options": [
+        "Only the Message Feedback Dataset and Email Tracking Dataset",
+        "Journey Step Event, Message Feedback Event, Email/Push Tracking, and BCC datasets",
+        "Only the Journey Step Event Dataset tied to Journey Metadata",
+        "Profile snapshots and segment membership history datasets"
+      ],
+      "correct": 1,
+      "explanation": "AJO's reporting infrastructure uses multiple datasets: Journey Step Event Dataset (journey progression analytics, CJA analysis), Message Feedback Event Dataset (delivery logs, bounce data), Email Tracking Experience Event Dataset (email engagement), Push Tracking Experience Event Dataset (push engagement), and BCC Feedback Dataset (BCC email delivery logs). Together they provide a complete picture of journey performance."
+    },
+    {
+      "id": 255,
+      "question": "What is the 'Push Tracking Experience Event Dataset' used for in AJO?",
+      "options": [
+        "Storing push notification content for A/B testing comparisons",
+        "Interaction logs for the Push channel showing actions taken on push notifications",
+        "Delivery confirmation logs for all push messages sent through AJO",
+        "Device token registration and management logs for push notification targeting"
+      ],
+      "correct": 1,
+      "explanation": "The Push Tracking Experience Event Dataset captures end-user interactions with push notifications — whether they opened the notification, dismissed it, or took a specific action. This interaction data drives push channel reporting in AJO and enables building audiences based on push engagement behavior."
+    },
+    {
+      "id": 256,
+      "question": "In AJO's reporting, what is the 'BCC: Feedback Event Dataset' used for?",
+      "options": [
+        "Storing blind carbon copy email addresses for compliance record-keeping",
+        "Delivery logs for BCC emails sent for regulatory compliance and archival purposes",
+        "Tracking when email BCC recipients take actions on forwarded messages",
+        "Recording email chain metadata when messages are forwarded to BCC addresses"
+      ],
+      "correct": 1,
+      "explanation": "The BCC Feedback Event Dataset stores delivery logs specifically for BCC (Blind Carbon Copy) emails. In regulated industries (financial services, healthcare, legal), every customer communication must be archived. AJO's BCC feature sends a copy of each outbound email to a compliance archive; this dataset stores the delivery confirmation for those BCC copies."
+    },
+    {
+      "id": 257,
+      "question": "What is the AEP Query Editor and what is it primarily used for?",
+      "options": [
+        "A visual query builder for creating audience segment definitions in Segment Builder",
+        "An interactive SQL tool for writing, validating, and running queries against AEP data",
+        "A code editor for writing XDM schema field group definitions",
+        "A drag-and-drop interface for configuring data flows between AEP datasets"
+      ],
+      "correct": 1,
+      "explanation": "The AEP Query Editor is an interactive SQL tool within the Experience Platform UI that allows users to write, validate, and execute queries against customer experience data stored in AEP. It supports both interactive (ad-hoc) queries for exploration and analysis, and non-interactive queries that populate output datasets. It's accessed via Queries → Create Query in the AEP UI."
+    },
+    {
+      "id": 258,
+      "question": "In AEP Query Service, what is the difference between an 'Ad-hoc Query' and a query that populates a dataset?",
+      "options": [
+        "Ad-hoc queries use SQL; dataset-populating queries use PQL",
+        "Ad-hoc queries explore/validate data without storing results; dataset-populating queries write output to AEP",
+        "Ad-hoc queries run immediately; dataset-populating queries are always scheduled",
+        "Ad-hoc queries access the Profile Store; dataset-populating queries access the Data Lake"
+      ],
+      "correct": 1,
+      "explanation": "Ad-hoc (interactive) queries in AEP Query Service are for exploration, validation, and analysis — they execute SELECT queries and display results but DON'T persist data anywhere (results not stored in the Data Lake). Non-interactive queries are configured to write their output to a new AEP dataset, creating persistent, queryable results for downstream use."
+    },
+    {
+      "id": 259,
+      "question": "What AJO feature allows marketers to experiment with different content strategies on web channels?",
+      "options": [
+        "Journey Branching with condition-based content variations for different audience segments",
+        "Web Content Experimentation to test multiple content approaches and identify the best performing",
+        "Audience Composition Split block for dividing audiences across different web experiences",
+        "Offer Decisioning with AI ranking to automatically select winning content variants"
+      ],
+      "correct": 1,
+      "explanation": "Web Content Experimentation in AJO enables controlled experiments on web channels — running multiple content variants simultaneously against different audience segments and measuring which approach drives the best results (engagement, conversion, revenue). This enables data-driven content optimization rather than relying on assumptions."
+    },
+    {
+      "id": 260,
+      "question": "What must be done to enable content experiment reporting in the web channel in AJO?",
+      "options": [
+        "Enable the 'Experiment Reporting' flag in the AJO organization settings",
+        "Ensure the dataset in the web implementation datastream is included in the reporting configuration",
+        "Create a separate reporting workspace in Customer Journey Analytics for web experiments",
+        "Install the Adobe Analytics web SDK tag alongside the AEP Web SDK"
+      ],
+      "correct": 1,
+      "explanation": "For web content experiment reporting to work, the dataset used in your web implementation's datastream must ALSO be included in AJO's reporting configuration. If you add a dataset to reporting that isn't in the datastream, web data won't appear in experiment reports. Both the datastream and reporting configuration must reference the same dataset."
+    },
+    {
+      "id": 261,
+      "question": "In AJO's Helper Functions, what does the 'Count' aggregation function do?",
+      "options": [
+        "Counts the number of profiles that match a specific segment definition",
+        "Determines the number of elements in an array for array operations",
+        "Counts the number of characters in a string value",
+        "Returns the total number of times a specific event occurred for a profile"
+      ],
+      "correct": 1,
+      "explanation": "The Count aggregation/array function in AJO's Helper Functions determines the number of elements in an array. For example, counting the number of items in a shopping cart array `{{Count(profile.commerce.cartAbandons)}}` gives the total number of cart abandonment events, enabling personalization like 'You have 3 items in your cart.'"
+    },
+    {
+      "id": 262,
+      "question": "What does the 'Format Date' function in AJO's Date Time Helper Functions do?",
+      "options": [
+        "Converts a string representation of a date into a Unix timestamp format",
+        "Converts a date value into a specified human-readable format for display in messages",
+        "Formats dates to comply with ISO 8601 standards for data exchange",
+        "Extracts individual date components (year, month, day) from a date field"
+      ],
+      "correct": 1,
+      "explanation": "The Format Date function in AJO's Date Time Helper Functions converts a raw date value into a user-specified display format. For example, converting a timestamp like `2025-04-13T09:00:00Z` into 'April 13, 2025' or '13/04/2025' for inclusion in a message. This ensures dates appear in the correct locale format for different regions."
+    },
+    {
+      "id": 263,
+      "question": "What is the 'Round Up' function in AJO's Math Helper Functions used for?",
+      "options": [
+        "Rounds a number up to the nearest integer (ceiling function)",
+        "Rounds a number to a specified number of decimal places using standard rounding",
+        "Rounds a number down to the nearest integer (floor function)",
+        "Rounds a number to the nearest thousand for large number display"
+      ],
+      "correct": 0,
+      "explanation": "The Round Up (ceiling) Math Helper function in AJO rounds a number UP to the nearest whole number. For example, `Round Up(3.1)` = 4, `Round Up(7.9)` = 8. This is useful in personalization when you want to display discount savings rounded up (e.g., 'Save up to $4' instead of '$3.10') for more compelling messaging."
+    },
+    {
+      "id": 264,
+      "question": "In AJO, what does the 'Contains' function in String Helper Functions check?",
+      "options": [
+        "Whether an array contains a specific element value",
+        "Whether a string contains a specific substring",
+        "Whether a profile attribute contains a valid, non-null value",
+        "Whether a field group contains a specific field definition"
+      ],
+      "correct": 1,
+      "explanation": "The Contains function in AJO's String Helper Functions checks whether a specific substring exists within a string value. For example, `Contains(profile.email, '@gmail.com')` returns true if the email address includes '@gmail.com'. This enables content personalization based on partial string matching, like detecting email domain or product name mentions."
+    },
+    {
+      "id": 265,
+      "question": "In AJO, what does the 'Is not null' Object Function check for?",
+      "options": [
+        "Whether a string value is not an empty string ('') or whitespace only",
+        "Whether an object reference exists and has a non-null value",
+        "Whether an array is not empty and contains at least one element",
+        "Whether a numerical value is not zero (a truthy non-zero check)"
+      ],
+      "correct": 1,
+      "explanation": "The 'Is not null' Object Function in AJO checks whether an object reference exists and has a non-null value. This is used for safe personalization: before rendering `{{profile.person.name.firstName}}`, checking `{{Is not null(profile.person.name.firstName)}}` prevents blank spaces or errors when the field is missing from the profile."
+    },
+    {
+      "id": 266,
+      "question": "In AJO, what does the 'Get' function in Map Helper Functions do?",
+      "options": [
+        "Makes an HTTP GET request to retrieve external data for personalization",
+        "Retrieves a specific value from a map (key-value pair structure) using a given key",
+        "Gets the current user's profile attribute value at runtime",
+        "Retrieves a content fragment from the AJO content library"
+      ],
+      "correct": 1,
+      "explanation": "The Map Helper Function 'Get' retrieves a specific value from a map data structure using a key. Maps in XDM are objects where you look up values by key name. For example, `Get(profile.preferences, 'emailLanguage')` retrieves the value associated with the key 'emailLanguage' from the customer's preferences map."
+    },
+    {
+      "id": 267,
+      "question": "In AJO's content experimentation for the web channel, what is the purpose of the 'Application Details' field group?",
+      "options": [
+        "Capturing web application routing and navigation events",
+        "Providing app-related data like crashes, feature usage, launches, and upgrades",
+        "Recording application user interface interaction events",
+        "Storing application configuration settings for personalization targeting"
+      ],
+      "correct": 1,
+      "explanation": "The Application Details field group in AEP captures mobile/app lifecycle events: application crashes, feature usage events, app launches, and version upgrades. It's required for web content experiment reporting (as per AJO documentation) because experiments may involve app-like interactions on progressive web apps or hybrid web/app experiences."
+    },
+    {
+      "id": 268,
+      "question": "What is the 'Commerce Details' field group used for in the context of web content experiment reporting?",
+      "options": [
+        "Storing payment method preferences and saved billing information",
+        "Capturing commerce data like product info (SKU, name, quantity) and cart operations",
+        "Tracking commerce platform API calls for integration monitoring",
+        "Recording commerce revenue data for financial reporting and reconciliation"
+      ],
+      "correct": 1,
+      "explanation": "The Commerce Details field group captures commerce-related data: product information (SKU, name, quantity, price), and standard cart operations (add to cart, order, checkout, abandon). In web content experiment reporting, it enables measurement of how different content variants affect actual commerce behaviors and conversion metrics."
+    },
+    {
+      "id": 269,
+      "question": "In AJO's Reporting Configuration, what is the significance of selecting the 'Profile ID' for a dataset?",
+      "options": [
+        "It links the reporting dataset to a specific customer segment for filtered reporting",
+        "It identifies which field in the dataset represents the profile identity for joining reporting data to profiles",
+        "It sets the primary key used for deduplication of reporting event records",
+        "It determines which merge policy applies when assembling profile data for reports"
+      ],
+      "correct": 1,
+      "explanation": "When configuring a dataset for AJO reporting, selecting the Profile ID specifies which field in the dataset contains the profile identifier. This is how AJO links reporting events (message deliveries, engagement interactions) back to specific customer profiles, enabling profile-level reporting and audience building based on reporting data."
+    },
+    {
+      "id": 270,
+      "question": "What does selecting 'Identity Map' as the Profile ID in AJO Reporting Configuration allow?",
+      "options": [
+        "Enables the use of any namespace in the Identity Map as the join key for reporting",
+        "Automatically resolves all identities in the map for comprehensive cross-device reporting",
+        "Allows choosing which specific identity namespace to use for the reporting join",
+        "Enables bi-directional identity resolution between reporting datasets and the Identity Graph"
+      ],
+      "correct": 2,
+      "explanation": "When 'Identity Map' is selected as the Profile ID option in AJO Reporting Configuration, it enables you to then choose which specific identity namespace (from the available namespaces in the Identity Map) to use as the primary key for joining reporting data back to profiles. This provides flexibility when profiles have multiple identifiers."
+    },
+    {
+      "id": 271,
+      "question": "In AJO, what is the 'Web Details' field group used for in content experiment reporting?",
+      "options": [
+        "Storing web server configuration and CDN routing information",
+        "Capturing web interaction events including page details, referrer, and interaction data",
+        "Recording web content management system (CMS) metadata and publishing events",
+        "Tracking web asset loading performance and Core Web Vitals metrics"
+      ],
+      "correct": 1,
+      "explanation": "The Web Details field group captures web-specific event information: page details (URL, page name, page type), referrer information (where the visitor came from), and web interaction events (clicks, form submissions, scroll depth). In content experiment reporting, it provides context about which web pages and interactions were affected by the experiment treatments."
+    },
+    {
+      "id": 272,
+      "question": "In AJO, what does the 'Journeys' metadata dataset store?",
+      "options": [
+        "A log of all journey execution events for compliance audit purposes",
+        "Metadata housing information about each step in a journey, tied to Journey Step Events",
+        "Customer profile snapshots taken at each journey entry point",
+        "Journey performance metrics and KPI benchmarks for executive reporting"
+      ],
+      "correct": 1,
+      "explanation": "The 'Journeys' dataset in AJO stores metadata about the journey structure itself — information about each step/activity in the journey, its configuration, and its position in the flow. This metadata dataset is linked to the Journey Step Event Dataset, enabling you to join execution events with journey structure data for comprehensive analytics."
+    },
+    {
+      "id": 273,
+      "question": "In AJO, how do helper functions enable 'Decision-making Within Customer Journeys'?",
+      "options": [
+        "They make API calls to external decision services to outsource routing logic",
+        "They enable conditional content blocks using if/else logic that dynamically adjusts content based on data",
+        "They trigger automatic journey branching without requiring manual condition configuration",
+        "They evaluate machine learning model predictions to automate personalization decisions"
+      ],
+      "correct": 1,
+      "explanation": "Helper functions like `if/else` enable decision-making WITHIN message content: the content itself changes based on real-time data. An `{{#if profile.loyaltyTier == 'Gold'}}` block renders premium content for Gold members and a different block for others. This content-level decision making is distinct from journey-level branching (Condition activities) and enables highly granular personalization."
+    },
+    {
+      "id": 274,
+      "question": "What is the maximum ad-hoc SQL query execution time enforced by AEP Query Service?",
+      "options": [
+        "5 minutes — queries exceeding this time are moved to the batch queue",
+        "10 minutes — queries exceeding this time trigger error code 53400",
+        "30 minutes — the maximum for complex analytical queries",
+        "60 minutes — the standard timeout for enterprise data warehouse queries"
+      ],
+      "correct": 1,
+      "explanation": "AEP Query Service enforces a 10-minute maximum execution time for ad-hoc interactive queries (used for exploration and validation via the Query Editor). If a query surpasses 10 minutes, it's terminated and returns error code 53400. This is a System-enforced (hard) limit — not a soft performance guideline."
+    },
+    {
+      "id": 275,
+      "question": "What does the error 'Session Limit Reached' indicate in AEP Query Service?",
+      "options": [
+        "The user's authentication session has expired and requires re-login",
+        "The maximum number of concurrent Query Service user sessions for the organization has been exceeded",
+        "The query result set exceeded the maximum allowed memory for the session",
+        "The Query Editor session timed out due to inactivity"
+      ],
+      "correct": 1,
+      "explanation": "The 'Session Limit Reached' error in AEP Query Service indicates that the maximum number of concurrent Query Service users for the organization has been exceeded. This is a System-enforced limit — the exact number depends on the purchased product package, with additional capacity available through 'Ad hoc query users add-on packs' (+5 concurrent sessions per pack)."
+    },
+    {
+      "id": 276,
+      "question": "In AJO, what is the 'Journeys' metadata dataset's relationship with the 'Journey Step Event' dataset?",
+      "options": [
+        "The Journeys metadata dataset contains aggregated summaries of Journey Step Events",
+        "Journey Step Events reference Journey Metadata via a shared journey ID for structural context",
+        "The Journey metadata dataset triggers Journey Step Events when journey status changes",
+        "They are independent datasets that cannot be joined in Customer Journey Analytics"
+      ],
+      "correct": 1,
+      "explanation": "The Journey Step Event dataset captures WHAT happened (which profile reached which step, when, with what outcome). The Journeys metadata dataset describes HOW the journey is structured (what each step IS, its configuration, its position). They are joined via a common journey ID, enabling CJA queries like 'show me completion rates for each named step in Journey X.'"
+    },
+    {
+      "id": 277,
+      "question": "What is the AEP Query Service API endpoint for creating query templates?",
+      "options": [
+        "POST /data/foundation/query/saved-queries",
+        "POST /data/foundation/query/query-templates",
+        "POST /platform/query/templates/create",
+        "PUT /ajo/reporting/query-templates"
+      ],
+      "correct": 1,
+      "explanation": "The AEP Query Service API endpoint for creating query templates is `POST https://platform.adobe.io/data/foundation/query/query-templates`. The request body includes the SQL statement (with optional parameter placeholders), the template name, and optional queryParameters for parameterized queries. Standard AEP authentication headers (Authorization, x-api-key, x-gw-ims-org-id, x-sandbox-name) are required."
+    },
+    {
+      "id": 278,
+      "question": "In AJO, what is 'Contextual Data Collection' and what sources does it come from?",
+      "options": [
+        "Data collected exclusively from customer service interactions and support tickets",
+        "Real-time situational data collected from website interactions, app usage, IoT devices, and environmental sources",
+        "Batch data collected from offline point-of-sale systems and in-store purchases",
+        "Data collected from third-party data providers and demographic enrichment services"
+      ],
+      "correct": 1,
+      "explanation": "Contextual data in AJO is collected from multiple real-time sources: website interactions (browsing behavior, clicks), app usage (in-app actions, device state), IoT devices (smart home, wearables, connected vehicles), and environmental sources (weather APIs, location services). Examples include order type, order number, and item price for shipment notification emails."
+    },
+    {
+      "id": 279,
+      "question": "What is the strategic value of 'Immediate Relevance' in contextual personalization for AJO?",
+      "options": [
+        "Delivering messages immediately after data ingestion to reduce latency",
+        "Content adjusts dynamically to the user's current situation, like location-specific offers or weather-based recommendations",
+        "Immediately qualifying profiles for segments upon event ingestion for faster activation",
+        "Immediately updating profile attributes to reflect real-time behavioral changes"
+      ],
+      "correct": 1,
+      "explanation": "Immediate Relevance is about making content situationally appropriate: the message addresses the customer's CURRENT reality, not just their historical preferences. For example, showing a 'Stay warm with our new jacket line' message when it's currently cold at the customer's location creates immediate relevance — the offer matters RIGHT NOW, driving higher engagement."
+    },
+    {
+      "id": 280,
+      "question": "In AJO, what is the business impact of 'Loyalty' achieved through contextual personalization?",
+      "options": [
+        "Improving loyalty program tier upgrade rates by offering contextually relevant tier incentives",
+        "Fostering stronger emotional connections through 'thoughtful automation' that considers the customer's context",
+        "Building loyalty by rewarding customers for sharing their contextual data preferences",
+        "Increasing loyalty card usage frequency through contextually triggered bonus point offers"
+      ],
+      "correct": 1,
+      "explanation": "According to AJO documentation on contextual personalization, the 'Loyalty' business impact refers to fostering a stronger emotional connection through 'thoughtful automation' — when a brand demonstrates awareness of a customer's current situation (weather, location, time), it signals that the brand 'gets them,' creating trust and emotional connection that builds long-term loyalty."
+    },
+    {
+      "id": 281,
+      "question": "In AJO, how can a journey be used to adjust behavior according to real-time weather data?",
+      "options": [
+        "Configure a weather-based audience in AEP that refreshes hourly for segment-triggered journeys",
+        "Set up a weather external data source, use a condition with the weather field to route profiles to different email content",
+        "Use a batch segmentation job that runs nightly to create weather-specific audience segments",
+        "Configure a Campaign that automatically switches content based on a location-based weather tag"
+      ],
+      "correct": 1,
+      "explanation": "The weather customization use case in AJO works as follows: (1) Configure an External Data Source connected to a weather API, (2) In the journey, add a condition that evaluates the weather data field (e.g., if temperature > 30°C), and (3) Route profiles to different message content paths based on the condition result — sending a 'hot weather' email vs. a standard one."
+    },
+    {
+      "id": 282,
+      "question": "What is the 'Conversion' business impact of contextual personalization in AJO?",
+      "options": [
+        "Converting anonymous profiles to known profiles through contextual identity capture",
+        "Driving higher satisfaction and measurable increases in conversion rates through situationally relevant messaging",
+        "Converting batch segmentation audiences to streaming audiences for faster activation",
+        "Converting multi-channel journeys into single-channel optimized flows for better conversion tracking"
+      ],
+      "correct": 1,
+      "explanation": "The Conversion business impact of contextual personalization: when messages are situationally relevant (right offer, right context, right moment), customers are more likely to take the desired action. A weather-triggered umbrella offer during a rainstorm has higher purchase intent than a generic offer. This situational relevance drives measurable conversion rate improvements."
+    },
+    {
+      "id": 283,
+      "question": "What is AJO's 'Reporting Configuration' under Administration used to configure?",
+      "options": [
+        "Setting up automated report delivery schedules to stakeholder email addresses",
+        "Configuring which datasets are used for AJO reporting and selecting appropriate Profile IDs",
+        "Defining KPI benchmarks and alerting thresholds for campaign performance monitoring",
+        "Setting up integration with Customer Journey Analytics for cross-channel reporting"
+      ],
+      "correct": 1,
+      "explanation": "AJO's Reporting Configuration (under Administration → Configurations → Reporting tile) is where you configure which AEP datasets are used for AJO's built-in reporting. For each dataset, you select the Profile ID (either a specific identity field or Identity Map with a namespace choice) that AJO uses to join reporting events to customer profiles."
+    },
+    {
+      "id": 284,
+      "question": "In AEP, what type of dataset is the 'Journey Step Event' dataset used for beyond AJO's native reporting?",
+      "options": [
+        "Training machine learning models for next-best-action recommendations",
+        "Building reports in Customer Journey Analytics for Year-over-Year (YoY) analysis",
+        "Feeding real-time dashboard displays in Adobe Analytics Workspace",
+        "Creating profile attributes based on journey completion status"
+      ],
+      "correct": 1,
+      "explanation": "The Journey Step Event dataset serves dual purposes: it feeds AJO's native journey reporting (progress rates, step completion, exit points) AND is specifically called out as 'critical for building reports in Customer Journey Analytics for YoY analysis.' CJA enables more sophisticated, historical cross-journey analysis that AJO's native reporting doesn't provide."
+    },
+    {
+      "id": 285,
+      "question": "In AJO's Expression Editor, what is an 'Expression Fragment' and how does it differ from a Content Fragment?",
+      "options": [
+        "Expression Fragments are CSS styling components; Content Fragments are HTML layout components",
+        "Expression Fragments are saved personalization expressions reused in the editor; Content Fragments are saved content blocks in emails",
+        "Expression Fragments are for transactional content; Content Fragments are for marketing content",
+        "Expression Fragments are text-only; Content Fragments support rich media including images"
+      ],
+      "correct": 1,
+      "explanation": "Expression Fragments are saved personalization expressions (code/logic) stored in the Expression Editor library — like a saved `{{#if profile.loyaltyTier == 'Gold'}} ... {{/if}}` block. Content Fragments are complete content blocks (visual HTML components like headers, footers). Expression Fragments = reusable LOGIC; Content Fragments = reusable VISUAL CONTENT."
+    },
+    {
+      "id": 286,
+      "question": "In AJO, what is the significance of 'Timeliness' as a strategic value of contextual attributes?",
+      "options": [
+        "Ensuring messages are delivered within the SLA timeframe for transactional communications",
+        "Ensuring messages are appropriate for the specific moment of engagement, not generically timed",
+        "Timing journey executions to coincide with peak email open rates by timezone",
+        "Synchronizing message delivery across channels to create a simultaneous multi-channel experience"
+      ],
+      "correct": 1,
+      "explanation": "Timeliness in contextual personalization means the MESSAGE IS APPROPRIATE FOR THE MOMENT — not just sent quickly, but contextually appropriate for what's happening right now. A 'happy hour' drink offer is only timely between 4-7pm. A snow gear offer is only timely in winter. Contextual attributes (time of day, season, weather) ensure messages are situationally timely."
+    },
+    {
+      "id": 287,
+      "question": "What is the purpose of the 'Web Details' field group specifically in the context of content experiment reporting in AJO?",
+      "options": [
+        "Storing web server performance metrics for infrastructure monitoring",
+        "Providing context about which web pages and interactions were impacted by experiment treatments",
+        "Tracking web crawlers and bot traffic to exclude them from experiment results",
+        "Capturing web application JavaScript errors that might affect experiment rendering"
+      ],
+      "correct": 1,
+      "explanation": "In content experiment reporting, the Web Details field group provides crucial context about the web environment where experiments ran: which URL/page a profile was on, what type of interaction occurred, and referral sources. Without this data, it's impossible to attribute experiment results to specific pages or understand the web user journey that led to conversion."
+    },
+    {
+      "id": 288,
+      "question": "In AJO, what does the 'Engagement' business impact mean in the context of contextual personalization?",
+      "options": [
+        "The technical engagement rate metric tracked in AJO reporting for email opens",
+        "Higher resonance with the user's immediate needs leading to increased content interaction",
+        "Deeper engagement with the AJO platform features by marketing team users",
+        "Engagement of the customer's loyalty card program for reward point accumulation"
+      ],
+      "correct": 1,
+      "explanation": "Engagement as a business impact of contextual personalization refers to the customer responding more strongly to messaging that addresses their immediate needs. When a customer receives an offer relevant to their current situation (local store sale, weather-appropriate product, time-of-day offer), they engage more (click, read, convert) than with generic broadcast messaging."
+    },
+    {
+      "id": 289,
+      "question": "What is the role of 'Arithmetic Helper Functions' in AJO's Expression Editor?",
+      "options": [
+        "Performing statistical analysis on historical profile data",
+        "Performing basic calculations: add, subtract, multiply, or divide numerical expressions",
+        "Converting numerical data types between integer, float, and currency formats",
+        "Rounding and formatting numbers for display in message content"
+      ],
+      "correct": 1,
+      "explanation": "Arithmetic Helper Functions in AJO's Expression Editor perform basic mathematical operations on numerical values: Add, Subtract, Multiply, and Divide. These enable calculations directly within personalization expressions — for example, calculating a discount amount `{{Multiply(profile.loyaltyPoints, 0.01)}}` to show customers their available discount value."
+    },
+    {
+      "id": 290,
+      "question": "What does the AJO expression `{{#if profile.person.name.firstName}} Hello {{profile.person.name.firstName}}! {{else}} Hello Valued Customer! {{/if}}` accomplish?",
+      "options": [
+        "It shows a personalized greeting if the first name exists, or a generic greeting if it doesn't",
+        "It checks if the profile is a first-time visitor and shows an appropriate welcome message",
+        "It checks if the person's name is in the first name field and shows a greeting in that case",
+        "It personalizes the greeting based on whether the profile is a gold tier member"
+      ],
+      "correct": 0,
+      "explanation": "This `if/else` expression demonstrates conditional personalization: if the profile HAS a first name (`{{#if profile.person.name.firstName}}` evaluates as truthy/not null), it renders the personalized 'Hello [Name]!' greeting. If the first name is absent or null, it falls back to the generic 'Hello Valued Customer!' This is a fundamental AJO personalization pattern."
+    },
+    {
+      "id": 291,
+      "question": "In AJO, where is the Reporting Configuration accessed in the Administration panel?",
+      "options": [
+        "Administration → Channel Settings → Reporting Configuration",
+        "Administration → Configurations → Reporting tile → Manage",
+        "Administration → Data Management → Reporting Datasets",
+        "Administration → Journey Settings → Analytics Configuration"
+      ],
+      "correct": 1,
+      "explanation": "Reporting Configuration is found in AJO's Administration panel under: Administration → Configurations → Reporting tile → click 'Manage.' This is where you add datasets for AJO reporting purposes and configure how each dataset is joined to profiles (via Profile ID selection or Identity Map with namespace choice)."
+    },
+    {
+      "id": 292,
+      "question": "In AJO, what is the 'Seamless CX' strategic value of contextual attributes?",
+      "options": [
+        "Ensuring customers can seamlessly switch between channels without losing their journey progress",
+        "Bridging the gap between brand preferences and environmental reality for consistent experience",
+        "Providing a seamless code-free experience for marketing users building contextual campaigns",
+        "Creating seamless data flows between AEP and third-party marketing technology platforms"
+      ],
+      "correct": 1,
+      "explanation": "Seamless CX (Customer Experience) as a strategic value of contextual personalization means bridging the gap between what a brand wants to communicate (preference-based messaging) and the customer's current environmental reality. When a brand's weather-aware message matches the customer's actual current weather, the experience feels seamlessly aware and relevant rather than out-of-touch."
+    },
+    {
+      "id": 293,
+      "question": "What is the key difference between 'Boolean AND' and 'Boolean OR' operators in AJO's Expression Editor?",
+      "options": [
+        "AND requires both conditions to be true; OR requires only one condition to be true",
+        "AND is evaluated before OR in operator precedence rules",
+        "AND combines profile conditions; OR combines event conditions",
+        "AND is available in the Expression Editor; OR requires the journey canvas Condition activity"
+      ],
+      "correct": 0,
+      "explanation": "Boolean operators in AJO follow standard logic: AND requires BOTH (all) conditions to evaluate to true for the overall expression to be true. OR requires at least ONE condition to be true. For example, `profile.loyaltyTier == 'Gold' AND profile.country == 'US'` is true only for US Gold members; with OR, it's true for Gold members OR US members (regardless of tier)."
+    },
+    {
+      "id": 294,
+      "question": "In AJO, what is the 'Comparison' category of Helper Functions used for?",
+      "options": [
+        "Comparing offer performance metrics to identify the best performing offer variant",
+        "Comparing expression values — checking equality, greater than, less than, etc.",
+        "Comparing audience segment sizes to prioritize which segments to target",
+        "Comparing profile attribute data against external reference data from lookup schemas"
+      ],
+      "correct": 1,
+      "explanation": "Comparison Helper Functions in AJO's Expression Editor compare two values and return boolean results: equal to, not equal to, greater than, less than, greater than or equal, less than or equal. For example, `profile.loyaltyPoints >= 1000` in a condition or personalization block enables content that's conditionally shown based on loyalty point thresholds."
+    },
+    {
+      "id": 295,
+      "question": "What is the purpose of 'Contextual Attributes' in the broader AJO personalization strategy?",
+      "options": [
+        "Providing long-term historical customer behavior data for predictive modeling",
+        "Transforming static marketing into dynamic, situation-aware experiences using real-time data",
+        "Improving the accuracy of machine learning recommendation algorithms",
+        "Reducing the need for audience segmentation by personalizing at an individual level"
+      ],
+      "correct": 1,
+      "explanation": "Contextual Attributes serve to transform what would otherwise be static, pre-planned marketing into dynamic, situation-aware experiences. Instead of sending the same message to all 'age 25-35 in London' customers, contextual attributes enable the message to adapt to each customer's CURRENT situation — their actual weather, time, location, and device — creating unique, relevant experiences."
+    },
+    {
+      "id": 296,
+      "question": "In AJO, what is the recommended way to access External Data Source field values in a journey Condition after the data lookup?",
+      "options": [
+        "Profile attributes are automatically updated with the external data for later conditions",
+        "Use 'Advanced Mode' in the Condition activity to select external data source payload fields",
+        "Assign the external data to a global journey variable that all conditions can read",
+        "Use the Expression Editor's 'External' data source function to reference the retrieved values"
+      ],
+      "correct": 1,
+      "explanation": "When a journey has retrieved data from an External Data Source and you need to use that data in a subsequent Condition activity, you access it via 'Advanced Mode' within the Condition's expression editor. Advanced Mode opens the full Expression Editor with access to the 'Context' menu, from which you can navigate to and select the specific fields retrieved by the External Data Source call."
+    },
+    {
+      "id": 297,
+      "question": "In AJO, what type of information does the 'Experience Event – Proposition Interactions' field group capture?",
+      "options": [
+        "Profile preference updates triggered by customer interactions with content",
+        "Actions taken for one or more prior propositions (offers/decisions), each linked by a unique decision ID",
+        "A/B test variant assignments for each profile participating in content experiments",
+        "Channel-specific interaction metadata for cross-channel attribution analysis"
+      ],
+      "correct": 1,
+      "explanation": "The 'Experience Event – Proposition Interactions' field group captures when a customer interacts with (or in response to) a prior proposition (an offer, recommendation, or personalized content piece). Each decision/proposition has a unique ID sent back with the experience event, linking the customer's action to the specific offer that influenced it."
+    },
+    {
+      "id": 298,
+      "question": "What happens in AJO if you attempt to publish a journey containing a Custom Action that exports a field labeled with a restricted governance label?",
+      "options": [
+        "The journey publishes with a warning but continues to send to all profiles",
+        "An error prompt is displayed and the journey is blocked from publication",
+        "The restricted field is automatically anonymized before being exported",
+        "The journey publishes in 'restricted mode' and only sends to profiles who consented"
+      ],
+      "correct": 1,
+      "explanation": "If the AJO DULE governance framework detects that a Custom Action's parameters include a field carrying a data usage label that violates an active governance policy, it displays an error prompt AND blocks the journey from being published. This hard enforcement prevents accidental data governance violations in production journeys."
+    },
+    {
+      "id": 299,
+      "question": "In AJO, what is the purpose of the 'Sample Templates' tab in the Email Designer's create screen?",
+      "options": [
+        "Showing AI-generated template suggestions based on the campaign's audience characteristics",
+        "Providing pre-built email layout templates from Adobe for quick start content creation",
+        "Displaying templates shared from other sandboxes in the same organization",
+        "Showing the most recently used custom templates for quick reuse"
+      ],
+      "correct": 1,
+      "explanation": "The 'Sample Templates' tab in the AJO Email Designer (shown by default when creating a new email) provides pre-built email layout templates from Adobe across different categories and styles. These give marketers a head start with professionally designed layouts that can be customized rather than starting from a blank canvas."
+    },
+    {
+      "id": 300,
+      "question": "In AJO's Content Template workflow, after selecting a template from the Saved Templates tab, what is the next step?",
+      "options": [
+        "Publish the template directly to the journey without additional editing",
+        "Click 'Use this template' in the top right, then edit content using the Email Designer",
+        "Save the template as a local copy before making any modifications",
+        "Configure the audience targeting rules associated with the template"
+      ],
+      "correct": 1,
+      "explanation": "The AJO Content Template workflow: browse Saved Templates → select the desired template → preview it using left/right arrows to compare options → click 'Use this template' (top right corner) → the template loads in the Email Designer → edit and customize the content as needed for your specific campaign or journey message."
+    }
+  ]
+}

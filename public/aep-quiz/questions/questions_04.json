@@ -1,0 +1,605 @@
+{
+  "title": "Decision Management & Offer Decisioning",
+  "questions": [
+    {
+      "id": 151,
+      "question": "What are the three key elements of an Offer in AJO's Offer Library?",
+      "options": [
+        "Name, description, and expiration date",
+        "Content, eligibility rules, and constraints",
+        "Channel, placement, and representation format",
+        "Priority, capping limit, and decision policy"
+      ],
+      "correct": 1,
+      "explanation": "An Offer in AJO is composed of three essential elements: Content (the images, text, and terms that the customer sees), Eligibility Rules (conditions determining which customers qualify for the offer), and Constraints (limits like capping rules, start/end dates, and priority settings that control HOW OFTEN and WHEN the offer is shown)."
+    },
+    {
+      "id": 152,
+      "question": "What is a 'Decision' in the context of AJO Offer Decisioning?",
+      "options": [
+        "A business rule that governs which journey path a profile takes",
+        "A container for offers that leverages the Offer Decision Engine to pick the best offer",
+        "The process of determining which channel to use for message delivery",
+        "An approval workflow that requires sign-off before an offer is published"
+      ],
+      "correct": 1,
+      "explanation": "In AJO, a Decision is a container that combines your Offer Library with the Offer Decision Engine. When evaluated, the Decision determines the 'best offer' for each specific profile by considering all offers in the container, checking eligibility against the profile, applying priority rankings, and respecting capping constraints."
+    },
+    {
+      "id": 153,
+      "question": "What is a 'Fallback Offer' in AJO Offer Decisioning?",
+      "options": [
+        "A default offer shown when the primary offer's content fails to render",
+        "A generic offer presented when no personalized offers match a profile's eligibility criteria",
+        "An offer that activates when the customer declines the primary offer",
+        "A backup offer used when the Offer Library API experiences downtime"
+      ],
+      "correct": 1,
+      "explanation": "A Fallback Offer is a 'catch-all' generic offer that is displayed when no personalized offers in the Decision qualify for a specific customer. It ensures that customers always see something relevant — rather than a blank offer slot — even if they don't meet any eligibility criteria for the targeted offers."
+    },
+    {
+      "id": 154,
+      "question": "What is the purpose of 'Offer Collections' in AJO's Offer Library?",
+      "options": [
+        "Grouping offers by performance metrics for analytics and reporting",
+        "Organizing offers into subsets using tags or filters for easier management in decisions",
+        "Creating offer bundles that are always presented together as a package",
+        "Archiving expired offers to remove them from active decision evaluation"
+      ],
+      "correct": 1,
+      "explanation": "Offer Collections are subsets of the Offer Library, grouped using tags or filter criteria. They organize offers into logical groups (e.g., 'Summer Collection,' 'VIP Offers,' 'Mobile App Exclusive') that can be referenced in Decisions. Instead of evaluating all offers in the library, a Decision evaluates only the relevant collection."
+    },
+    {
+      "id": 155,
+      "question": "In AJO Offer Decisioning, what defines an offer's 'Eligibility Rules'?",
+      "options": [
+        "The channel and placement specifications where the offer can appear",
+        "The conditions and audience criteria that determine which profiles qualify to receive the offer",
+        "The capping limits that restrict how many times the offer can be displayed globally",
+        "The priority score that positions the offer relative to other competing offers"
+      ],
+      "correct": 1,
+      "explanation": "Eligibility Rules define WHO qualifies for an offer. These are conditions built against profile attributes, segment membership, and behavioral criteria (e.g., 'Gold loyalty tier members,' 'Customers who haven't purchased in 30 days,' 'Users in France'). Only profiles meeting ALL eligibility rules will have the offer considered for delivery by the Decision Engine."
+    },
+    {
+      "id": 156,
+      "question": "What is the 'Decisioning API' in AJO used for?",
+      "options": [
+        "Creating and managing offer definitions programmatically via REST API",
+        "Requesting the best offer for a profile from external systems via API call",
+        "Triggering journey executions from external systems based on offer interactions",
+        "Exporting decision audit logs to external analytics and BI tools"
+      ],
+      "correct": 1,
+      "explanation": "The AJO Decisioning API allows external systems, websites, and apps to request the best offer for a specific profile via a REST API call. The external system sends the profile context, and the Offer Decision Engine responds with the winning offer(s) in real-time. This powers web personalization, kiosk displays, and third-party app integrations."
+    },
+    {
+      "id": 157,
+      "question": "What benefit does Offer Decisioning provide in terms of marketing workflow efficiency?",
+      "options": [
+        "It eliminates the need for manual campaign creation by auto-generating campaigns from offer data",
+        "It allows a single delivery to vary offers in different parts of a template, replacing multiple separate campaigns",
+        "It automatically A/B tests all offers simultaneously and promotes the winner without human intervention",
+        "It pre-computes personalized offers overnight so they can be displayed without runtime processing"
+      ],
+      "correct": 1,
+      "explanation": "A key workflow benefit of Offer Decisioning is that marketers can create ONE delivery/campaign and vary the offers in different parts of the template for different customers — instead of creating 10 campaigns for 10 different offers. This dramatically reduces campaign management overhead while delivering highly personalized experiences."
+    },
+    {
+      "id": 158,
+      "question": "What is a 'Decision Policy' in AJO Offer Decisioning?",
+      "options": [
+        "A governance policy that controls which teams can create and publish offers",
+        "A set of rules combining offer collections, ranking criteria, and constraints to determine the winning offer",
+        "A schedule policy that defines when a decision should be evaluated for each profile",
+        "An approval policy requiring manager sign-off before offers can be activated"
+      ],
+      "correct": 1,
+      "explanation": "A Decision Policy brings together: an Offer Collection (which offers to consider), a Ranking strategy (how to prioritize competing eligible offers — by priority score, ranking formula, or AI model), and Fallback Offer (what to show if nothing qualifies). The Decision Engine applies the policy to pick the single best offer for each profile."
+    },
+    {
+      "id": 159,
+      "question": "In AJO offer configuration, what does 'Priority' control?",
+      "options": [
+        "The order in which offers are evaluated by the Decision Engine for eligibility",
+        "Which offer wins when a customer qualifies for multiple eligible offers simultaneously",
+        "The sequence in which offer content is loaded and rendered in the message",
+        "The resource allocation given to processing this offer during batch evaluation jobs"
+      ],
+      "correct": 1,
+      "explanation": "Priority resolves conflicts: when a customer qualifies for multiple offers, the one with the HIGHEST priority number is selected. For example, if an offer has priority 100 and another has priority 50, and a customer qualifies for both, they receive the priority-100 offer. Higher numerical value = higher priority in AJO."
+    },
+    {
+      "id": 160,
+      "question": "What is the purpose of 'Weighting' in AJO Offer Decisioning?",
+      "options": [
+        "Assigning a performance score to offers based on historical click-through rates",
+        "Defining the importance/score given to an offer relative to others in a ranking formula",
+        "Controlling the percentage of traffic that sees each offer in an A/B test",
+        "Setting the cost-per-thousand weight used in programmatic offer buying"
+      ],
+      "correct": 1,
+      "explanation": "Weighting in AJO offer management assigns a numerical importance score to an offer within a ranking formula. When multiple offers are eligible, their weights are evaluated as part of the ranking strategy to determine which offer has the highest overall score and should be presented to the customer."
+    },
+    {
+      "id": 161,
+      "question": "What information is captured in the 'Experience Event – Proposition Interactions' field group?",
+      "options": [
+        "User interaction events like page views, clicks, and form submissions",
+        "Information about actions taken for prior propositions (offers/decisions), with a unique decision ID",
+        "Application lifecycle events like crashes, launches, and upgrades",
+        "Web analytics data including page details, referrer information, and session data"
+      ],
+      "correct": 1,
+      "explanation": "The 'Experience Event – Proposition Interactions' field group captures when a customer takes an action in response to a proposition (an offer or personalized experience). Each decision has a unique ID sent with the experience event, tracking which specific offer/decision the customer interacted with — critical for measuring offer performance."
+    },
+    {
+      "id": 162,
+      "question": "In AJO, what is the relationship between 'Offers' and 'Decisions'?",
+      "options": [
+        "Decisions are created first; offers are added to decisions as child components",
+        "Offers are created in the Offer Library; Decisions are containers that use offers to pick the best one per profile",
+        "Decisions define the audience; Offers define the content — they are completely independent",
+        "Each Offer automatically generates a Decision with default settings upon creation"
+      ],
+      "correct": 1,
+      "explanation": "The flow is: first create Offers in the Offer Library (with content, eligibility, constraints). Then create Decisions — containers that organize offers into the Decision Engine. When a Decision is evaluated for a profile, it searches through the associated offers, applies eligibility rules and ranking, and returns the single best matching offer."
+    },
+    {
+      "id": 163,
+      "question": "What methods can be used to rank offers when multiple eligible offers are found for a profile in AJO?",
+      "options": [
+        "Only alphabetical order by offer name for deterministic, reproducible results",
+        "Offer Priority scores, custom ranking formulas, or AI-driven ranking models",
+        "Only timestamp-based ranking using offer creation date",
+        "Random assignment with probability weights for fair distribution"
+      ],
+      "correct": 1,
+      "explanation": "AJO supports multiple offer ranking strategies: Priority scores (a static numerical priority set on each offer), Ranking Formulas (custom mathematical expressions using profile and offer attributes), and AI Models (machine learning models trained on engagement data to predict the offer most likely to drive conversions for each individual profile)."
+    },
+    {
+      "id": 164,
+      "question": "What is an 'Offer Placement' and how does it relate to offer 'Representations'?",
+      "options": [
+        "Placements define the geographic market; Representations define the visual format for each market",
+        "A Placement is the channel+location where an offer appears; a Representation is an offer's content configured for a specific Placement",
+        "Placements are templates; Representations are the actual content instances based on templates",
+        "Placements define eligibility criteria; Representations define the offer reward/value"
+      ],
+      "correct": 1,
+      "explanation": "A Placement defines WHERE an offer can appear (channel + location, e.g., 'Email → Hero Banner'). A Representation is an offer's actual content configured for a specific Placement — since one offer can appear in multiple places, you add multiple Representations (one per Placement). Each Representation contains the appropriately sized/formatted content for that channel and location."
+    },
+    {
+      "id": 165,
+      "question": "In AJO Offer Decisioning, what does integrating offers into campaigns enable in terms of 'control over number of times an offer is shown'?",
+      "options": [
+        "It enables automatic frequency capping using real-time engagement signals",
+        "Capping constraints can be set on individual offers to limit global and per-profile display counts",
+        "Campaign scheduling automatically enforces daily limits without additional configuration",
+        "The Offer Decision Engine uses machine learning to automatically reduce over-shown offers"
+      ],
+      "correct": 1,
+      "explanation": "Offer Decisioning gives granular control through Capping: you set a maximum number of times an offer can be presented — globally (total impressions across all customers) and/or per profile (maximum times any one customer sees the same offer). This prevents 'offer fatigue' and respects marketing frequency policies."
+    },
+    {
+      "id": 166,
+      "question": "What is the 'Offer Library' API endpoint for creating offers programmatically?",
+      "options": [
+        "POST /ajo/offers/create",
+        "POST /offer-management/v1/offers",
+        "POST /decisioning/offers",
+        "See the AJO API documentation for the Offer Management REST endpoint"
+      ],
+      "correct": 3,
+      "explanation": "The exact Offer Management REST API endpoint varies by AJO version and should be verified in the official Adobe Experience League documentation (experienceleague.adobe.com/docs/journey-optimizer). The Decisioning API reference is at: experienceleague.adobe.com/docs/journey-optimizer/using/offer-decisioning/api-reference/offer-delivery-api/decisioning-api.html. Always consult the current official documentation for exact endpoint paths."
+    },
+    {
+      "id": 167,
+      "question": "How can offers in AJO be integrated into campaign message templates?",
+      "options": [
+        "By using a special offer tag syntax in the HTML: <offer id='offer-id'>",
+        "By adding an Offer Decision activity to the message template that evaluates and inserts the best offer",
+        "By manually copying offer content into the template for each campaign",
+        "By linking the campaign to an offer collection using the campaign's audience targeting settings"
+      ],
+      "correct": 1,
+      "explanation": "Offers are integrated into campaign templates by adding an Offer Decision component/activity within the message template. This component references a configured Decision, and when the message is generated for each profile, the Offer Decision Engine evaluates eligible offers and inserts the winning offer's content into that section of the message."
+    },
+    {
+      "id": 168,
+      "question": "What is the significance of offer 'Start and End Date' constraints in AJO?",
+      "options": [
+        "They define when the offer can be created and edited in the Offer Library",
+        "They set the time window during which the offer is eligible to be selected and delivered",
+        "They schedule when the offer's performance report is generated",
+        "They control when the offer becomes visible to marketing users in the library"
+      ],
+      "correct": 1,
+      "explanation": "The Start and End Date constraints on an offer define the active window during which the offer can be selected by the Offer Decision Engine and delivered to customers. Outside this date range, the offer is automatically excluded from consideration — enabling seasonal promotions, time-limited deals, and event-specific offers to automatically activate and expire."
+    },
+    {
+      "id": 169,
+      "question": "What is a 'Global Capping' constraint on an offer in AJO?",
+      "options": [
+        "A cap that applies only to global (worldwide) campaigns, not regional ones",
+        "The total maximum number of times an offer can be presented across ALL customers",
+        "A cap that limits the offer to global regions, excluding country-specific targeting",
+        "The maximum offer value that can be presented globally according to budget limits"
+      ],
+      "correct": 1,
+      "explanation": "Global Capping sets an absolute maximum for the total number of impressions an offer can receive across ALL customers combined. For example, a 'first 1,000 customers get free shipping' offer would use global capping = 1,000. Once this limit is reached, the offer is automatically excluded from all future decisions."
+    },
+    {
+      "id": 170,
+      "question": "In AJO, what is 'Per-Profile Capping' in offer management?",
+      "options": [
+        "A limit on how many offers can be configured in a single customer's offer profile",
+        "The maximum number of times a SINGLE customer can receive the same offer",
+        "A cap that restricts how many profile attributes can be used in eligibility rules",
+        "The maximum number of decisions a single profile can participate in simultaneously"
+      ],
+      "correct": 1,
+      "explanation": "Per-Profile Capping (also called Frequency Capping in some contexts) limits how many times a single individual customer can receive the same offer. For example, capping an offer at 3 times per profile means no customer will see the same offer more than 3 times total, preventing the annoyance of repeated identical offers."
+    },
+    {
+      "id": 171,
+      "question": "What type of Offer Ranking strategy uses machine learning to predict which offer is most likely to drive conversions?",
+      "options": [
+        "Priority Score ranking using manually assigned numerical weights",
+        "AI Model (Auto-optimization) ranking based on engagement prediction",
+        "Chronological ranking using offer creation timestamp",
+        "Random sampling ranking with configurable probability distributions"
+      ],
+      "correct": 1,
+      "explanation": "AJO Offer Decisioning supports AI-driven ranking through Auto-optimization models. These machine learning models are trained on historical engagement data (clicks, conversions, revenue) to predict which offer each specific profile is most likely to engage with. This moves beyond static priority rules to fully individualized offer selection."
+    },
+    {
+      "id": 172,
+      "question": "In AJO, what is an 'Offer Tag' used for?",
+      "options": [
+        "HTML tags used to insert offer content dynamically within message templates",
+        "Labels used to categorize and filter offers in the Offer Library for organization",
+        "Tracking tags appended to offer URLs to measure click-through attribution",
+        "Version tags that identify which iteration of an offer is currently active"
+      ],
+      "correct": 1,
+      "explanation": "Offer Tags are metadata labels attached to offers in the Offer Library. They are used for organization and filtering — enabling marketers to group offers by category (e.g., 'Summer 2025,' 'Electronics,' 'VIP') and use these tags to define Offer Collections that feed into specific Decisions."
+    },
+    {
+      "id": 173,
+      "question": "What three types of channels can be specified in an Offer Placement in AJO?",
+      "options": [
+        "Social media, display advertising, and content marketing",
+        "Email, mobile, web, or other custom channel types",
+        "Outbound, inbound, and transactional channel categories",
+        "Digital, physical, and hybrid channel classifications"
+      ],
+      "correct": 1,
+      "explanation": "An AJO Offer Placement specifies a channel type — the options include: Email (email messages), Mobile (app/push), Web (websites), or Other (custom channels like kiosks, connected devices, call centers). Selecting the correct channel ensures the offer content (size, format, interactions) is appropriate for the delivery medium."
+    },
+    {
+      "id": 174,
+      "question": "What can be added to an offer Representation from the Adobe Assets Library?",
+      "options": [
+        "Pre-configured offer eligibility rules from approved segment templates",
+        "Images and creative assets stored in the Adobe Assets (formerly Adobe Experience Manager Assets) library",
+        "Pre-built personalization expressions from the expression fragment library",
+        "Offer decision policies pre-configured by the organization's data architects"
+      ],
+      "correct": 1,
+      "explanation": "When configuring an offer Representation, the 'Asset Library' option allows adding images and creative assets directly from the Adobe Assets library (Adobe Experience Manager Assets). This provides a centralized source for brand-approved visuals, ensuring offers use the correct, current creative assets."
+    },
+    {
+      "id": 175,
+      "question": "What is the key benefit of using Offer Decisioning over manually creating multiple campaign variants?",
+      "options": [
+        "Offer Decisioning is faster to process than multiple campaign variants",
+        "One campaign can deliver different personalized offers to different customers, reducing campaign sprawl",
+        "Offer Decisioning automatically creates the campaign variants from the offer library",
+        "Offer Decisioning eliminates the need for audience segmentation before sending"
+      ],
+      "correct": 1,
+      "explanation": "With Offer Decisioning, one campaign/delivery can serve thousands of different offer variations to different customers — each person sees the best offer for them. Without it, marketers would need to create separate campaigns for each offer variant (10 offers = 10 campaigns). This dramatically reduces campaign management overhead while improving personalization."
+    },
+    {
+      "id": 176,
+      "question": "In AJO, when should a 'Fallback Offer' be used in an Offer Decision?",
+      "options": [
+        "When the primary offer's content fails to render correctly in the delivery channel",
+        "When no eligible personalized offers are found for a specific profile",
+        "When the offer's global capping limit has been reached and it's no longer available",
+        "When a customer explicitly rejects the primary offer and requests an alternative"
+      ],
+      "correct": 1,
+      "explanation": "A Fallback Offer is the 'last resort' — it's displayed ONLY when the Offer Decision Engine cannot find any personalized, eligible offers for a specific profile. This ensures customers always see SOME offer content rather than an empty slot. The Fallback is typically a generic brand offer with no eligibility restrictions."
+    },
+    {
+      "id": 177,
+      "question": "What does the 'Offer Decision Engine' evaluate when processing a decision for a profile?",
+      "options": [
+        "Only the customer's last known action to ensure offer relevance in real-time",
+        "All offers in the collection against eligibility rules, then ranks and caps to select the best one",
+        "Only offers marked as 'Priority 1' to ensure the most important offers are always shown",
+        "The customer's historical offer interactions to avoid showing previously rejected offers"
+      ],
+      "correct": 1,
+      "explanation": "The Offer Decision Engine evaluates: (1) ALL offers in the collection against the profile's eligibility rules (eliminating non-qualifying offers), (2) applies capping checks (eliminating over-capped offers), (3) ranks remaining eligible offers using the configured ranking strategy (priority, formula, or AI), and (4) returns the highest-ranking offer."
+    },
+    {
+      "id": 178,
+      "question": "What is the purpose of including start and end dates when creating an offer in AJO?",
+      "options": [
+        "To schedule when the offer is reviewed and approved by the marketing compliance team",
+        "To define the active validity window during which the offer is eligible for delivery",
+        "To set the reporting period for measuring the offer's performance metrics",
+        "To control when the offer becomes searchable and visible in the Offer Library UI"
+      ],
+      "correct": 1,
+      "explanation": "Start and End dates create the offer's validity window. Before the start date, the offer won't be selected even if a profile qualifies. After the end date, the offer is automatically deactivated and excluded from all decisions. This eliminates manual activation/deactivation for time-bound promotions like 'Weekend Sale' or 'Holiday Special.'"
+    },
+    {
+      "id": 179,
+      "question": "What is an 'AI Ranking' model used for in AJO Offer Decisioning?",
+      "options": [
+        "Automatically generating new offer content using generative AI based on profile data",
+        "Predicting which eligible offer each profile is most likely to engage with to maximize conversion",
+        "Detecting fraudulent offer usage patterns and flagging suspicious redemption activity",
+        "Automatically segmenting the audience into groups before offer eligibility evaluation"
+      ],
+      "correct": 1,
+      "explanation": "AI Ranking models in AJO Offer Decisioning use machine learning to score eligible offers for each individual profile. The model is trained on historical interaction data (e.g., which offers were clicked/redeemed by similar customers) and predicts the probability of engagement for each offer-profile combination — selecting the offer with the highest predicted conversion rate."
+    },
+    {
+      "id": 180,
+      "question": "What challenge does Offer Decisioning solve for the marketing team according to AJO documentation?",
+      "options": [
+        "The challenge of designing visually compelling offer creative without design resources",
+        "Improved campaign performance through personalized offers while improving workflow efficiency",
+        "The technical challenge of connecting the offer library to external e-commerce systems",
+        "The compliance challenge of ensuring all offers meet regulatory requirements automatically"
+      ],
+      "correct": 1,
+      "explanation": "AJO's Offer Decisioning documentation cites three key benefits: (1) Improved campaign performance through personalized offers across multiple channels, (2) Improved workflow efficiency by enabling one delivery to vary offers for different customers (versus multiple campaigns), and (3) Control over offer frequency through capping rules."
+    },
+    {
+      "id": 181,
+      "question": "In AJO, what is the 'Offer Asset Library' option in offer Representation configuration?",
+      "options": [
+        "A pre-built set of offer templates maintained by Adobe for common industry verticals",
+        "An integration with Adobe Experience Manager Assets to use brand-approved images in offers",
+        "A repository of legally approved offer terms and conditions maintained by compliance teams",
+        "A collection of A/B tested offer variations ranked by historical performance"
+      ],
+      "correct": 1,
+      "explanation": "The 'Offer Asset Library' option in Representation configuration provides integration with Adobe Experience Manager Assets (or Adobe Assets). Marketers can browse and select images directly from the centralized brand asset library when configuring how an offer looks in a specific channel/placement, ensuring brand consistency across all offers."
+    },
+    {
+      "id": 182,
+      "question": "How does AJO's Offer Decisioning support 'multi-channel offer delivery'?",
+      "options": [
+        "By automatically translating offer content into the native format of each channel",
+        "By allowing one offer to have multiple Representations — one per channel/placement combination",
+        "By broadcasting the same offer simultaneously across all channels without configuration",
+        "By maintaining separate offer libraries for each channel type"
+      ],
+      "correct": 1,
+      "explanation": "AJO supports multi-channel offers through multiple Representations. One offer definition can have different Representations for email, mobile, and web — each with appropriately formatted content and creative for that channel. The same underlying offer (same eligibility, priority, capping) can thus appear correctly across all customer touchpoints."
+    },
+    {
+      "id": 183,
+      "question": "What is the primary difference between 'Offer Priority' and 'Offer Ranking Formula' in AJO?",
+      "options": [
+        "Priority is a global setting; Ranking Formula is per-placement",
+        "Priority is a static numerical score; Ranking Formula is a dynamic expression using offer and profile attributes",
+        "Priority is evaluated first; Ranking Formula only applies if multiple offers have the same priority",
+        "Priority works for email channel only; Ranking Formula works for all channels"
+      ],
+      "correct": 1,
+      "explanation": "Offer Priority is a simple static number assigned to an offer — higher number = higher priority. A Ranking Formula is a dynamic mathematical expression that evaluates offer and profile attributes at runtime (e.g., `offer.value * profile.loyaltyScore`) to compute a score. Formulas enable more nuanced, context-aware ranking than a fixed priority number."
+    },
+    {
+      "id": 184,
+      "question": "In the offer creation process in AJO, what is added multiple times if an offer is used in multiple channels and placements?",
+      "options": [
+        "Eligibility rules — one rule set per channel for channel-specific audience targeting",
+        "Representations — one Representation per channel/placement combination",
+        "Capping constraints — separate caps are required for each channel",
+        "Decision policies — one policy per channel to manage independent offer selection"
+      ],
+      "correct": 1,
+      "explanation": "When creating an offer in AJO that will appear across multiple channels/placements, you add multiple Representations to that single offer. Each Representation specifies a channel (email, mobile, web) and a placement within that channel, along with the content appropriate for that context. The offer's core attributes (eligibility, priority, capping) are shared across all Representations."
+    },
+    {
+      "id": 185,
+      "question": "What is the relationship between a 'Decision' and an 'Offer Collection' in AJO Offer Decisioning?",
+      "options": [
+        "An Offer Collection contains Decisions; each Decision references a single offer",
+        "A Decision contains an Offer Collection (or multiple collections) as the pool of offers to evaluate",
+        "An Offer Collection defines the ranking strategy; a Decision applies it to a profile",
+        "Decisions and Collections are interchangeable terms for the same AJO concept"
+      ],
+      "correct": 1,
+      "explanation": "A Decision references one or more Offer Collections as the pool of offers to evaluate. Instead of evaluating ALL offers in the library, the Decision Engine evaluates only the offers within the specified Collection(s). The Collection acts as a pre-filter, reducing computational overhead and ensuring only relevant offers are considered."
+    },
+    {
+      "id": 186,
+      "question": "What is the purpose of 'Offer Tags' in relation to 'Offer Collections' in AJO?",
+      "options": [
+        "Tags are used for URL tracking; Collections are used for audience targeting",
+        "Tags categorize offers; Collections can be built by filtering offers using those tags",
+        "Tags define channel compatibility; Collections group offers by channel type",
+        "Tags are internal metadata; Collections are customer-facing offer groupings"
+      ],
+      "correct": 1,
+      "explanation": "The workflow is: first tag offers with relevant labels (e.g., 'Holiday2025,' 'Electronics,' 'Premium'). Then create Offer Collections that include offers matching specific tags. This tag-based filtering makes collection management dynamic — adding a tag to a new offer automatically includes it in collections using that tag, without manually updating every collection."
+    },
+    {
+      "id": 187,
+      "question": "In AJO, what is 'Offer Representation' in the context of multi-channel delivery?",
+      "options": [
+        "A legal representation confirming the offer terms are accurately communicated",
+        "The content configuration for a specific offer in a specific channel and placement",
+        "A marketing representative assigned to manage a set of offers in the library",
+        "The visual mockup presented to stakeholders before an offer campaign launches"
+      ],
+      "correct": 1,
+      "explanation": "An Offer Representation is the configured content of an offer as it appears in a specific channel (email, web, mobile) at a specific placement (hero banner, product slot, email header). Since an offer needs to look and feel appropriate for different contexts, each channel/placement combination gets its own Representation with appropriately formatted content and assets."
+    },
+    {
+      "id": 188,
+      "question": "When creating a new offer in AJO's Offer Library, what does the 'Images' section in Representation allow?",
+      "options": [
+        "Uploading images from local storage directly to the AJO servers",
+        "Adding images from the Adobe Assets library to appear with the offer content",
+        "Embedding Base64-encoded images directly in the offer HTML code",
+        "Linking to externally hosted images via CDN URL references"
+      ],
+      "correct": 1,
+      "explanation": "In the offer Representation configuration, the Images section allows connecting to the Adobe Assets Library (Adobe Experience Manager Assets) to select brand-approved images. This ensures offer visuals come from the centralized, governed asset repository rather than ad-hoc uploads, maintaining brand consistency and proper asset rights management."
+    },
+    {
+      "id": 189,
+      "question": "What is the purpose of the 'Constraint' section when creating an offer in AJO?",
+      "options": [
+        "Setting technical constraints like maximum content size and character limits",
+        "Defining capping rules, priority, and validity dates that control how often and when the offer can be shown",
+        "Applying data governance constraints that restrict which markets can receive the offer",
+        "Creating audience constraints that limit which personas the offer targets"
+      ],
+      "correct": 1,
+      "explanation": "The Constraint section of an offer definition covers the operational limits: Priority (which offer wins when multiple qualify), Capping (maximum times shown globally and/or per profile), and Validity Dates (start/end date window). These constraints ensure offers are shown the right number of times, to the right people, at the right time."
+    },
+    {
+      "id": 190,
+      "question": "In AJO Offer Decisioning, what is the role of 'Eligibility' versus 'Constraints' in offer configuration?",
+      "options": [
+        "Eligibility defines what content is shown; Constraints define where it is shown",
+        "Eligibility defines WHO qualifies for the offer; Constraints define HOW OFTEN and WHEN it can be shown",
+        "Eligibility is evaluated at audience build time; Constraints are evaluated at delivery time",
+        "Eligibility applies to anonymous users; Constraints apply to known, identified profiles"
+      ],
+      "correct": 1,
+      "explanation": "Eligibility and Constraints serve different purposes: Eligibility Rules answer 'WHO qualifies?' (audience criteria, segment membership, profile attributes). Constraints answer 'HOW OFTEN and WHEN?' (capping limits to prevent over-showing, validity dates to automate activation/deactivation, and priority to resolve conflicts). Together they define a complete offer policy."
+    },
+    {
+      "id": 191,
+      "question": "What is the difference between including offers in 'Journeys' versus 'Campaigns' in AJO?",
+      "options": [
+        "Journeys can only include offers via email; Campaigns support all channels",
+        "Journeys deliver offers reactively based on real-time events; Campaigns deliver offers at scheduled times to segments",
+        "Journeys use the Offer Decision Engine; Campaigns use static offer assignment only",
+        "Journeys are for B2B offers; Campaigns are for B2C consumer offers"
+      ],
+      "correct": 1,
+      "explanation": "In Journeys, offers are triggered reactively — a specific event (purchase, abandonment, milestone) triggers the journey and the offer is delivered in context of that event, personalized in real-time. In Campaigns, offers are delivered at a scheduled time to an entire audience segment — more like a broadcast promotion to all eligible customers simultaneously."
+    },
+    {
+      "id": 192,
+      "question": "What does 'Improved campaign performance' mean in the context of AJO Offer Decisioning benefits?",
+      "options": [
+        "Offer Decisioning speeds up campaign delivery by pre-computing decisions overnight",
+        "Delivering the right personalized offer to each customer across multiple channels increases relevance and conversion",
+        "Offer Decisioning improves email deliverability scores by reducing spam complaints",
+        "Using AI ranking models automatically optimizes campaign schedules for peak open times"
+      ],
+      "correct": 1,
+      "explanation": "According to AJO documentation, Offer Decisioning improves campaign performance by delivering personalized offers across multiple channels. When each customer receives the offer most relevant to them (vs. a generic broadcast), engagement rates, conversion rates, and revenue per campaign all improve — this is the core value proposition of personalized offer decisioning."
+    },
+    {
+      "id": 193,
+      "question": "In AJO, what is a 'Decision Container'?",
+      "options": [
+        "A Docker container used to deploy the Offer Decision Engine in cloud environments",
+        "A Decision (formerly called a Decision Container) that holds offer collections and ranking logic",
+        "A logical partition in the Offer Library that groups offers by business unit",
+        "A security container that restricts offer access to specific user roles"
+      ],
+      "correct": 1,
+      "explanation": "A 'Decision' in AJO (sometimes historically referred to as a 'Decision Container' in documentation) is the object that holds the offer collections, ranking strategy, and fallback offer together. This container is what the Offer Decision Engine references to determine which offer to select for each profile — it's the 'configuration' for a decisioning scenario."
+    },
+    {
+      "id": 194,
+      "question": "What does 'Control over the number of times an offer is shown' mean as a benefit of Offer Decisioning in AJO?",
+      "options": [
+        "The ability to manually review each offer before it is sent to prevent errors",
+        "Capping rules that set maximum global and per-profile display limits for each offer",
+        "Analytics dashboards that show real-time impression counts for monitoring",
+        "Approval workflows that require sign-off before an offer exceeds a display threshold"
+      ],
+      "correct": 1,
+      "explanation": "AJO Offer Decisioning's capping feature provides granular control: you can set a global maximum (e.g., 'this offer can be shown at most 10,000 times total') and a per-profile maximum (e.g., 'no customer sees this offer more than 3 times'). These controls prevent offer fatigue and protect marketing budget by avoiding over-exposure."
+    },
+    {
+      "id": 195,
+      "question": "How are offers evaluated against a customer's profile in AJO's Offer Decision Engine?",
+      "options": [
+        "All offers are sent to the customer; they self-select based on interest",
+        "Eligibility rules are checked against Real-Time Customer Profile data to filter qualifying offers",
+        "Offers are selected randomly from the collection unless frequency caps are exceeded",
+        "Only offers with matching tags to the customer's profile interests are considered"
+      ],
+      "correct": 1,
+      "explanation": "The Offer Decision Engine evaluates each offer's Eligibility Rules against the customer's Real-Time Customer Profile data. Profile attributes (loyalty tier, location, purchase history, segment membership) are checked against each offer's eligibility conditions. Offers that fail any eligibility rule are excluded before ranking begins, ensuring only truly qualifying offers compete."
+    },
+    {
+      "id": 196,
+      "question": "What is the purpose of specifying a 'Channel' when creating an Offer Placement in AJO?",
+      "options": [
+        "To limit which marketing team members can use the placement in their campaigns",
+        "To specify the delivery medium (email, mobile, web, other) where the offer content will appear",
+        "To configure the tracking methodology used to measure offer performance",
+        "To define the content format restrictions (image-only, text-only, HTML) for the placement"
+      ],
+      "correct": 1,
+      "explanation": "The Channel in an Offer Placement specifies the delivery medium where the offer will appear. This matters because offer content (size, format, interactivity) must be appropriate for the channel. An email banner has different requirements than a mobile in-app card or a web hero image. The channel classification helps organize placements and ensures content is channel-appropriate."
+    },
+    {
+      "id": 197,
+      "question": "In AJO, when can a customer's interaction with an offer be tracked for reporting purposes?",
+      "options": [
+        "Only through explicit pixel tracking embedded in offer content",
+        "Through the Experience Event – Proposition Interactions field group that captures offer interactions",
+        "Only for email channel offers using the Email Tracking Experience Event dataset",
+        "Through manual import of offer interaction data from external CRM systems"
+      ],
+      "correct": 1,
+      "explanation": "Offer interactions are tracked via the 'Experience Event – Proposition Interactions' field group in the AEP dataset schema. When a customer views or clicks an offer, an Experience Event is generated with a unique decision ID linking back to the specific offer that was presented. This data feeds into AJO's offer performance reporting and can be used to build re-engagement audiences."
+    },
+    {
+      "id": 198,
+      "question": "What is the key difference between 'Offer Decisioning in Campaigns' and standard 'Content Personalization' in AJO?",
+      "options": [
+        "Offer Decisioning requires a separate license; Content Personalization is included in all AJO plans",
+        "Offer Decisioning selects the best offer per profile dynamically; Personalization uses profile attributes to customize fixed content",
+        "Offer Decisioning works only for email; Content Personalization works across all channels",
+        "Offer Decisioning is evaluated at journey entry; Personalization is evaluated at message rendering time"
+      ],
+      "correct": 1,
+      "explanation": "Standard AJO personalization uses profile attributes to customize pre-defined content (e.g., inserting a name or loyalty tier into a template). Offer Decisioning goes further: it dynamically SELECTS WHICH CONTENT to show from a pool of offers based on eligibility, ranking, and constraints — the content itself varies per individual, not just the variable values within a fixed template."
+    },
+    {
+      "id": 199,
+      "question": "In AJO's Offer Decisioning, what is the significance of the 'Offer Library' being a 'central catalog'?",
+      "options": [
+        "It means all AJO users worldwide share the same global offer catalog",
+        "It provides one place to create, manage, and reuse offers across multiple campaigns and journeys",
+        "It centralizes offer budget management and spend allocation across all channels",
+        "It serves as the single source of truth for all brand assets used in offers"
+      ],
+      "correct": 1,
+      "explanation": "The central Offer Library is the single repository for all offer assets — create an offer once and reuse it across multiple journeys, campaigns, and Decisions. This prevents offer duplication, ensures consistency, and simplifies updates: change an offer's content in the Library and the update propagates to all active campaigns using that offer."
+    },
+    {
+      "id": 200,
+      "question": "What does AJO's Offer Decisioning use to 'associate eligibility rules and constraints with multiple pieces of content'?",
+      "options": [
+        "Marketing automation workflows that link content to audience segments",
+        "The Offer Library, which combines content representations with eligibility rules and constraints into unified offer objects",
+        "External DAM (Digital Asset Management) integrations that tag assets with targeting rules",
+        "Campaign templates that embed eligibility logic directly in the template HTML"
+      ],
+      "correct": 1,
+      "explanation": "The Offer Library provides the mechanism to associate everything together: offer content (Representations for different channels/placements) + eligibility rules (who qualifies) + constraints (capping, dates, priority) are all packaged into a single Offer object. This unified object is then placed in a Decision that the Offer Decision Engine evaluates."
+    }
+  ]
+}

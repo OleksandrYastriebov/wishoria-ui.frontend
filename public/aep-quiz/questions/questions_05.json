@@ -1,0 +1,605 @@
+{
+  "title": "Data Governance, External Sources & Custom Actions",
+  "questions": [
+    {
+      "id": 201,
+      "question": "What does the acronym 'DULE' stand for in Adobe Experience Platform's data governance framework?",
+      "options": [
+        "Data Unification and Lineage Engine",
+        "Data Usage Labelling and Enforcement",
+        "Dynamic User Lifecycle Engine",
+        "Distributed Unified Logging Environment"
+      ],
+      "correct": 1,
+      "explanation": "DULE stands for Data Usage Labelling and Enforcement — AEP's data governance framework. It enables organizations to label data with usage classifications (C, I, S labels), define policies specifying allowed marketing actions, and enforce those policies across all data access patterns including Custom Actions in AJO journeys."
+    },
+    {
+      "id": 202,
+      "question": "What are the three key elements of AEP's Data Governance framework?",
+      "options": [
+        "Schemas, Datasets, and Destinations",
+        "Labels, Policies, and Enforcement",
+        "Identity, Segmentation, and Activation",
+        "Consent, Preferences, and Suppression"
+      ],
+      "correct": 1,
+      "explanation": "AEP's Data Governance framework has three key elements: Labels (classify data by privacy, contractual, and sensitivity considerations), Policies (describe which marketing actions are allowed or prohibited on specific labeled data), and Enforcement (uses the policy framework to advise and enforce policies across all data access patterns, including real-time API checks)."
+    },
+    {
+      "id": 203,
+      "question": "What are the three categories of predefined Data Usage Labels in AEP's governance framework?",
+      "options": [
+        "Personal, Sensitive, and Public data categories",
+        "Contract 'C', Identity 'I', and Sensitive 'S' data labels",
+        "Internal, External, and Restricted data classifications",
+        "Primary, Secondary, and Derived data lineage labels"
+      ],
+      "correct": 1,
+      "explanation": "AEP provides three predefined label categories: 'C' (Contract) labels for data with contractual obligations or customer governance policies, 'I' (Identity) labels for data that can identify or contact a person, and 'S' (Sensitive) labels for sensitive data such as geographic location, health information, or financial data."
+    },
+    {
+      "id": 204,
+      "question": "What is a 'Contract C' data usage label used for in AEP?",
+      "options": [
+        "Marking data collected through contractual employment relationships",
+        "Labeling data that has contractual obligations or is related to customer data governance policies",
+        "Identifying data covered by cloud service provider contracts",
+        "Tagging data that requires a legal contract review before processing"
+      ],
+      "correct": 1,
+      "explanation": "'C' (Contract) labels are applied to data with contractual obligations — for example, data that was collected under specific terms of service, data covered by third-party data provider agreements, or data governed by customer-specific data handling policies. They enforce that this data is only used in ways permitted by those contractual commitments."
+    },
+    {
+      "id": 205,
+      "question": "What is an 'Identity I' data usage label used for in AEP?",
+      "options": [
+        "Marking data used for Identity Graph construction and management",
+        "Labeling data that can identify or contact a specific person",
+        "Identifying internal-use-only data that should not be shared externally",
+        "Tagging data with identity resolution confidence scores"
+      ],
+      "correct": 1,
+      "explanation": "'I' (Identity) labels are applied to data fields that can identify or contact a specific person. Examples include email addresses, phone numbers, full names, physical addresses, and government IDs. These labels trigger policies that restrict how such identifying information can be used in marketing actions and exports to third-party systems."
+    },
+    {
+      "id": 206,
+      "question": "What is a 'Sensitive S' data usage label used for in AEP?",
+      "options": [
+        "Marking data that is sensitive to query performance and should use indexed fields",
+        "Labeling data related to sensitive categories such as geographic data, health, or financial information",
+        "Identifying data that is security-classified and requires multi-factor authentication to access",
+        "Tagging seasonally relevant data that has temporary sensitivity during campaign periods"
+      ],
+      "correct": 1,
+      "explanation": "'S' (Sensitive) labels are applied to sensitive personal data categories: geographic data (precise location), health/medical information, financial data, religious beliefs, sexual orientation, etc. These labels enable stricter governance policies that may restrict or entirely prohibit certain uses (like targeted advertising) of sensitive personal information."
+    },
+    {
+      "id": 207,
+      "question": "How does AEP's Data Governance integration with AJO prevent misuse of sensitive data in Custom Actions?",
+      "options": [
+        "By encrypting sensitive fields before they are passed to Custom Actions",
+        "By blocking journey publication when a governance policy violation is detected in Custom Action parameters",
+        "By anonymizing sensitive fields automatically when they are included in Custom Action payloads",
+        "By requiring a second approval before sensitive fields can be included in Custom Actions"
+      ],
+      "correct": 1,
+      "explanation": "When AJO detects that a Custom Action's parameters include a field labeled with a data usage label that violates an active governance policy (e.g., sending an 'I' labeled field to a third party without consent), it displays an error and BLOCKS the journey from being published. This enforcement prevents accidental export of restricted data to external systems."
+    },
+    {
+      "id": 208,
+      "question": "What are the two types of data usage policies available in AEP?",
+      "options": [
+        "Internal Policies and External Policies",
+        "Data Governance Policies and Consent Policies",
+        "Contractual Policies and Regulatory Policies",
+        "Marketing Policies and Analytics Policies"
+      ],
+      "correct": 1,
+      "explanation": "AEP has two policy types: Data Governance Policies (restrict data activation based on the marketing action being performed and the data usage labels on the data — preventing data from being used in prohibited ways), and Consent Policies (filter profiles based on customer consent or preferences — ensuring marketing only reaches customers who have opted in)."
+    },
+    {
+      "id": 209,
+      "question": "In AEP, what is a 'Marketing Action' in the context of data governance policies?",
+      "options": [
+        "A type of AJO journey activity that sends marketing messages to customers",
+        "A specific use of data (like 'Email Marketing,' 'Analytics,' or 'Third-party sharing') that policies restrict",
+        "An automated workflow triggered when data governance violations are detected",
+        "A campaign type in AJO that requires additional governance approval"
+      ],
+      "correct": 1,
+      "explanation": "In AEP data governance, a 'Marketing Action' defines HOW data is being used — examples include 'Email Marketing,' 'Personalization Across Sites,' 'Analytics,' 'Export to third-party.' Data governance policies link marketing actions to data labels: 'Data labeled C2 cannot be used for Email Marketing.' This enables flexible, intent-based governance rather than blanket restrictions."
+    },
+    {
+      "id": 210,
+      "question": "How do you create a new custom data usage policy in AEP?",
+      "options": [
+        "Submit a request to Adobe Support who creates it through admin tools",
+        "Select 'Create policy' in the top-right corner of the Browse tab in the Policies workspace",
+        "Define it in the schema editor by adding governance annotations to field groups",
+        "Create it via the AEP API using a POST request to /governance/policies"
+      ],
+      "correct": 1,
+      "explanation": "To create a custom data usage policy in AEP UI: navigate to the Policies workspace under Data Governance, select the 'Browse' tab, and click 'Create policy' in the top-right corner. The workflow will then guide you through defining the marketing action and the label conditions that trigger the policy violation."
+    },
+    {
+      "id": 211,
+      "question": "In AEP, where can you view existing governance policies and their associated labels and marketing actions?",
+      "options": [
+        "In the Schema Editor under each field's governance properties",
+        "In the Policies workspace under the Experience Platform UI → Policies → Browse tab",
+        "In the Identity Service dashboard under the Governance section",
+        "In the Destinations catalog under each destination's data governance settings"
+      ],
+      "correct": 1,
+      "explanation": "To view existing governance policies: in the Experience Platform UI, navigate to Policies in the left menu. In the Browse tab, you can see all available policies with their associated labels, marketing actions, and status (enabled/disabled). This provides a central view for governance administration and compliance review."
+    },
+    {
+      "id": 212,
+      "question": "What is an 'External Data Source' in AJO?",
+      "options": [
+        "A dataset imported from an external S3 bucket into AEP Data Lake",
+        "A connection to a third-party REST API used to look up real-time data during journey execution",
+        "A CRM database synchronized with AEP via a source connector",
+        "An audience segment imported from an external CDP platform"
+      ],
+      "correct": 1,
+      "explanation": "An External Data Source in AJO is a configured connection to a third-party system accessible via REST API. During journey execution, AJO can call this external source in real-time to look up contextual data (like live weather, inventory levels, or CRM data). The result can be used in journey conditions and personalization."
+    },
+    {
+      "id": 213,
+      "question": "What are the technical requirements for a system to be used as an External Data Source in AJO?",
+      "options": [
+        "Must support GraphQL queries, return XML responses, and handle 1 request per second",
+        "Must be usable via REST API, support JSON format, and handle the volume of requests",
+        "Must support SOAP web services, return JSON, and provide SDK authentication",
+        "Must be hosted on Adobe Experience Cloud infrastructure or approved cloud providers"
+      ],
+      "correct": 1,
+      "explanation": "For a system to be used as an AJO External Data Source, it must meet three requirements: (1) Be accessible via REST API, (2) Support JSON format for request/response payloads, and (3) Be capable of handling the request volume that AJO will generate during journey execution. Real-time lookups require the external system to respond quickly (low latency is critical)."
+    },
+    {
+      "id": 214,
+      "question": "What is the character limit for an External Data Source name in AJO, and what characters are not allowed?",
+      "options": [
+        "Maximum 64 characters; underscores and numbers are not allowed",
+        "Maximum 30 characters; no spaces or special characters allowed",
+        "Maximum 50 characters; must be alphanumeric with hyphens only",
+        "Maximum 100 characters; must follow URL-safe naming conventions"
+      ],
+      "correct": 1,
+      "explanation": "External Data Source names in AJO must not exceed 30 characters and must not contain spaces or special characters. This constraint applies to ensure compatibility with internal naming systems and to prevent issues when the data source name is referenced in journey conditions and the AJO configuration interface."
+    },
+    {
+      "id": 215,
+      "question": "What authentication types are supported for External Data Sources in AJO?",
+      "options": [
+        "OAuth 2.0 and SAML only",
+        "No authentication, Basic, Custom, or API Key",
+        "JWT tokens and mTLS certificates only",
+        "API Key and OAuth 2.0 only"
+      ],
+      "correct": 1,
+      "explanation": "AJO External Data Sources support four authentication types: No authentication (public APIs), Basic authentication (username/password), Custom authentication (for complex auth schemes), and API Key (passing a key as a query parameter or header). This flexibility covers most common REST API authentication patterns."
+    },
+    {
+      "id": 216,
+      "question": "In AJO External Data Source configuration, what are 'Field Groups' used for?",
+      "options": [
+        "Defining the audience segment criteria used to filter which profiles can use this data source",
+        "Defining sets of fields returned by the API along with the request parameters for each group",
+        "Grouping multiple external data sources together for bulk management",
+        "Organizing governance labels for data returned by the external API"
+      ],
+      "correct": 1,
+      "explanation": "In AJO External Data Source configuration, Field Groups define each 'endpoint call' you want to make to the external API — specifying the fields returned and the required request parameters. For example, a weather API might have a Field Group called 'currentWeather' with parameters {lat, long} that returns {temperature, conditions, humidity}."
+    },
+    {
+      "id": 217,
+      "question": "In AJO, after configuring an External Data Source with parameters like lat/long for a weather API, how are the parameters provided at journey runtime?",
+      "options": [
+        "They are hardcoded in the data source configuration and cannot change per profile",
+        "They are entered in the Dynamic Values field and automatically added to the API call for each profile",
+        "They are provided by the user when they manually trigger the journey",
+        "They are derived from the journey's entry event payload only"
+      ],
+      "correct": 1,
+      "explanation": "For GET call parameters in AJO External Data Sources, you specify them in the 'Dynamic Values' field during configuration. These are then automatically appended to the API URL at journey runtime, with the actual values coming from profile attributes or journey context (e.g., using a profile's `homeAddress.latitude` and `homeAddress.longitude` to fetch local weather)."
+    },
+    {
+      "id": 218,
+      "question": "What is the purpose of the 'Data Exchange' in AJO Custom Actions?",
+      "options": [
+        "Syncing profile data between AEP and the external system's database on a scheduled basis",
+        "The runtime JSON payload sent to the external API and the response mapped back into the journey",
+        "Exchanging authentication tokens between AJO and the external system for secure calls",
+        "Transferring journey engagement data to external BI tools for reporting"
+      ],
+      "correct": 1,
+      "explanation": "Data Exchange in Custom Actions is the actual runtime interaction: AJO builds and sends a JSON payload (containing profile data, journey context, and mapped fields) to the external REST endpoint. The external system processes it and returns a JSON response. AJO can then parse this response and map specific fields back into the journey for use in subsequent conditions or personalization."
+    },
+    {
+      "id": 219,
+      "question": "In AJO Custom Action configuration, which two HTTP headers CANNOT be modified by the user?",
+      "options": [
+        "Content-Type and Accept headers are read-only",
+        "Header 1 and Header 2 in the predefined header list cannot be modified",
+        "Authorization and X-API-Key headers are managed automatically by AJO",
+        "The Host and Connection headers are protected system headers"
+      ],
+      "correct": 1,
+      "explanation": "In AJO Custom Action configuration, when adding header fields, the documentation notes that 'header 1 and 2 cannot be modified' — these are the first two predefined header slots which AJO reserves for internal use. Additional custom headers can be added freely using the 'Add a header field' button."
+    },
+    {
+      "id": 220,
+      "question": "What is 'Error Handling' in the context of AJO Custom Actions?",
+      "options": [
+        "Automatic retry logic that retries failed API calls up to 3 times with exponential backoff",
+        "Managing timeouts, handling failed requests, and providing fallback mechanisms for external calls",
+        "Logging error details to the AEP Data Lake for post-journey debugging analysis",
+        "Sending an error notification email to the journey designer when an external call fails"
+      ],
+      "correct": 1,
+      "explanation": "Error Handling for AJO Custom Actions involves managing what happens when the external system call fails: handling HTTP timeouts (when the external system is slow to respond), processing failed requests (4xx/5xx responses), and providing appropriate fallback behavior or alternative journey paths so the customer experience isn't broken by external system failures."
+    },
+    {
+      "id": 221,
+      "question": "What is 'Throttling' in AJO's rate limiting for Custom Actions, and how does it differ from Capping?",
+      "options": [
+        "Throttling slows down journey execution globally; Capping stops individual profiles from progressing",
+        "Throttling queues excess calls for ordered processing; Capping discards excess calls immediately",
+        "Throttling applies soft limits; Capping applies hard limits",
+        "Throttling is for inbound data; Capping is for outbound API calls"
+      ],
+      "correct": 1,
+      "explanation": "Throttling and Capping both limit external API call rates, but with different behaviors when the rate is exceeded: Capping = excess calls are DISCARDED (dropped, never processed). Throttling = excess calls are QUEUED and processed in order as soon as capacity is available. Throttling preserves all calls but delays some; Capping is more aggressive and may lose calls."
+    },
+    {
+      "id": 222,
+      "question": "In AJO, which of the following is true about Throttling for data sources and custom actions?",
+      "options": [
+        "Throttling is available for both data sources and custom actions",
+        "Throttling is available only for custom actions, not data sources",
+        "Throttling is available only for data sources, not custom actions",
+        "Throttling is not available in AJO — only Capping is supported"
+      ],
+      "correct": 1,
+      "explanation": "According to AJO documentation: Capping is available on BOTH data sources and custom actions. Throttling is available ONLY on custom actions. This means if you need rate-limiting for external data source calls, you can only use Capping (drop excess calls). Throttling (queue excess calls) is an option only for custom action API calls."
+    },
+    {
+      "id": 223,
+      "question": "At which level in AJO are Capping and Throttling rules configured, and what determines their scope?",
+      "options": [
+        "At journey level; rules apply only to the specific journey",
+        "At sandbox level for a specific endpoint URL; rules apply globally to all journeys in that sandbox",
+        "At organization level; rules apply across all sandboxes in the IMS organization",
+        "At campaign level; rules apply only to messages sent through that campaign"
+      ],
+      "correct": 1,
+      "explanation": "Capping/Throttling rules in AJO are configured at the SANDBOX level, tied to a specific endpoint URL. This means the rate limit applies globally to ALL journeys within that sandbox that call the same endpoint. If 50 journeys all call the same CRM endpoint, they collectively share the configured rate limit — preventing any one endpoint from being overwhelmed."
+    },
+    {
+      "id": 224,
+      "question": "What is the purpose of 'Logging and Monitoring' for Custom Actions in AJO?",
+      "options": [
+        "Recording all customer journey data for GDPR audit trail requirements",
+        "Tracking execution, monitoring performance, and enabling debugging of custom action calls",
+        "Generating performance reports for comparison against SLA benchmarks",
+        "Creating audit logs that verify data governance compliance for each external call"
+      ],
+      "correct": 1,
+      "explanation": "Logging and Monitoring for Custom Actions enables: tracking that custom action calls actually executed (confirmation they ran), monitoring performance metrics (latency, success/failure rates), and troubleshooting issues during development and testing phases. Without proper logging, diagnosing failures in production journeys would be extremely difficult."
+    },
+    {
+      "id": 225,
+      "question": "What 'Security Considerations' are important when configuring Custom Actions in AJO?",
+      "options": [
+        "All external API calls must be routed through Adobe's security gateway for scanning",
+        "Authentication tokens and user data must be handled securely to prevent exposure in logs",
+        "External endpoints must use TLS 1.3 or higher for all communications",
+        "API keys must be rotated every 30 days and the new keys registered in AJO"
+      ],
+      "correct": 1,
+      "explanation": "Security is critical for Custom Actions. Key considerations include: securing authentication credentials (API keys, OAuth tokens) stored in AJO to prevent unauthorized access, ensuring sensitive user data in request payloads is handled appropriately, validating that the external system's connection uses HTTPS, and being cautious about what data appears in logs."
+    },
+    {
+      "id": 226,
+      "question": "In AJO, what does the 'Data Governance' framework integration prevent from happening during journey publication?",
+      "options": [
+        "Publishing journeys to production sandboxes without required documentation",
+        "Exporting sensitive (labeled) fields to third-party systems through custom actions that violate policies",
+        "Activating journeys that target audience segments with fewer than 1000 members",
+        "Sending messages during hours designated as quiet times in consent preferences"
+      ],
+      "correct": 1,
+      "explanation": "AJO's Data Governance integration (via DULE) prevents the export of sensitive, governance-restricted data to external systems through Custom Actions. When a journey configuration includes a Custom Action that passes a field labeled with a restricted usage label (e.g., 'Sensitive' data labeled 'S2') in violation of an active governance policy, AJO displays an error and blocks the journey from publishing."
+    },
+    {
+      "id": 227,
+      "question": "What does AEP's Data Governance 'Enforcement' element do?",
+      "options": [
+        "Provides training and documentation to educate data users about governance best practices",
+        "Uses the policy framework to advise and enforce policies across different data access patterns",
+        "Generates compliance reports for regulatory submission to GDPR supervisory authorities",
+        "Manually reviews and approves data access requests that involve sensitive labeled data"
+      ],
+      "correct": 1,
+      "explanation": "The Enforcement element of AEP's Data Governance framework is the active layer that applies governance policies across data access patterns — including segment activation, Custom Action calls in AJO, API requests, and destination exports. When a data access violates a policy (e.g., using C2 labeled data for email marketing when prohibited), Enforcement blocks or advises against the action."
+    },
+    {
+      "id": 228,
+      "question": "In AJO, what does 'Data Mapping' refer to when configuring Custom Actions?",
+      "options": [
+        "Mapping data lineage from source systems to AEP datasets",
+        "Ensuring the right information is passed to and from the external system in the correct format",
+        "Mapping schema field names from AEP format to the external system's naming conventions",
+        "Defining which AEP datasets are visible to the external system for query access"
+      ],
+      "correct": 1,
+      "explanation": "Data Mapping for Custom Actions involves configuring the correct information exchange: mapping AEP profile attributes and journey context fields to the external system's expected request format, and mapping the external system's response fields back to AJO journey variables. Incorrect mapping means wrong data is sent or response data can't be used effectively."
+    },
+    {
+      "id": 229,
+      "question": "What is the purpose of 'Testing and Debugging' capabilities for Custom Actions in AJO?",
+      "options": [
+        "To validate that all custom actions comply with Adobe's security certification requirements",
+        "To simulate journeys, monitor custom action executions, and troubleshoot issues during development",
+        "To performance test external systems before connecting them to production journeys",
+        "To verify that data governance policies are correctly applied to custom action payloads"
+      ],
+      "correct": 1,
+      "explanation": "Testing and Debugging capabilities for Custom Actions enable: simulating journey executions to verify the custom action calls the correct endpoint with the right payload, monitoring execution logs to see what was sent and received, and troubleshooting issues (incorrect payloads, authentication failures, unexpected responses) before deploying journeys to production."
+    },
+    {
+      "id": 230,
+      "question": "When creating a Custom Action in AJO, what does the 'Channel' field define?",
+      "options": [
+        "The delivery channel (email, SMS, push) through which the custom action sends its response",
+        "The type of communication this action will be related to (email, push, SMS, etc.)",
+        "The Adobe Experience Edge channel used for routing custom action requests",
+        "The data collection channel that provides event data to trigger the custom action"
+      ],
+      "correct": 1,
+      "explanation": "In AJO Custom Action configuration, the 'Channel' field defines what type of communication the custom action relates to — for example, is this action related to an email process? A push notification workflow? An SMS system? This classification helps organize custom actions and enables appropriate governance policies to be applied based on channel type."
+    },
+    {
+      "id": 231,
+      "question": "What JSON structure is required in the Custom Action 'Response' section in AJO?",
+      "options": [
+        "A JSON schema definition following the OpenAPI 3.0 specification",
+        "A sample JSON payload copied from the external API's actual response",
+        "A JSON template with placeholder variables for all expected response fields",
+        "A JSON-LD context document that defines the semantic meaning of response fields"
+      ],
+      "correct": 1,
+      "explanation": "In AJO Custom Action configuration, the Response section requires you to paste a sample JSON payload from the actual external API response. AJO uses this sample to: (1) understand the response structure, (2) make specific response fields available for mapping in journey conditions and personalization, and (3) validate that the external system's response is in the expected format."
+    },
+    {
+      "id": 232,
+      "question": "In AJO, what is the 'Extension Points' concept for Custom Actions?",
+      "options": [
+        "Plugin APIs that allow third-party developers to extend the AJO user interface",
+        "Predefined places in the standard journey workflow where custom actions can be injected",
+        "External API endpoints that AJO extends with additional capabilities via middleware",
+        "Schema extension points where custom field groups can be added to standard XDM schemas"
+      ],
+      "correct": 1,
+      "explanation": "Extension Points in AJO refer to the predefined places within the standard journey workflow where users can inject Custom Actions. These are the integration points where the standard journey capabilities 'end' and custom external logic 'begins' — providing defined, governed interfaces for connecting journeys to external systems at specific workflow stages."
+    },
+    {
+      "id": 233,
+      "question": "When setting up an External Data Source with API Key authentication in AJO, what information must be provided?",
+      "options": [
+        "Client ID, Client Secret, and OAuth token endpoint URL",
+        "API key Name (parameter name), Value (the actual key), and Location (query parameter or header)",
+        "Username, password, and the API key backup credential",
+        "Bearer token, token expiry duration, and refresh token URL"
+      ],
+      "correct": 1,
+      "explanation": "For API Key authentication on an External Data Source in AJO, you must provide: the Name (the parameter name the API expects, e.g., 'Apikey' or 'x-api-key'), the Value (the actual API key credential), and the Location (whether the key is passed as a query parameter in the URL or as an HTTP header). This matches how the external API expects to receive the authentication."
+    },
+    {
+      "id": 234,
+      "question": "What is the impact of Data Governance labels on AJO's ability to publish journeys?",
+      "options": [
+        "Labels have no impact on journey publication — they only affect data exports to destinations",
+        "If labeled fields are used in Custom Actions violating governance policies, journey publication is blocked",
+        "Labels slow down journey publication by triggering a mandatory compliance review",
+        "Labels automatically encrypt sensitive fields, which may delay message delivery"
+      ],
+      "correct": 1,
+      "explanation": "Data Governance labels have a direct impact on AJO journey publication. The DULE framework checks whether any Custom Action in the journey attempts to export fields carrying data usage labels that conflict with active governance policies. If a violation is detected, AJO displays an error prompt and PREVENTS the journey from being published until the violation is resolved."
+    },
+    {
+      "id": 235,
+      "question": "In the AEP Data Governance framework, what does a 'Consent Policy' do?",
+      "options": [
+        "Records consent collection events for GDPR audit trail purposes",
+        "Filters profiles based on their consent or preferences before activation to destinations",
+        "Enforces consent collection requirements on all web and mobile data collection channels",
+        "Manages the consent preference center UI displayed to customers"
+      ],
+      "correct": 1,
+      "explanation": "Consent Policies in AEP filter WHICH profiles can be activated or targeted, based on each customer's consent and preferences. For example, a consent policy ensures that only profiles who have opted in to 'Email Marketing' receive email campaigns. This is distinct from Data Governance Policies which restrict data USAGE based on labels and marketing actions."
+    },
+    {
+      "id": 236,
+      "question": "In AJO, what must be configured to use an External Data Source's field values in journey conditions?",
+      "options": [
+        "A dedicated dataset in AEP must be mapped to the external data source output",
+        "The Field Group retrieval configuration must be added with the correct API parameters",
+        "The external data source must be published and deployed to production before use",
+        "A custom namespace must be created to store external data source values"
+      ],
+      "correct": 1,
+      "explanation": "To use an External Data Source in journey conditions, you must configure Field Groups for that data source — specifying which API parameters are needed and what fields are returned. When a profile reaches the relevant journey step, AJO makes the API call with the profile's parameter values and makes the returned fields available for condition evaluation and personalization."
+    },
+    {
+      "id": 237,
+      "question": "What is the primary difference between AJO's 'External Data Sources' and 'Custom Actions'?",
+      "options": [
+        "External Data Sources are for GET operations (retrieving data); Custom Actions are for POST/PUT operations (sending data or triggering actions)",
+        "External Data Sources require OAuth 2.0; Custom Actions require API Key authentication",
+        "External Data Sources are configured at the sandbox level; Custom Actions are configured per journey",
+        "External Data Sources are for B2B integrations; Custom Actions are for B2C integrations"
+      ],
+      "correct": 0,
+      "explanation": "The primary distinction: External Data Sources are READ operations — they retrieve contextual data (like weather, inventory, CRM attributes) to enrich journey logic. Custom Actions are WRITE/TRIGGER operations — they send data to external systems, trigger processes, or execute actions (like updating a CRM record, sending to a custom notification system, calling an external loyalty platform)."
+    },
+    {
+      "id": 238,
+      "question": "In AEP, where are data usage policies applied to prevent unauthorized data use?",
+      "options": [
+        "Only at the point of data ingestion via source connectors",
+        "Across different data access patterns including segment activation, API access, and AJO Custom Actions",
+        "Only during nightly batch processing jobs in the Data Lake",
+        "Only when data is exported to external advertising destinations"
+      ],
+      "correct": 1,
+      "explanation": "AEP's data governance Enforcement element applies policies across ALL data access patterns — segment activation (to destinations), API-level data access (Query Service, Profile API), AJO Custom Actions (preventing export of restricted fields), and data exports. This comprehensive enforcement ensures governance is upheld wherever data moves within and outside AEP."
+    },
+    {
+      "id": 239,
+      "question": "What is the practical use case demonstrated in AJO documentation for External Data Sources?",
+      "options": [
+        "Retrieving customer purchase history from an external data warehouse for segmentation",
+        "Fetching real-time weather data to customize journey content based on local weather conditions",
+        "Pulling product inventory levels from a PIM system to show availability in messages",
+        "Getting customer NPS scores from a survey platform to personalize follow-up journeys"
+      ],
+      "correct": 1,
+      "explanation": "The AJO documentation demonstrates External Data Sources using a weather API example: configure a connection to a weather service (e.g., weatherstack.com), set up a Field Group with lat/long parameters, and in a journey condition, check if the temperature is above 30°C to route profiles to a 'hot weather' or 'standard' communication path."
+    },
+    {
+      "id": 240,
+      "question": "In AEP's Data Governance framework, what does labeling a field with a 'Sensitive S' label enable organizations to do?",
+      "options": [
+        "Mark the field as required for segmentation jobs to improve performance",
+        "Create governance policies that restrict how sensitive data is used in marketing actions",
+        "Encrypt the field contents in transit and at rest across all AEP services",
+        "Flag the field for manual review before it can be included in any audience activation"
+      ],
+      "correct": 1,
+      "explanation": "Labeling a field with a Sensitive 'S' label enables organizations to create governance policies that control how that sensitive data category can be used. For example, 'S1' (racial/ethnic origin data) could be linked to a policy that prohibits its use for targeted advertising but allows it for analytics. Labels + Policies together create the governance controls."
+    },
+    {
+      "id": 241,
+      "question": "In AJO journey creation with a Custom Action, what is the purpose of 'Query Parameters' configuration?",
+      "options": [
+        "SQL query parameters used to retrieve relevant customer data before the action executes",
+        "URL query string parameters appended to the external endpoint URL during the API call",
+        "Database query optimization parameters that improve the performance of profile lookups",
+        "GraphQL query variables used in structured API requests to external systems"
+      ],
+      "correct": 1,
+      "explanation": "Query Parameters in AJO Custom Action configuration are the URL query string parameters appended to the external REST endpoint URL (e.g., `?city=Paris&lang=en`). During journey execution, the 'edit pencil' for Query Parameters lets you map profile fields (like the customer's city attribute) to these parameters, passing the correct values to the external system."
+    },
+    {
+      "id": 242,
+      "question": "What is the significance of 'Event Triggers' for Custom Actions in AJO?",
+      "options": [
+        "Custom Actions can be configured to trigger new journey entry events for other journeys",
+        "Custom Actions are triggered by specific events or conditions in the customer journey",
+        "Custom Actions automatically trigger when profile data changes in the Real-Time Customer Profile",
+        "Custom Actions trigger based on time-based cron schedules configured in AJO settings"
+      ],
+      "correct": 1,
+      "explanation": "Custom Actions are triggered contextually by events or conditions within the journey flow. When a profile reaches the Custom Action node — due to whatever event, condition, or sequence brought them there — the external API call is executed. The trigger could be a specific user behavior event, the result of a condition evaluation, or a scheduled journey entry."
+    },
+    {
+      "id": 243,
+      "question": "What is AEP Data Governance's primary goal in the context of customer data management?",
+      "options": [
+        "Maximizing the use of all available data to improve marketing performance",
+        "Ensuring data is used in ways that are compliant with regulations, contracts, and customer preferences",
+        "Preventing all data from leaving AEP to protect against data breaches",
+        "Standardizing data formats across all source systems for consistent analytics"
+      ],
+      "correct": 1,
+      "explanation": "AEP Data Governance's primary goal is regulatory and ethical compliance: ensuring customer data is used in ways that are compliant with privacy regulations (GDPR, CCPA), contractual obligations (data provider agreements), and customer preferences (consent). It achieves this through Labels (classification), Policies (rules), and Enforcement (blocking violations)."
+    },
+    {
+      "id": 244,
+      "question": "In AJO, what happens when the rate limit is exceeded for a Custom Action with Capping configured?",
+      "options": [
+        "The journey pauses and waits until the rate limit window resets",
+        "The excess calls are discarded and not processed — they are simply dropped",
+        "The calls are queued and processed in order when capacity becomes available",
+        "The journey routes the affected profiles to an error path defined in the journey canvas"
+      ],
+      "correct": 1,
+      "explanation": "With CAPPING: when the maximum rate is reached, excess calls are DISCARDED — they are dropped and not processed. This is the key difference from Throttling: Capping sacrifices completeness (some calls are lost) to protect the external system from overload. The journey profiles whose calls are discarded may not receive the intended external action."
+    },
+    {
+      "id": 245,
+      "question": "What is the naming restriction for External Data Source field group names in AJO?",
+      "options": [
+        "Must follow camelCase naming with a maximum of 50 characters",
+        "Must not contain spaces or special characters",
+        "Must begin with the prefix 'ext_' to identify external sources",
+        "Must match the endpoint URL path segment for automatic mapping"
+      ],
+      "correct": 1,
+      "explanation": "When adding a new Field Group to an External Data Source in AJO, the field group name must not contain spaces or special characters. This naming constraint ensures compatibility with AJO's internal reference system and prevents issues when the field group is referenced in journey conditions and expressions."
+    },
+    {
+      "id": 246,
+      "question": "In AEP's Data Governance, what is the relationship between Labels, Policies, and Marketing Actions?",
+      "options": [
+        "Labels are applied to fields; Policies link labels to prohibited Marketing Actions; Enforcement blocks violations",
+        "Marketing Actions define labels; Policies enforce them; Labels track violations",
+        "Labels are assigned by Policies; Marketing Actions trigger label evaluation",
+        "Policies contain labels; Marketing Actions reference policies for compliance checking"
+      ],
+      "correct": 0,
+      "explanation": "The governance chain: DATA LABELS are applied to schema fields (e.g., 'I2' = email address can identify a person). POLICIES define prohibited combinations (e.g., 'C2 labeled data CANNOT be used for Email Marketing'). MARKETING ACTIONS define the intended use (e.g., 'this campaign uses Email Marketing'). When all three align — labeled data + prohibited policy + matching marketing action — enforcement blocks the operation."
+    },
+    {
+      "id": 247,
+      "question": "What is a 'Custom Authentication' type for External Data Sources in AJO used for?",
+      "options": [
+        "Creating custom encryption for API payloads beyond standard TLS",
+        "Handling complex, non-standard authentication schemes not covered by Basic or API Key",
+        "Enabling single sign-on (SSO) integration between AJO and external systems",
+        "Configuring mutual TLS (mTLS) client certificate authentication"
+      ],
+      "correct": 1,
+      "explanation": "The 'Custom' authentication type for AJO External Data Sources is available for complex authentication schemes not covered by the standard options (No auth, Basic, API Key). This might include multi-step authentication flows, custom header combinations, or proprietary authentication protocols specific to the external system."
+    },
+    {
+      "id": 248,
+      "question": "In AJO, what is the purpose of 'Capping' for external data source calls?",
+      "options": [
+        "Limiting the maximum size of data payloads returned by external APIs",
+        "Limiting the number of calls per second to prevent overloading the external data source",
+        "Setting a maximum number of field groups per external data source for management",
+        "Capping the maximum latency threshold before an external data source call times out"
+      ],
+      "correct": 1,
+      "explanation": "Capping for External Data Sources limits the rate of API calls per second, preventing AJO from overwhelming the external system during high-volume journey executions. When the cap is reached, additional calls are discarded rather than queued. This is especially important for third-party APIs that have their own rate limits and may charge per-request fees."
+    },
+    {
+      "id": 249,
+      "question": "What is the purpose of 'Basic' authentication in AJO External Data Source configuration?",
+      "options": [
+        "A simplified configuration mode for beginner users that auto-populates common settings",
+        "HTTP Basic Auth — passing a username and password encoded in the Authorization header",
+        "A basic API key implementation using only a single parameter",
+        "The default authentication mode that AJO uses when no other auth is specified"
+      ],
+      "correct": 1,
+      "explanation": "Basic authentication for AJO External Data Sources implements standard HTTP Basic Authentication — the username and password are Base64-encoded and passed in the `Authorization: Basic <credentials>` header with each API request. This is the standard authentication mechanism for many REST APIs that don't use OAuth or API keys."
+    },
+    {
+      "id": 250,
+      "question": "After configuring an External Data Source in AJO, what is the next step to make it usable in journey conditions?",
+      "options": [
+        "The data source must be reviewed and approved by an AJO admin before it can be used",
+        "Save the data source — it is then configured and ready to be used in journeys",
+        "Activate the data source to a specific sandbox environment for testing",
+        "Create a corresponding dataset in AEP to store the retrieved data"
+      ],
+      "correct": 1,
+      "explanation": "After completing all External Data Source configuration steps (name, URL, authentication, field groups, parameters) in AJO, clicking 'Save' makes the data source immediately configured and available for use in journeys. There is no additional activation step — saved data sources can be referenced in journey conditions and personalization expressions."
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Sparkles, LogOut, User, List, Menu, X, Search } from 'lucide-react';
+import { Sparkles, LogOut, User, List, Menu, X, Search, BookOpen } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { Avatar } from '../ui/Avatar';
 import { UserSearchDropdown } from '../search/UserSearchDropdown';
@@ -73,6 +73,18 @@ export function Navbar() {
             </div>
           )}
 
+          {user && (
+            <a
+              href="/aep-quiz/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-black/[0.04] rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 flex-shrink-0 z-10"
+            >
+              <BookOpen size={15} />
+              Practice Test
+            </a>
+          )}
+
           {user ? (
             <>
               <button
@@ -134,6 +146,10 @@ export function Navbar() {
                     <User size={15} className="text-stone-400" />
                     Profile
                   </Link>
+                  <a href="/aep-quiz/index.html" target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-stone-700 hover:bg-black/[0.04] hover:text-stone-900 transition-colors">
+                    <BookOpen size={15} className="text-stone-400" />
+                    AJO Practice Test
+                  </a>
                   <div className="my-1 border-t border-black/[0.06]" />
                   <button onClick={() => { setMenuOpen(false); void handleLogout(); }} className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-500/10 transition-colors">
                     <LogOut size={15} />
@@ -208,6 +224,16 @@ export function Navbar() {
                   <User size={16} className="text-stone-400" />
                   Profile
                 </Link>
+                <a
+                  href="/aep-quiz/index.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-3 text-sm text-stone-700 hover:bg-black/[0.04] hover:text-stone-900 transition-colors"
+                >
+                  <BookOpen size={16} className="text-stone-400" />
+                  AJO Practice Test
+                </a>
                 <div className="my-1 border-t border-black/[0.06]" />
                 <button
                   onClick={() => { setMobileOpen(false); void handleLogout(); }}

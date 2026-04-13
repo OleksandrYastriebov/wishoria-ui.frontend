@@ -1,0 +1,626 @@
+{
+  "title": "AJO Channels — Email, SMS, Push, In-App & Web",
+  "questions": [
+    {
+      "id": 301,
+      "question": "A marketing team needs to send a transactional order-confirmation email in AJO. They notice the email surface configuration requires a 'PTR record'. What is a PTR record and why is it critical for email deliverability?",
+      "options": [
+        "A PTR (Pointer) record maps a domain name to an IP address — it's used for domain authentication alongside DKIM",
+        "A PTR (Pointer) record maps a sending IP address back to a domain name (reverse DNS) — ISPs use it to verify the sender's legitimacy and reject mail from IPs with no PTR",
+        "A PTR record is an AJO-specific configuration that links a message preset to a specific sending IP pool",
+        "A PTR record is a DNS TXT record that authorizes AJO to send email on behalf of a domain, similar to SPF"
+      ],
+      "correct": 1,
+      "correctVariants": [
+        "A PTR record enables reverse DNS lookup — it proves the sending IP 'claims' a hostname, which inbox providers use as a spam signal. Without it, many ISPs will reject or junk your email."
+      ],
+      "explanation": "**PTR (Pointer) record** = reverse DNS. While an A record maps domain → IP, a PTR record maps IP → domain. ISPs check that the IP sending the email resolves back to a domain that matches the envelope-from domain.\n\n**Why it matters:**\n- Missing or mismatched PTR = immediate rejection by major ISPs (Gmail, Yahoo, Microsoft)\n- It's one of the first checks in email receiving MTAs\n- In AJO, each IP pool assigned to a channel surface must have corresponding PTR records configured in your DNS\n\n**Other email authentication layers:**\n| Record | What it does |\n|---|---|\n| SPF | Lists authorised IPs for a domain |\n| DKIM | Cryptographic signature on message headers |\n| DMARC | Policy: what to do when SPF/DKIM fail |\n| PTR | Reverse DNS — IP → domain |\n\nAll four are required for top-tier deliverability."
+    },
+    {
+      "id": 302,
+      "question": "In AJO Email channel configuration, what is the difference between a 'suppression list' and an 'exclusion list'?",
+      "options": [
+        "Suppression list is managed by the brand; exclusion list is managed by Adobe automatically based on bounce data",
+        "Suppression list is an AJO-level block list (hard bounces, spam complaints, manual unsubscribes) that prevents ALL sends; exclusion list is a journey/campaign-level filter applied during audience evaluation",
+        "Both terms describe the same feature — addresses excluded from sending; the naming depends on the channel",
+        "Suppression list applies only to transactional emails; exclusion list applies to marketing emails to honour opt-out preferences"
+      ],
+      "correct": 1,
+      "explanation": "**Suppression list** (global, system-level):\n- Maintained per sandbox in AJO\n- Addresses added automatically for: **hard bounces** (invalid address), **spam complaints** (ISP feedback loop), and manually by admins\n- Once on the suppression list, the address receives **no email at all** — the message is suppressed before it even reaches the MTA\n- Retention: hard bounce entries expire after **5 days** by default; spam complaints are permanent until manually removed\n\n**Exclusion (business) rules** (journey/campaign-level):\n- Applied during audience qualification\n- Examples: exclude VIP customers from promotional sends, exclude users in active service outage journeys\n- These are business-logic filters, not deliverability safety nets\n\n**Key exam point:** A suppression list entry takes precedence over *everything* — even a transactional message will be suppressed if the address has a spam complaint. You must explicitly use the `transactional` message category and configure your surface to override suppression for critical transactional messages."
+    },
+    {
+      "id": 303,
+      "type": "multi",
+      "question": "Which of the following events automatically add an email address to the AJO suppression list? (Select all that apply)",
+      "options": [
+        "Hard bounce — the receiving server permanently rejects the address as invalid",
+        "Soft bounce — a temporary delivery failure due to full mailbox",
+        "Spam complaint — the recipient marks the email as spam in their inbox client",
+        "Unsubscribe click — the recipient clicks the List-Unsubscribe header link",
+        "Manual addition by a system administrator in the AJO Suppression List UI"
+      ],
+      "correct": [0, 2, 4],
+      "explanation": "**AJO Suppression List — automatic triggers:**\n\n| Event | Added to suppression? | Why |\n|---|---|---|\n| Hard bounce | ✅ Yes | Permanent delivery failure — address doesn't exist |\n| Soft bounce | ❌ No | Temporary; AJO retries; only added after threshold |\n| Spam complaint | ✅ Yes | ISP feedback loop signals user complaint |\n| Unsubscribe click | ❌ No | Goes to consent/opt-out management, not suppression |\n| Admin manual add | ✅ Yes | Direct UI or API addition |\n\n**Important distinction:** Unsubscribes update the **consent profile attribute** (`consents.marketing.email.val = 'n'`), which blocks future marketing sends via audience qualification — but the address is NOT added to the suppression list. Suppression is for deliverability issues; consent is for regulatory compliance (GDPR/CAN-SPAM)."
+    },
+    {
+      "id": 304,
+      "question": "Your email campaign in AJO shows a high 'Soft Bounce' rate. What is AJO's default retry behavior for soft bounces?",
+      "options": [
+        "AJO retries soft bounces once after 1 hour, then marks the address as suppressed",
+        "AJO retries soft bounced messages for up to 3.5 days (84 hours) with exponential back-off before the message is marked as failed",
+        "AJO does not retry soft bounces — it logs the event and notifies the campaign owner",
+        "AJO retries soft bounces indefinitely until the message TTL configured in the channel surface expires"
+      ],
+      "correct": 1,
+      "correctVariants": [
+        "AJO uses a 3.5-day retry window (84 hours) with exponential back-off for soft bounces — industry standard for transient delivery failures"
+      ],
+      "explanation": "**AJO Email Retry Logic:**\n\n- **Soft bounce** = temporary failure (mailbox full, server temporarily unavailable, rate-limit at receiving server)\n- **Retry window:** up to **3.5 days (84 hours)** — this matches the industry-standard email RFC recommendation\n- **Strategy:** exponential back-off (attempts get further apart over time to avoid hammering the receiving server)\n- After 84 hours without successful delivery, the message is **permanently failed** and the event is logged\n\n**Hard bounce** (permanent failure): no retry — the address is immediately added to the suppression list.\n\n**Exam tip:** The 3.5-day figure is the *maximum* retry window. The channel surface configuration also has a **TTL (Time-to-Live)** setting that can shorten this for time-sensitive messages (e.g., OTP codes should have a TTL of minutes, not days)."
+    },
+    {
+      "id": 305,
+      "question": "A company is preparing to send emails from a brand-new IP address. Why is 'IP Warmup' necessary and what is the recommended approach in AJO?",
+      "options": [
+        "IP warmup is required by law in GDPR regions; it means gradually revealing the sending IP to consent management systems over 30 days",
+        "New IPs have no sending reputation — ISPs apply strict throttling. Warmup gradually increases send volume to build a positive reputation before full-scale sending",
+        "IP warmup in AJO is an automated process that tests email templates for rendering issues across 50+ email clients before launch",
+        "Warmup is only needed for dedicated IPs; shared IPs already have established reputation and can send at full volume immediately"
+      ],
+      "correct": 1,
+      "explanation": "**IP Warmup — Why it matters:**\n\nISPs (Gmail, Yahoo, Outlook) track the sending reputation of every IP address. A brand-new IP has **zero reputation** — ISPs assume unknown IPs are potential spammers and apply aggressive rate limits or junk-folder placement.\n\n**Warmup Plan (typical schedule):**\n| Day range | Daily volume |\n|---|---|\n| Days 1-3 | 500–2,000 |\n| Days 4-7 | 5,000–10,000 |\n| Week 2 | 25,000–50,000 |\n| Week 3+ | 100,000+ |\n\n**AJO Warmup features:**\n- **IP Warmup Plan** feature in AJO allows you to configure a structured ramp-up schedule\n- You define **phases** with target volumes and ISP priority tiers\n- AJO automatically caps daily sends per phase and selects **most-engaged** subscribers first (highest open/click history) to build positive signals\n\n**Best practice:** Always send to your most engaged segment first during warmup — positive engagement signals (opens, clicks) build reputation faster than neutral non-engagement."
+    },
+    {
+      "id": 306,
+      "question": "In AJO, what is the purpose of the 'List-Unsubscribe' header and which two methods does it support?",
+      "options": [
+        "List-Unsubscribe is a custom AJO header that tracks unsubscribe events in the Journey reporting dataset; it supports GET and POST methods",
+        "List-Unsubscribe is an email standard header that lets email clients show a native Unsubscribe button; AJO supports mailto: (email-based) and https: (one-click URL) methods",
+        "List-Unsubscribe is only supported in transactional emails for GDPR compliance and uses a single POST method to the AJO consent endpoint",
+        "List-Unsubscribe is deprecated in AJO in favour of in-email unsubscribe links managed through the personalisation editor"
+      ],
+      "correct": 1,
+      "explanation": "**List-Unsubscribe header** is an email RFC standard (RFC 2369 & RFC 8058) that email clients like Gmail and Apple Mail use to render a native **Unsubscribe** button in the interface — separate from any link in the email body.\n\n**Two supported methods:**\n\n| Method | Mechanism |\n|---|---|\n| `mailto:` | Client sends an email to a specified address to trigger unsubscribe |\n| `https:` (one-click POST) | RFC 8058 — client sends an HTTP POST directly; no redirect page needed |\n\n**Why it matters for deliverability:**\n- Gmail requires `List-Unsubscribe-Post` (one-click) header for bulk senders (>5,000/day) since **February 2024**\n- Yahoo also enforces this requirement\n- Without it, bulk sends risk deliverability penalties\n\n**AJO configuration:** Enable \"One-click opt-out\" in the email surface settings. AJO automatically injects the `List-Unsubscribe` and `List-Unsubscribe-Post` headers with a managed endpoint that updates the profile's consent attribute."
+    },
+    {
+      "id": 307,
+      "question": "A mobile marketing team in AJO wants to send SMS messages via Twilio. A customer replies 'STOP' to an SMS. What happens in AJO?",
+      "options": [
+        "AJO logs the STOP reply as an inbound message event but takes no automatic action — the brand must manually process opt-outs",
+        "AJO receives the inbound STOP keyword via the Twilio webhook, automatically updates the profile's SMS consent to opted-out, and no further SMS messages are sent to that number",
+        "The STOP keyword triggers a journey exit event that removes the customer from all active journeys globally",
+        "AJO forwards the STOP reply to the Data Lake as an Experience Event with eventType = 'sms.optOut' for downstream processing"
+      ],
+      "correct": 1,
+      "explanation": "**AJO SMS Opt-Out (Inbound keyword handling):**\n\nAJO SMS providers (Sinch, Twilio, Infobip) are configured with **inbound message webhooks**. When a customer replies with a keyword, AJO processes it automatically:\n\n| Keyword | Action |\n|---|---|\n| STOP / STOPALL / UNSUBSCRIBE / CANCEL / END / QUIT | Opts out — sets `consents.marketing.sms.val = 'n'` |\n| START / YES | Opts back in — sets `consents.marketing.sms.val = 'y'` |\n| HELP / INFO | Sends a configured help message |\n\n**Important:** CTIA (US) and carrier regulations **require** automatic opt-out processing for STOP. This is a legal requirement, not just a best practice.\n\n**Profile update:** The opt-out updates the Real-Time Customer Profile consent attributes in near-real-time, preventing future SMS sends during audience qualification.\n\n**Exam tip:** Inbound keywords are case-insensitive and the list can be customised per channel surface for non-English markets."
+    },
+    {
+      "id": 308,
+      "question": "What are the character limits for a standard SMS message, and how does AJO handle messages that exceed a single SMS length?",
+      "options": [
+        "Standard SMS is limited to 160 GSM-7 characters or 70 Unicode characters; AJO truncates messages that exceed this limit",
+        "Standard SMS is limited to 160 GSM-7 characters or 70 Unicode characters; longer messages are split into concatenated SMS segments (each up to 153 GSM-7 or 67 Unicode characters to allow for header)",
+        "AJO SMS has no character limit because it uses MMS by default for messages over 160 characters",
+        "Standard SMS is limited to 256 characters; exceeding this limit causes AJO to switch to email channel automatically"
+      ],
+      "correct": 1,
+      "explanation": "**SMS character encoding and segmentation:**\n\n| Encoding | Max per segment | Max per concatenated part |\n|---|---|---|\n| GSM-7 (standard Latin characters) | 160 chars | 153 chars |\n| Unicode/UCS-2 (emojis, non-Latin scripts) | 70 chars | 67 chars |\n\n**Why concatenated parts are smaller:** The UDH (User Data Header) for concatenation takes 7 bytes (GSM-7) or 3 characters (Unicode), reducing the available payload per part.\n\n**Cost implications:** Each SMS segment is billed separately. A 400-character GSM-7 message = 3 SMS segments = 3x the cost.\n\n**AJO behaviour:**\n- AJO's SMS editor shows a **character counter** and segment count in real time\n- Messages are automatically concatenated — no manual splitting needed\n- Using a single emoji can flip the encoding from GSM-7 to Unicode, doubling the segment count for long messages\n\n**Exam tip:** Common special characters that force Unicode: emojis (📱), smart quotes (\u201c\u201d), non-breaking spaces, and many brand trademark symbols (®, ™)."
+    },
+    {
+      "id": 309,
+      "question": "In AJO Push Notifications, what is the difference between APNs and FCM, and which credential types does AJO require for each?",
+      "options": [
+        "APNs (Apple) uses an API key; FCM (Google) uses a p8 certificate — both are configured per mobile app in AJO",
+        "APNs (Apple Push Notification service) uses either a p8 key file + Key ID + Team ID (token-based) or a p12 certificate; FCM (Firebase Cloud Messaging) uses a Server Key (legacy) or a service account JSON (v1 API)",
+        "Both APNs and FCM use OAuth 2.0 Bearer tokens; the difference is only in the endpoint URL",
+        "APNs requires a Developer Certificate from Apple Developer Portal; FCM requires a Google Cloud project ID only"
+      ],
+      "correct": 1,
+      "explanation": "**Push platform credentials in AJO:**\n\n**APNs (iOS / Apple):**\n| Method | Credentials needed |\n|---|---|\n| Token-based (recommended) | .p8 private key file, Key ID, Team ID, Bundle ID |\n| Certificate-based (legacy) | .p12 certificate + password |\n\nToken-based is preferred — certificates expire annually; p8 keys do not expire.\n\n**FCM (Android / Google Firebase):**\n| Method | Credentials needed |\n|---|---|\n| HTTP v1 API (recommended) | Service account JSON file from Google Cloud Console |\n| Legacy HTTP API (deprecated) | Server Key string |\n\n**Google deprecated the Legacy FCM API in June 2023** — all new AJO push implementations should use FCM HTTP v1 with a service account JSON.\n\n**AJO configuration:** App surfaces are created in AJO under **Administration → Channels → App surfaces**. Each surface is tied to a bundle ID (iOS) or package name (Android) and holds the platform credentials securely.\n\n**Exam tip:** You configure separate app surfaces for development (APNs Sandbox) and production (APNs Production) environments."
+    },
+    {
+      "id": 310,
+      "question": "What is a 'Silent Push' notification in AJO, and what is its primary use case?",
+      "options": [
+        "A silent push is a push notification where the sound is disabled but a badge count is still updated on the app icon",
+        "A silent push is a push notification with no visible alert, sound, or badge — it wakes the app in the background to perform a task such as refreshing content or syncing data",
+        "A silent push is a push notification that bypasses Do Not Disturb mode on iOS and Android for critical alerts",
+        "A silent push is an AJO-specific push type that delivers personalized content to the app's local cache without triggering a notification"
+      ],
+      "correct": 1,
+      "explanation": "**Silent Push (Background Push):**\n\nA silent push notification has no visible UI component — no alert, no sound, no badge. Its sole purpose is to **wake the app in the background** and signal it to perform a task.\n\n**Common use cases:**\n- Refresh app content (news feeds, sports scores) before the user opens the app\n- Sync local data with the backend\n- Trigger SDK data collection (update profile data, process pending events)\n- Pre-load personalised content for a seamless experience when the user opens the app\n\n**iOS implementation:**\n- Requires `content-available: 1` flag in the APNs payload\n- App must have `Background App Refresh` capability enabled\n- iOS throttles silent pushes aggressively (especially when battery is low)\n\n**Android implementation:**\n- Uses FCM `data` message (no `notification` object) — app handles it in `FirebaseMessagingService.onMessageReceived()`\n\n**AJO configuration:** In the push content editor, select **Silent Notification** type. Note: silent pushes cannot contain a title or body — attempting to add them converts it to a visible notification."
+    },
+    {
+      "id": 311,
+      "question": "A mobile team wants to create an In-App message in AJO that appears when a user opens the app's checkout screen. Which In-App trigger should they configure?",
+      "options": [
+        "Schedule-based trigger — set a delivery schedule for when the checkout screen is typically visited",
+        "Event-based trigger — configure a trigger rule using the XDM event type that fires when the app reports screen view events matching the checkout screen name",
+        "Segment-based trigger — create a segment of users who have visited the checkout screen and send to that segment",
+        "Profile-based trigger — use a profile attribute 'lastViewedScreen = checkout' as the display condition"
+      ],
+      "correct": 1,
+      "explanation": "**AJO In-App Message Triggers:**\n\nIn-App messages are triggered **client-side** by SDK events. When the AJO Mobile SDK (Adobe Experience Platform Mobile SDK with Messaging extension) receives a message from AJO, it stores it locally and evaluates trigger rules as events occur.\n\n**Trigger types:**\n| Type | Example |\n|---|---|\n| App launch | `Application Foreground` event |\n| Screen view | `screenName = 'Checkout'` |\n| Custom event | `eventType = 'addToCart'` |\n| Profile attribute | Show once per session if `loyaltyTier = 'Gold'` |\n\n**For checkout screen:**\nConfigure the trigger rule: `eventType = 'application.screenView' AND screenName = 'checkout'`\n\n**How it works technically:**\n1. Campaign is published in AJO → message payload delivered to device via silent push or on next SDK sync\n2. SDK caches the message payload locally\n3. On each `trackAction` or `trackState` call, SDK evaluates cached trigger rules\n4. Rule matches → message is displayed in-app without any network call\n\n**Exam tip:** In-App messages work **offline** because evaluation happens locally. This is a key difference from push notifications which require a network connection to deliver."
+    },
+    {
+      "id": 312,
+      "question": "What are the four layout types available for In-App messages in AJO, and which one covers the entire device screen?",
+      "options": [
+        "Banner, Card, Modal, Takeover — Takeover covers the entire screen",
+        "Banner, Card, Modal, Fullscreen — Fullscreen covers the entire screen",
+        "Toast, Popup, Overlay, Fullscreen — Fullscreen covers the entire screen",
+        "Notification, Alert, Sheet, Immersive — Immersive covers the entire screen"
+      ],
+      "correct": 1,
+      "correctVariants": [
+        "The four types are Banner (top/bottom strip), Card (dismissible card), Modal (centered dialog with overlay), and Fullscreen (complete screen takeover)"
+      ],
+      "explanation": "**AJO In-App Message Layout Types:**\n\n| Layout | Description | Best for |\n|---|---|---|\n| **Banner** | Thin strip at top or bottom of screen; auto-dismisses | Subtle notifications, status updates |\n| **Card** | Dismissible card (usually swipe-away) | Feature announcements, tips |\n| **Modal** | Centered dialog with dark overlay; requires user action | Consent prompts, important alerts |\n| **Fullscreen** | Takes over the entire screen | Onboarding, major promotions, surveys |\n\n**Display frequency settings** (applies to all types):\n- Show every time the trigger fires\n- Show once per session\n- Show once per campaign lifetime\n- Show N times (configurable cap)\n\n**Custom HTML option:** AJO also supports a **Custom HTML** layout for fully branded in-app experiences — you provide raw HTML/CSS/JavaScript that the SDK renders in a WKWebView (iOS) or WebView (Android).\n\n**Exam tip:** The **Custom HTML** layout is the only type that supports JavaScript execution inside the in-app message, enabling interactive content like embedded videos or animated carousels."
+    },
+    {
+      "id": 313,
+      "question": "In AJO Web Channel, what is the difference between the 'Visual Editor' and the 'Code Editor' for creating web campaigns?",
+      "options": [
+        "Visual Editor modifies the DOM using CSS overrides only; Code Editor allows JavaScript injection",
+        "Visual Editor uses WYSIWYG point-and-click to modify page elements without coding; Code Editor accepts raw HTML/CSS/JS changes — giving full control but requiring technical knowledge",
+        "Visual Editor is for desktop web only; Code Editor is required for mobile web and single-page applications",
+        "Both editors produce the same output; the difference is only in the user interface for the marketer"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Web Channel — Editor comparison:**\n\n**Visual Editor (WYSIWYG):**\n- Point-and-click interface using the AJO browser extension\n- Modify text, images, buttons, colours, and hide/show components\n- Move elements, replace HTML, add components from a library\n- No coding required — ideal for marketers\n- Changes are applied as DOM mutations by the AEP Web SDK (`alloy.js`) at page load\n\n**Code Editor:**\n- Write raw HTML, CSS, and JavaScript\n- Full control over any page element\n- Can insert personalisation tokens (`{{profile.firstName}}`)\n- Required for: complex SPAs, shadow DOM elements, dynamically rendered content not selectable by Visual Editor\n\n**Technical mechanism:**\nBoth editors generate **modification objects** stored in the AJO campaign. On page load, `alloy.js` calls `sendEvent({ renderDecisions: true })`, AJO Edge returns the modifications, and the SDK applies them to the DOM — all happening in milliseconds to avoid content flicker.\n\n**Surface URIs for Web:**\n```\nweb://www.example.com/checkout       (exact page)\nweb://www.example.com/product/*      (wildcard — all product pages)\n```\n\n**Exam tip:** AJO Web channel requires the **AEP Web SDK (alloy.js)** to be deployed on the page. It does NOT work with the legacy Adobe Target `at.js` library."
+    },
+    {
+      "id": 314,
+      "question": "What is a 'Channel Surface' (formerly 'Message Preset') in AJO and what does it configure?",
+      "options": [
+        "A channel surface is a visual template for a specific channel type — it defines the layout and style that all messages of that type will use",
+        "A channel surface is an administrative configuration entity that bundles sending infrastructure settings (IP pools, subdomains, API credentials) with delivery behaviour settings (retry logic, TTL, opt-out) for a specific channel and use case",
+        "A channel surface is a permission scope that controls which marketing teams can send on which channels",
+        "A channel surface is a data mapping configuration that translates AEP profile attributes to channel-specific fields"
+      ],
+      "correct": 1,
+      "explanation": "**Channel Surface (Message Preset):**\n\nA channel surface is the **bridge between your sending infrastructure and your messages**. Every message in AJO must reference a channel surface.\n\n**What a channel surface configures (by channel):**\n\n**Email surface:**\n- Sending subdomain (e.g., `mail.brand.com`)\n- IP pool assignment\n- BCC email address\n- Reply-to address\n- Message type: **Marketing** vs **Transactional**\n- Opt-out configuration (one-click, custom landing page)\n- Email retry settings and TTL\n\n**SMS surface:**\n- Provider (Sinch / Twilio / Infobip)\n- API credentials reference\n- Short code or long code number\n- Inbound keyword handling\n- MMS enablement\n\n**Push surface:**\n- App surface reference (APNs/FCM credentials)\n- iOS/Android push priority\n\n**Key design principle:** Surfaces decouple **what to send** (the message content) from **how to send it** (infrastructure). This allows:\n- Same message used with different surfaces for transactional vs marketing\n- Infrastructure changes without editing individual messages\n\n**Exam tip:** Only users with the **Manage Channel Surfaces** permission can create/edit surfaces. This is typically an IT/delivery ops role, not a marketer."
+    },
+    {
+      "id": 315,
+      "question": "A journey in AJO sends a Push notification followed by an Email 24 hours later. The customer opts out of email between the push send and the email send. What happens?",
+      "options": [
+        "The email is sent regardless because the consent was valid at journey entry time",
+        "The email is blocked — AJO checks consent at the time of message send, not at journey entry, so a consent change mid-journey is respected",
+        "The journey pauses at the email step and waits for the customer to re-opt-in for 30 days before failing",
+        "AJO sends the email but attaches an automatic re-opt-in request to the message"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Consent Check Timing:**\n\nAJO evaluates **consent at the moment of message delivery**, not at journey entry. This is the legally correct behaviour under GDPR and other privacy frameworks.\n\n**Journey execution with mid-journey opt-out:**\n```\nJourney entry (consent = ✅)\n  ↓\nPush sent (consent = ✅) → Delivered\n  ↓\n[Customer opts out of email at T+2h]\n  ↓\nWait 24h\n  ↓\nEmail check (consent = ❌) → Message SKIPPED\n  ↓\nJourney continues to next step (or ends)\n```\n\n**What 'skipped' means:** The profile moves to the next action in the journey without an error. The consent skip is recorded in the Journey Step Events dataset.\n\n**Channel-level vs profile-level consent:**\n- Each channel has its own consent attribute: `consents.marketing.email.val`, `consents.marketing.sms.val`, `consents.marketing.push.val`\n- Opt-out from email does NOT affect push or SMS consent\n\n**Exam tip:** For transactional messages (password resets, order confirmations), the channel surface message type is set to **Transactional**, which bypasses marketing consent checks. GDPR allows this for service-related messages under 'legitimate interest'."
+    },
+    {
+      "id": 316,
+      "question": "In AJO, what is the 'Frequency Capping' feature and at what levels can it be configured?",
+      "options": [
+        "Frequency capping limits the number of messages sent per hour from an IP pool to prevent blacklisting; configured at the channel surface level only",
+        "Frequency capping limits how many messages a specific profile receives within a time window; can be configured at the campaign level, journey level, and globally via Business Rules",
+        "Frequency capping limits the number of concurrent journeys a profile can be in; configured in the Journey Properties settings",
+        "Frequency capping is a deliverability setting that throttles the send rate to warm up new IP pools; configured in the IP Warmup Plan"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Frequency Capping — levels and scope:**\n\n**1. Business Rules (global frequency rules):**\n- Defined in **Administration → Business Rules**\n- Apply across multiple journeys and campaigns\n- Example: 'A profile can receive max 3 marketing emails per week across ALL campaigns'\n- Channels: Email, Push, SMS, In-App\n- Time windows: Daily, Weekly, Monthly, Lifetime\n\n**2. Campaign-level capping:**\n- Set directly on a campaign (e.g., 'Show this In-App message max 2 times per session')\n- Local to that campaign only\n\n**3. Journey-level re-entry:**\n- Journey re-entry settings prevent the same profile from entering a journey more than N times per window\n- Not strictly 'frequency capping' but achieves similar outcome\n\n**Business Rules priority:**\n```\nGlobal Business Rule cap: 5 emails/week\nCampaign A sends 3 → remaining budget: 2\nCampaign B tries to send 3 → only 2 delivered, 1 suppressed\n```\n\n**Exam tip:** Frequency capping via Business Rules is evaluated in **real-time at message send time**. If the cap is already met, the message is quietly skipped and the profile continues through the journey. The cap counter resets at the boundary of the configured time window (midnight UTC for daily caps)."
+    },
+    {
+      "id": 317,
+      "question": "What is AJO's 'Direct Mail' channel and what file format does it output?",
+      "options": [
+        "Direct Mail in AJO sends physical mail via an integrated postal service API; output format is PDF",
+        "Direct Mail in AJO generates an extraction file (CSV) containing the personalised audience data that is sent to a third-party direct mail vendor for physical printing and delivery",
+        "Direct Mail is a legacy email channel for bulk SMTP delivery via dedicated IPs; output is an MIME-encoded email batch file",
+        "Direct Mail is an AJO channel for sending documents (invoices, statements) via Adobe Document Cloud; output is PDF with e-signature capability"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Direct Mail Channel:**\n\nAJO does **not** print or physically deliver mail. It acts as the **orchestration and extraction layer**:\n\n1. **Define the audience** — Journey or Campaign audience qualification\n2. **Create the extraction file** — configure columns (personalisation fields from profile)\n3. **Configure routing** — where to send the file (SFTP, Amazon S3, Azure Blob)\n4. **Send schedule** — once on campaign launch, or scheduled\n5. **Third-party vendor** receives the CSV and handles printing, personalisation, and physical delivery\n\n**File output:** CSV (Comma-Separated Values)\n\n**Column mapping:**\n- Map XDM profile attributes to columns\n- Apply transformations (e.g., format date, concatenate first/last name)\n- Include personalisation tokens for variable content\n\n**Routing configuration:**\n- File routing destination must be configured in channel surfaces\n- Supported destinations: SFTP server (custom or Adobe-managed), Amazon S3\n\n**Use cases:** Loyalty programme mailers, seasonal catalogues, overdue payment notices, regulated financial/healthcare documents.\n\n**Exam tip:** Direct Mail is the only AJO channel that does NOT send anything to the end customer directly — AJO is purely the data/orchestration layer. Physical delivery is always via an external vendor."
+    },
+    {
+      "id": 318,
+      "question": "In AJO Email, what is the 'BCC' (Blind Carbon Copy) feature used for, and what is an important limitation?",
+      "options": [
+        "BCC allows sending a copy of every outbound email to a compliance archive address; limitation is it counts as an additional send against the contract volume",
+        "BCC sends a copy of each email to a designated address for archival/compliance; limitation is it only works with transactional emails, not marketing emails",
+        "BCC allows marketers to secretly copy themselves on customer emails to review personalisation; limitation is only one BCC address per campaign",
+        "BCC is an Adobe-managed email archive feature that stores a copy in Adobe's cloud; limitation is 90-day retention only"
+      ],
+      "correct": 0,
+      "explanation": "**AJO Email BCC:**\n\n**Purpose:** Send an exact copy of each outbound email to a designated archive/compliance mailbox. Common uses:\n- **Regulatory compliance:** Financial services, healthcare — some regulations require retention of all customer communications\n- **Legal discovery:** Archived emails as evidence\n- **QA auditing:** Review exactly what customers received\n\n**Configuration:** Set the BCC address at the **channel surface level** (applies to all emails using that surface) or override at the **message level**.\n\n**Important limitations:**\n1. **Volume counts:** Each BCC copy counts as an **additional email send** against your AJO contract volume (i.e., 1 customer email + 1 BCC = 2 emails billed)\n2. **One BCC address:** Only one BCC address per channel surface\n3. **No personalisation:** The BCC copy is the exact rendered email — you cannot customise what goes to the BCC address\n4. **Compliance responsibility:** AJO does not manage the BCC mailbox — you must maintain your own email archive solution\n\n**Exam tip:** Because BCC doubles your send volume billing, it's often used selectively — only on high-value transactional messages or channels where legal retention is required."
+    },
+    {
+      "id": 319,
+      "question": "What is the role of 'Subdomains' in AJO Email channel and what are the two delegation methods?",
+      "options": [
+        "Subdomains in AJO are URL shorteners for tracking links; two methods: custom domain and Adobe-managed domain",
+        "Subdomains are the sending domains used in the From address and for tracking links; two delegation methods: Full subdomain delegation (Adobe manages DNS) and CNAME delegation (brand retains DNS control)",
+        "Subdomains are required for DKIM signing only; two methods: automatic DKIM key rotation and manual key upload",
+        "Subdomains are virtual send domains that isolate campaign emails from transactional emails; two methods: dedicated subdomain and shared subdomain pool"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Subdomains:**\n\nA subdomain (e.g., `mail.brand.com`) is used for:\n- **From address:** `noreply@mail.brand.com`\n- **Tracking pixel domain:** Image hosted at `img.mail.brand.com`\n- **Click-tracking domain:** Links rewritten to `click.mail.brand.com`\n- **Unsubscribe landing page domain**\n\n**Two delegation methods:**\n\n| Method | How it works | Who manages DNS |\n|---|---|---|\n| **Full subdomain delegation** | Brand delegates entire subdomain to Adobe's nameservers via NS records | Adobe |\n| **CNAME delegation** | Brand adds specific CNAME records pointing subdomain components to Adobe infrastructure | Brand |\n\n**Full delegation** = simpler for brand (Adobe handles all records), but requires giving Adobe nameserver control.\n\n**CNAME delegation** = more work to set up (multiple CNAME records), but brand retains full DNS control — preferred by security-conscious enterprises.\n\n**After delegation:**\n- AJO automatically creates and manages DKIM keys\n- PTR records are set up on the sending IPs\n- SPF records are configured\n- The subdomain goes through domain authentication checks before being made available\n\n**Exam tip:** You cannot use a root domain (e.g., `brand.com`) — you must use a subdomain. This protects your primary domain's reputation from email sending issues."
+    },
+    {
+      "id": 320,
+      "type": "multi",
+      "question": "Which of the following are valid AJO SMS providers that can be configured in channel surfaces? (Select all that apply)",
+      "options": [
+        "Sinch",
+        "Twilio",
+        "Infobip",
+        "Vonage (Nexmo)",
+        "Amazon SNS"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "**AJO Supported SMS Providers (native integrations):**\n\n| Provider | Status |\n|---|---|\n| **Sinch** | ✅ Native AJO integration |\n| **Twilio** | ✅ Native AJO integration |\n| **Infobip** | ✅ Native AJO integration |\n| Vonage (Nexmo) | ❌ Not natively supported (as of current release) |\n| Amazon SNS | ❌ Not a native AJO SMS provider |\n\n**Custom provider option:** AJO also supports **custom SMS API providers** via the 'Custom' provider type — you configure the API endpoint, authentication, and request/response mapping. This allows integration with regional providers like Vonage, MessageBird, or local carriers.\n\n**Configuration location:** Administration → Channels → SMS configurations\n\n**What each provider integration requires:**\n- API credentials (Account SID + Auth Token for Twilio; API key for Sinch/Infobip)\n- Phone number / short code / long code configuration\n- Inbound webhook URL (set in the provider dashboard to point to AJO's endpoint for receiving replies)\n\n**Exam tip:** Inbound SMS handling (STOP/START/HELP keywords) requires the webhook to be correctly configured in the provider's dashboard — AJO provides the webhook URL in the API credentials configuration screen."
+    },
+    {
+      "id": 321,
+      "question": "In AJO, what is the 'Content Experiment' (A/B Testing) feature and how does it work for campaigns?",
+      "options": [
+        "Content Experiment allows testing different audience segments — variant A gets one segment, variant B gets another, to compare which audience converts better",
+        "Content Experiment allows testing multiple content variants (A/B/n) by randomly splitting the campaign audience into groups, each receiving a different variant — the winning variant is determined by configured success metrics",
+        "Content Experiment tests different delivery times — variant A sends at 9am, variant B at 6pm — to find the optimal send time",
+        "Content Experiment is a multivariate test of channel combinations — variant A uses email only, variant B uses email + push, to find the best channel mix"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Content Experiment (A/B Testing):**\n\n**How it works:**\n1. Create a Campaign and enable **Content Experiment**\n2. Define 2–10 treatment variants (different content, subject lines, images, CTAs, or entire offer structures)\n3. Define a **holdout group** (optional — receives no message) for measuring true lift\n4. Configure audience split percentages (e.g., 33%/33%/34%)\n5. Set **success metric** and measurement window\n\n**What can be tested:**\n- Email: subject line, preheader, body content, CTA, send time\n- Push: title, body, image, deep link\n- In-App: layout, content, offer\n- Entire treatments (different offers, different channels)\n\n**Success metrics:**\n| Metric | Use case |\n|---|---|\n| Unique opens | Subject line testing |\n| Unique clicks | CTA testing |\n| Custom conversion event | Purchase, signup, etc. |\n| Subscription changes | Opt-in rate testing |\n\n**Statistical confidence:**\nAJO calculates statistical lift and confidence intervals. Results dashboard shows winning variant with confidence level.\n\n**Exam tip:** The holdout group (control) counts against your licensed send volume even though no message is sent — because it's tracking that cohort's behaviour as a baseline for measurement."
+    },
+    {
+      "id": 322,
+      "question": "What is the AJO 'Content Template' feature and how does it benefit large marketing teams?",
+      "options": [
+        "Content Templates are pre-approved HTML files stored in Adobe Assets that marketers drag into the email editor",
+        "Content Templates are reusable, pre-designed message components (email layouts, fragments, full templates) that can be created by designers and referenced by marketers across multiple campaigns and journeys — ensuring brand consistency and reducing design duplication",
+        "Content Templates are AI-generated content suggestions that appear in the personalisation editor based on the campaign objective",
+        "Content Templates are channel surface configurations saved as templates to quickly bootstrap new channel setups with the same infrastructure settings"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Content Templates:**\n\n**Types:**\n| Type | Scope |\n|---|---|\n| **Full template** | Complete email or push layout — marketer swaps out text/images |\n| **Fragment** | Reusable component (header, footer, CTA block) — embedded in multiple templates |\n\n**Workflow benefits:**\n- Brand/design team creates master templates with locked brand elements\n- Marketing team selects the template when creating a message — only editable zones are unlocked\n- **Single source of truth:** Update a fragment (e.g., new legal footer) → automatically reflected in all messages using that fragment\n\n**Fragment types:**\n- **Visual fragment:** Designed component (image + text block, header bar)\n- **Expression fragment:** Reusable personalisation expression or code snippet (e.g., conditional logic that picks greeting based on language)\n\n**Governance:**\n- Templates have a **draft/live/archived** lifecycle\n- Locking capability: mark specific sections as non-editable (e.g., brand logo, legal disclaimer)\n\n**Exam tip:** Fragments are particularly powerful for **legal and compliance text** — when the legal team updates the disclaimer in the fragment, all live and future campaigns using it automatically include the updated language. No need to manually update each campaign."
+    },
+    {
+      "id": 323,
+      "question": "In AJO, what is 'Personalisation' using the Expression Editor and what language does it use?",
+      "options": [
+        "AJO personalisation uses JavaScript template literals (backtick strings) with XDM field references",
+        "AJO personalisation uses Handlebars.js syntax with profile attributes accessed via double curly braces",
+        "AJO personalisation uses Adobe's Personalisation Query Language (PQL) — the same language used for segment definitions",
+        "AJO personalisation uses Handlebars-inspired syntax rendered on Adobe's edge, allowing profile attributes, helper functions, conditional logic (if/else), loops, and Expression Fragments"
+      ],
+      "correct": 3,
+      "explanation": "**AJO Expression Editor — Personalisation Language:**\n\nAJO uses a **Handlebars-inspired template syntax** processed server-side (at the Edge) before message delivery.\n\n**Basic syntax:**\n```handlebars\nHello {{profile.person.name.firstName}}!\n\n{{#if profile.person.gender == \"male\"}}\n  Dear Mr. {{profile.person.name.lastName}}\n{{else}}\n  Dear {{profile.person.name.firstName}}\n{{/if}}\n```\n\n**Available data contexts:**\n| Context | What it provides |\n|---|---|\n| `profile.*` | Real-Time Customer Profile attributes |\n| `context.*` | Journey context (journey name, node name, timestamp) |\n| `segmentMembership.*` | Audience membership flags |\n| `offers.*` | Offer Decisioning results |\n\n**Helper functions:**\n```handlebars\n{{upperCase profile.person.name.firstName}}\n{{dateFormat context.journey.createdAt \"MM/DD/YYYY\"}}\n{{coalesce profile.homePhone profile.mobilePhone \"No phone\"}}\n```\n\n**Expression Fragments:** Reusable personalisation expressions stored in the Content Template Library — e.g., a complex language-detection conditional reused across all communications.\n\n**Exam tip:** Personalisation is evaluated at **send time**, not at journey entry — so if a profile attribute changes between journey entry and message send, the most current value is used in the message."
+    },
+    {
+      "id": 324,
+      "question": "What happens in AJO when a Push notification is sent to a profile whose device token has become invalid (e.g., the user uninstalled the app)?",
+      "options": [
+        "AJO retries the push for 72 hours assuming the token will become valid again",
+        "APNs/FCM returns an 'invalid token' or 'unregistered' error; AJO automatically marks the token as invalid and stops sending pushes to that device token — the profile's push token attribute is removed",
+        "AJO routes the message to the Email channel as a fallback if an email address exists on the profile",
+        "AJO flags the profile for re-engagement through the Re-Targeting Audience feature"
+      ],
+      "correct": 1,
+      "explanation": "**Invalid Push Token Handling:**\n\nWhen an app is uninstalled, the OS (iOS/Android) notifies the push platform:\n- **APNs** returns error code `410 Gone` or `BadDeviceToken`\n- **FCM** returns `UNREGISTERED` or `InvalidRegistration`\n\n**AJO behaviour:**\n1. Receives the error response from APNs/FCM\n2. **Automatically invalidates** the device push token on the profile\n3. No further pushes are sent to that token\n4. The push failure is logged as `pushNotificationNotDelivered` in the Journey Step Events\n\n**Why this matters:**\nSending to invalid tokens wastes volume, but more importantly, high invalid-token rates damage your app's push notification sender reputation — app stores track this metric.\n\n**Token refresh:**\nWhen the user reinstalls the app and launches it, the mobile SDK registers a **new token** and sends it to AJO via a `sendEvent` call with identity data. AJO links the new token to the existing profile via the ECID/CRMID.\n\n**Exam tip:** AJO does NOT automatically fall back to another channel when push fails. Multi-channel fallback must be explicitly modelled in the journey using a **Wait + Check push opt-in** branch pattern or by listening for the push failure event."
+    },
+    {
+      "id": 325,
+      "type": "multi",
+      "question": "Which of the following rich media capabilities are supported in AJO Push Notifications? (Select all that apply)",
+      "options": [
+        "Image attachments (JPEG/PNG) displayed below the notification text",
+        "Video autoplay in the expanded notification view",
+        "Custom notification sound files",
+        "Deep link URLs that open a specific screen in the app on tap",
+        "Interactive buttons (up to 3 action buttons with custom labels)"
+      ],
+      "correct": [0, 2, 3, 4],
+      "explanation": "**AJO Rich Push Capabilities:**\n\n| Feature | iOS (APNs) | Android (FCM) | Notes |\n|---|---|---|---|\n| **Image attachment** | ✅ | ✅ | JPEG/PNG/GIF; iOS requires Notification Service Extension |\n| Video autoplay | ❌ | ❌ | Not supported natively in push notifications |\n| **Custom sound** | ✅ | ✅ | Sound file must be bundled in the app |\n| **Deep link** | ✅ | ✅ | Universal links (iOS) / App Links (Android) |\n| **Action buttons** | ✅ (up to 4) | ✅ (up to 3) | Each button can have a label and deep link action |\n\n**iOS Image requirement:**\nA **Notification Service Extension** must be added to the app — this background extension downloads the image from the URL before the notification is displayed.\n\n**AJO configuration for rich push:**\n- Upload image to AJO Assets (Adobe Experience Manager) or reference an external URL\n- Action buttons configured in the push content editor: label, action type (deep link, dismiss, open URI)\n\n**Exam tip:** Video autoplay is NOT supported — this is a common wrong answer on exams. GIF images are technically supported but may not animate in all notification trays."
+    },
+    {
+      "id": 326,
+      "question": "In AJO, what is the 'Offer Decision' component and how does it integrate with push, email, and in-app messages?",
+      "options": [
+        "An Offer Decision is a segment condition that determines which push topic category a profile is subscribed to",
+        "An Offer Decision is an Offer Decisioning Engine call placed inside a message — the engine evaluates eligibility rules and ranking to return the best offer for that profile at render time",
+        "An Offer Decision is a journey branch condition that routes profiles to different journey paths based on their last purchase",
+        "An Offer Decision is a machine learning model trained on past campaign data to predict which product a user will buy"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Offer Decision in Messages:**\n\nAn **Offer Decision** is a reference to a Decision Management activity embedded inside message content. When the message is rendered for a specific profile, AJO's Decision Engine evaluates:\n1. **Eligibility rules:** Which offers in the activity is this profile eligible for?\n2. **Ranking:** Among eligible offers, which has the highest priority/AI-predicted relevance?\n3. **Capping:** Has this offer already been shown/accepted the maximum number of times?\n4. **Result:** Returns the top offer (or fallback offer if none qualify)\n\n**Integration in message content:**\n```handlebars\n{{#each offers.items}}\n  <img src=\"{{this.representations.[0].components.[0].content}}\" />\n  <p>{{this.characteristics.description}}</p>\n{{/each}}\n```\n\n**Channels where Offer Decisions work:**\n- ✅ Email (personalised offer block in body)\n- ✅ Push (offer title/image)\n- ✅ In-App (dynamic offer banner)\n- ✅ Web (personalised content zone)\n- ✅ SMS (offer code in message)\n\n**Key benefit:** One decision activity can power offers across all channels simultaneously — consistent next-best-offer logic regardless of the channel.\n\n**Exam tip:** If no offer qualifies (all capped or ineligible), the **fallback offer** is returned. If no fallback is configured, the placeholder in the message is left empty — so always configure a fallback."
+    },
+    {
+      "id": 327,
+      "question": "What is the 'Send-Time Optimisation' (STO) feature in AJO and how does it determine the best send time?",
+      "options": [
+        "STO is a manual A/B test where the marketer schedules multiple send waves at different times and compares open rates",
+        "STO is an Adobe Sensei AI feature that analyses each profile's historical email engagement patterns to predict the individual time within a defined window when they are most likely to open the message",
+        "STO is a frequency optimisation feature that spreads sends over 24 hours to avoid ISP throttling",
+        "STO uses timezone-based send scheduling — the marketer picks a local time and AJO adjusts delivery per recipient timezone"
+      ],
+      "correct": 1,
+      "explanation": "**Send-Time Optimisation (STO):**\n\n**How Adobe Sensei calculates optimal time:**\n1. Analyses the profile's **historical email engagement data** — open timestamps over the past 90 days\n2. Builds an individual engagement-probability curve for each hour of the day\n3. Selects the hour within the configured **optimisation window** with the highest predicted open probability\n\n**Configuration:**\n- Enable STO on email or push in the campaign/journey action settings\n- Define a **delivery window** (e.g., within the next 24 hours, within the next 7 days)\n- Profiles with insufficient historical data fall back to immediate send or a default time\n\n**STO vs Profile Timezone:**\n| Feature | What it does |\n|---|---|\n| **STO** | Finds the best hour based on individual history |\n| **Profile Timezone send** | Sends at the same local time across all timezones (e.g., 10am for everyone) |\n\nThese two features can be combined.\n\n**Exam tip:** STO requires a **data enrichment period** — profiles with fewer than 3 opens in the past 90 days don't have enough signal and fall back to immediate delivery. For new subscribers, STO won't activate until enough engagement history is collected."
+    },
+    {
+      "id": 328,
+      "question": "In AJO, what is a 'Journey Dry Run' and when should it be used?",
+      "options": [
+        "A Journey Dry Run is a test mode that sends messages to a single test profile without publishing the journey",
+        "A Journey Dry Run simulates journey execution with real profiles — all journey logic runs normally but no actual messages are sent, allowing validation of audience qualification, wait periods, and branching logic before going live",
+        "A Journey Dry Run is an automated journey validation that checks for configuration errors (missing surfaces, invalid conditions) before allowing publication",
+        "A Journey Dry Run sends messages to a dedicated test distribution list defined in the channel surface, isolating test sends from production traffic"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Journey Dry Run:**\n\n**What it does:**\n- Executes the journey with **real profile data** from the production sandbox\n- Processes audience qualification, conditions, wait periods (fast-forwarded), and branching\n- **Does NOT send any messages** — all message actions are simulated\n- **Does NOT update profile attributes** — write-back actions (update profile, consent updates) are also simulated\n\n**Why use it:**\n- Validate that the audience size entering the journey is as expected\n- Check that condition branches split the audience correctly (e.g., 60% Gold tier, 40% Silver tier)\n- Confirm wait period logic and exit conditions work as designed\n- Identify data quality issues (missing attributes causing unexpected branch routing)\n\n**Comparison with other test methods:**\n| Method | Real profiles | Messages sent | Profile updates |\n|---|---|---|---|\n| **Dry Run** | ✅ | ❌ | ❌ |\n| **Test Mode** | ❌ (test profiles only) | ✅ (to test profiles) | ❌ |\n| **Live** | ✅ | ✅ | ✅ |\n\n**Exam tip:** Dry Run is ideal for **event-triggered journeys** where you want to verify the entire logic flow without risking production message sends to real customers. Test Mode is better for checking actual message rendering and delivery."
+    },
+    {
+      "id": 329,
+      "question": "What is the maximum number of live journeys a single profile can be in simultaneously in AJO, and what happens when this limit is reached?",
+      "options": [
+        "A profile can be in a maximum of 5 live journeys simultaneously; additional journey entries are queued",
+        "A profile can be in a maximum of 50 live journeys simultaneously; additional entries beyond this are silently dropped",
+        "There is no hard limit on concurrent journeys per profile in AJO",
+        "The default limit is 50 concurrent journeys per profile, but this is configurable up to 100 by Adobe support"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Concurrent Journey Limit per Profile:**\n\n**Default limit: 50 live journeys per profile simultaneously.**\n\n**What happens when limit is reached:**\n- The profile attempts to enter journey #51\n- The entry is **silently rejected** — the profile does not enter the journey\n- The rejection is logged as a journey entry failure event\n- No notification to the marketer by default (use Alerts to monitor for this)\n\n**Why the limit exists:**\n- Prevents runaway scenarios where a bug causes millions of event-triggered journey entries for the same profile\n- Protects system performance for real-time profile evaluation\n\n**Practical implications:**\nFor most brands, 50 concurrent journeys per profile is far more than needed. But in complex orchestration setups (dozens of always-on nurture journeys, real-time trigger journeys), it's worth monitoring.\n\n**How to monitor:**\n- Journey reports → Entry failures report\n- AJO Alerting: set up an alert for journey entry rejection threshold\n\n**Exam tip:** This limit applies to **live journeys only** — draft, test, and completed journeys don't count. The limit resets as profiles complete or exit journeys. For most marketing use cases, the practical advice is to archive completed journeys to keep the active journey count manageable."
+    },
+    {
+      "id": 330,
+      "type": "multi",
+      "question": "A marketer is building an email in AJO's Email Designer. Which of the following content components can be added to the email layout? (Select all that apply)",
+      "options": [
+        "Image — single image with optional link",
+        "Video — embedded video player with autoplay",
+        "Button — CTA button with customisable label and URL",
+        "HTML — custom HTML block for advanced content",
+        "Divider — horizontal separator line between sections"
+      ],
+      "correct": [0, 2, 3, 4],
+      "explanation": "**AJO Email Designer — Content Components:**\n\n| Component | Available | Notes |\n|---|---|---|\n| **Image** | ✅ | Upload from Assets or external URL; set alt text and link |\n| Video | ❌ | Email clients don't support embedded video playback; use animated GIF or image-with-link to video instead |\n| **Button** | ✅ | Styled CTA button; customize label, URL, colours, padding |\n| **HTML** | ✅ | Raw HTML block for custom code; useful for dynamic content or third-party widgets |\n| **Divider** | ✅ | Horizontal rule; set colour, width, and spacing |\n\n**Full list of available components:**\n- Text, Image, Button, Divider, HTML\n- Social links block\n- Menu component\n- Carousel (experimental)\n\n**Why no video:** Email HTML rendering is extremely limited — most email clients (Outlook especially) strip or don't render HTML5 `<video>` tags. The industry best practice is an **animated GIF** with a thumbnail image, linked to a video landing page.\n\n**Exam tip:** The AJO Email Designer uses a **drag-and-drop structure** with rows (layout) and components (content). Rows define column structure (1/2/3 columns); components fill columns. This distinction matters for responsive email design."
+    },
+    {
+      "id": 331,
+      "question": "In AJO, what is a 'Landing Page' and how does it integrate with consent management?",
+      "options": [
+        "A landing page in AJO is a web page hosted by the brand that AJO redirects customers to after clicking an email CTA",
+        "A landing page in AJO is an Adobe-hosted web page that can be linked from any AJO channel — it contains forms for opt-in/opt-out management, preference centre updates, or any custom form that writes directly back to AEP profile consent attributes",
+        "A landing page in AJO is a campaign-specific microsite builder for promotional events like product launches",
+        "A landing page in AJO is a post-click page configured in the tracking settings to record conversion events"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Landing Pages:**\n\n**What they are:**\nAdobe-hosted web pages (no external hosting needed) that you design in AJO. Each page gets a unique Adobe-managed URL.\n\n**Common use cases:**\n1. **Email opt-in/opt-out page** — linked from email footer; customer clicks → page loads → form submission updates consent\n2. **Subscription preference centre** — customer selects which topics/channels they want to hear about\n3. **Double opt-in confirmation** — customer clicks to confirm their email subscription\n4. **Simple lead capture** — event RSVP, content download form\n\n**How consent updates work:**\n```\nCustomer clicks [Manage Preferences] in email\n  → AJO Landing Page loads (Adobe-hosted)\n  → Customer selects preferences (e.g., turns off Promotions, keeps Service notifications)\n  → Form POST → AJO Landing Page Action API\n  → Profile consent attributes updated in Real-Time Customer Profile\n  → Customer sees confirmation message on same page\n```\n\n**Technical features:**\n- Design with drag-and-drop builder (same Email Designer components)\n- Forms with consent checkboxes, radio buttons, text fields\n- Primary page + confirmation sub-page\n- Available in multiple languages (localisation)\n\n**Exam tip:** Landing page URLs are **publicly accessible** by default — anyone with the URL can access them. For authenticated preference centres, you must pass the profile identifier via URL parameter and validate it."
+    },
+    {
+      "id": 332,
+      "question": "What is AJO's 'Multi-Lingual' campaign feature and what are the two source management options?",
+      "options": [
+        "Multi-lingual campaigns use AJO's AI translation engine to automatically translate message content; two options: auto-translate and human review workflow",
+        "Multi-lingual campaigns allow creating a single campaign that delivers content in multiple languages based on the profile's preferred language attribute; two options: Manual (upload translations via CSV) and Automated (integrate with a translation provider)",
+        "Multi-lingual campaigns are A/B tests comparing different language variants to determine which performs best in each market",
+        "Multi-lingual campaigns use Adobe Experience Manager translation workflows; two options: AEM in-context translation and XLIFF file export/import"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Multi-Lingual Campaigns:**\n\n**How it works:**\n1. Define a **default locale** and additional **target locales** (e.g., en-US, fr-FR, de-DE, ja-JP)\n2. Each locale gets its own message variant with the same structure\n3. AJO delivers the matching locale based on the profile attribute `person.preferredLanguage` (or a configured XDM field)\n4. If no matching locale found → fallback to default locale\n\n**Two source management options:**\n\n| Option | Workflow |\n|---|---|\n| **Manual** | Marketer uploads translations via CSV or enters them directly in the editor; full control but time-intensive |\n| **Automated** | Integrate with a third-party translation management system (e.g., Lionbridge, Smartling, Language Weaver via partner integration); content is sent out for translation and returned automatically |\n\n**Locale settings:**\n- Each locale references the same channel surface (one campaign = one set of infrastructure)\n- Subject lines, body content, images, CTAs can all be locale-specific\n- Preview mode allows checking each locale's rendering before publish\n\n**Exam tip:** Multi-lingual is different from **multiple campaigns** per language. Multi-lingual = one campaign, one audience, multiple content variants. This simplifies reporting (all locales under one campaign dashboard) and reduces operational overhead."
+    },
+    {
+      "id": 333,
+      "question": "In AJO, what is a 'Triggered Campaign' versus a 'Scheduled Campaign'?",
+      "options": [
+        "Triggered campaigns are for push only; scheduled campaigns are for email and SMS",
+        "Scheduled campaigns send to a static audience at a defined date/time (one-shot or recurring); triggered campaigns are sent in response to a real-time event (API trigger or audience qualification event) to an individual profile",
+        "Triggered campaigns run on AEP's batch processing schedule; scheduled campaigns use AJO's real-time streaming engine",
+          "Scheduled campaigns require audience approval; triggered campaigns bypass approval workflows for speed"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Campaign Types:**\n\n**Scheduled Campaign:**\n- Sends to a **static audience snapshot** at a specific date and time\n- Types: **One-time** (single send) or **Recurring** (daily/weekly/monthly on a schedule)\n- Audience is evaluated at send time — who is in the segment at that moment\n- Use cases: Newsletter, weekly digest, monthly promotion, seasonal campaign\n\n**Triggered Campaign:**\n- Executes for an **individual profile** when a specific event occurs\n- **API-triggered:** An external system calls AJO's Campaign API with a profile identifier and optional contextual payload → campaign sends immediately\n- **Audience-triggered:** Profile enters a defined audience → campaign activates for that profile\n- Use cases: Transactional confirmations, real-time personalised offers, event-driven notifications\n\n**API-triggered campaigns — unique capability:**\n```json\nPOST /campaigns/{campaignId}/trigger\n{\n  \"profiles\": [{\"namespace\": \"Email\", \"identity\": \"user@example.com\"}],\n  \"additionalContext\": {\n    \"orderNumber\": \"ORD-12345\",\n    \"totalAmount\": \"$129.99\"\n  }\n}\n```\nThe `additionalContext` is accessible in message personalisation as `context.system.*`.\n\n**Exam tip:** API-triggered campaigns are AJO's way of supporting **transactional messaging** via a campaign (as opposed to a journey). They're faster to set up than a journey for simple single-message transactional use cases."
+    },
+    {
+      "id": 334,
+      "question": "What is AJO's 'Conflict Detection' feature and what types of conflicts does it identify?",
+      "options": [
+        "Conflict detection finds duplicate audience definitions across segments to prevent double-counting in reporting",
+        "Conflict detection identifies profiles that will receive overlapping journeys or campaigns simultaneously — flagging potential over-communication, contradictory messages, or channel saturation for the same profile during a given time window",
+        "Conflict detection validates that campaign audience rules don't conflict with Data Governance policy labels",
+        "Conflict detection checks for technical conflicts like duplicate channel surface configurations or overlapping IP pool assignments"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Conflict Detection (Priority & Conflict Management):**\n\nConflict detection helps identify situations where **a profile could receive too many messages or contradictory experiences** across multiple active journeys and campaigns.\n\n**Types of conflicts detected:**\n\n| Conflict Type | Example |\n|---|---|\n| **Channel overlap** | Profile will receive 3 emails on Tuesday from 3 different campaigns |\n| **Journey overlap** | Profile is eligible for both a re-engagement journey and a loyalty nurture journey with contradictory messaging |\n| **Offer contradictions** | Profile receives a 10% discount offer in email AND a 20% discount in push — inconsistent pricing |\n| **Frequency cap approaching** | Profile is near the Business Rule frequency cap — some messages may be suppressed |\n\n**Priority scores:**\nEach journey and campaign has a configurable **priority score (0–100)**. When conflicts are detected, higher-priority items take precedence.\n\n**Arbitration logic:**\nWhen two items conflict, AJO can:\n- Block the lower-priority item\n- Suppress a specific channel for the lower-priority item\n- Allow both (no arbitration — useful when conflicts are intentional)\n\n**Exam tip:** Conflict detection is surfaced in the **Conflict and Priority** section during campaign/journey publishing. It's advisory — you can override and publish anyway — but it helps prevent the 'too many emails' customer experience problem."
+    },
+    {
+      "id": 335,
+      "type": "multi",
+      "question": "In AJO Email, which of the following are valid methods for handling email opt-out (unsubscribe)? (Select all that apply)",
+      "options": [
+        "One-click unsubscribe via the List-Unsubscribe header (RFC 8058)",
+        "In-email unsubscribe link using a landing page with a form that updates consent",
+        "Reply-to unsubscribe — customer replies 'UNSUBSCRIBE' to the email",
+        "Preference centre link — directs to a page where customers manage subscription preferences",
+        "Automatic opt-out after 6 months of no engagement (silence = opt-out)"
+      ],
+      "correct": [0, 1, 3],
+      "explanation": "**AJO Email Opt-Out Methods:**\n\n| Method | Supported | Notes |\n|---|---|---|\n| **One-click List-Unsubscribe (RFC 8058)** | ✅ | Native header; Gmail/Yahoo show unsubscribe button |\n| **In-email link → Landing page** | ✅ | Custom URL to AJO landing page with consent form |\n| Reply-to unsubscribe | ❌ | Not a native AJO feature; requires custom reply-to handling |\n| **Preference centre link** | ✅ | Directs to AJO Landing Page preference centre |\n| Silence = opt-out | ❌ | Not an AJO feature; GDPR actually prohibits assuming consent from inaction |\n\n**How consent is updated:**\nAll opt-out paths ultimately write to the profile attribute:\n```\nconsents.marketing.email.val = 'n'\n```\nThis blocks future marketing emails during audience qualification.\n\n**Legal requirements (GDPR/CAN-SPAM):**\n- Unsubscribe must be **honoured within 10 business days** (CAN-SPAM)\n- Must be **free and easy** — no account login required to unsubscribe\n- Cannot require more than visiting a single page to complete opt-out\n\n**AJO best practice:** Always include **both** a List-Unsubscribe header (for native client button) and an in-email unsubscribe link (for email clients that don't show the header button and for users who prefer the in-email option)."
+    },
+    {
+      "id": 336,
+      "question": "What is the 'AJO Code-Based Experience' channel and how is it different from Web and In-App channels?",
+      "options": [
+        "Code-Based Experience is a developer-focused channel for IoT devices and non-standard surfaces that don't fit Web, Email, Push, or In-App — it returns JSON/HTML/text payloads via API that the developer renders in any surface",
+        "Code-Based Experience is the technical name for the Web Code Editor — the same feature, just renamed in a recent release",
+        "Code-Based Experience is an AJO channel for A/B testing raw API responses used by the backend engineering team to optimise server-side logic",
+        "Code-Based Experience is a hybrid channel that combines email content with push delivery for rich notification experiences"
+      ],
+      "correct": 0,
+      "explanation": "**AJO Code-Based Experience Channel:**\n\n**Problem it solves:**\nWeb channel = browser. In-App = mobile app. But what about:\n- Smart TV apps\n- Gaming consoles\n- Digital kiosks\n- Connected devices (IoT)\n- Single-Page Applications with complex rendering\n- Server-side rendered apps\n- Any custom surface not covered by standard channels\n\n**How it works:**\n1. Developer defines a **surface URI** (e.g., `app://smart-tv/homescreen/banner`)\n2. AJO campaign/journey targets a profile with a Code-Based Experience action\n3. Developer's application calls the **AEP Edge Network API** with the surface URI\n4. AJO responds with the configured payload (JSON / HTML / text)\n5. Developer's code renders the payload however they choose\n\n**Payload example:**\n```json\n{\n  \"heroTitle\": \"Welcome back, {{profile.person.name.firstName}}\",\n  \"offerCode\": \"SUMMER20\",\n  \"heroImageUrl\": \"https://assets.brand.com/summer-sale.jpg\"\n}\n```\n\n**Key difference from Web channel:**\nWeb channel = AJO *automatically* applies DOM modifications via `alloy.js`.\nCode-Based = AJO returns the payload; developer's code decides how to render it.\n\n**Exam tip:** Code-Based Experience is ideal for **server-side personalisation** and **headless architectures** where the frontend is built with frameworks that don't use the standard AEP Web SDK DOM manipulation approach."
+    },
+    {
+      "id": 337,
+      "question": "In AJO, what is a 'Journey Version' and why are new versions created instead of editing the original?",
+      "options": [
+        "Journey versions are auto-saved drafts created every hour; they allow rollback if a marketer makes a mistake",
+        "A live journey cannot be directly edited — changes require creating a new version. The new version can be tested and activated while the previous version continues processing profiles already in it. Both versions can be live simultaneously during transition",
+        "Journey versions are sandbox copies of a journey used for testing — version 1 is in dev sandbox, version 2 is in prod sandbox",
+        "Journey versions are created when a journey is duplicated to a different campaign; each campaign reference creates a new version number"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Journey Versioning:**\n\n**Why direct editing is not allowed on live journeys:**\n- Profiles currently inside a live journey are following a specific path based on the published configuration\n- Changing a wait duration, condition logic, or message content mid-execution would create inconsistent experiences for in-flight profiles\n- AJO protects these profiles by preventing live journey modification\n\n**Version lifecycle:**\n```\nv1 (Live) — 10,000 profiles in progress\n  ↓ Create new version\nv2 (Draft) — edit and test\n  ↓ Publish v2\nv2 (Live) — new entries go here\nv1 (Live) — existing profiles finish their journey\n  ↓ When v1 has 0 active profiles\nv1 (Closed)\n```\n\n**Maximum versions:** AJO allows up to **10 versions** per journey.\n\n**Version management options:**\n- **Stop current version:** No new entries; existing profiles complete the journey\n- **Close to new entries:** No new entries; existing profiles continue\n- **Activate new version:** New entries go to the latest version while old entries continue on their version\n\n**Exam tip:** When a marketer says 'I need to fix the email subject line in the active journey', the correct process is: create new version → edit → test → activate new version → close old version to new entries."
+    },
+    {
+      "id": 338,
+      "question": "What is the AJO 'Message Fatigue' problem and how do Business Rules and Frequency Capping address it?",
+      "options": [
+        "Message fatigue is an AJO system performance issue when too many messages are queued; Business Rules set throughput limits",
+        "Message fatigue refers to a customer receiving so many messages that they disengage, unsubscribe, or mark messages as spam; Business Rules implement cross-channel frequency caps that limit the total messages a profile can receive across all campaigns and journeys within a time window",
+        "Message fatigue is a deliverability issue where ISPs throttle senders with high send volumes; Business Rules configure IP rotation to distribute the load",
+        "Message fatigue is detected by AJO's AI when engagement scores drop; Business Rules automatically pause campaigns with below-threshold engagement rates"
+      ],
+      "correct": 1,
+      "explanation": "**Message Fatigue and Business Rules:**\n\n**The problem:**\nA large brand may run 20+ active campaigns and journeys simultaneously. Without coordination, the same engaged customer might receive:\n- Monday: Welcome series email (Journey A)\n- Monday: Promotional campaign email\n- Tuesday: Re-engagement push (Journey B)\n- Tuesday: Weekly newsletter\n- Wednesday: Cart abandonment email (Journey C)\n\nResult: **5 messages in 3 days** → unsubscribe, spam complaint, brand damage.\n\n**Business Rules solution:**\n\n```\nRule: Max 2 marketing emails per week\nRule: Max 1 push notification per day\nRule: Max 4 total messages per week (all channels combined)\n```\n\n**How they work:**\n- Rules are evaluated at **message send time**\n- If the rule cap is reached, the message is **skipped** (silently suppressed)\n- Counter resets at the configured window boundary (midnight UTC for daily/weekly)\n- Rules apply across ALL campaigns and journeys — not just one\n\n**Business Rule priority:**\nWhen a rule would block a message, higher-priority items (configured with priority scores) send first. Lower-priority items are blocked.\n\n**Exam tip:** Business Rules frequency caps are **global per sandbox** — they apply across all brands, journeys, and campaigns in that sandbox. For multi-brand organisations sharing a sandbox, this requires careful rule design to avoid one brand's rules blocking another brand's messages."
+    },
+    {
+      "id": 339,
+      "question": "In AJO, what is the 'Reporting' dataset for journeys and how are journey execution metrics stored?",
+      "options": [
+        "Journey metrics are stored in AJO's proprietary analytics database and accessed only through the AJO Reports UI",
+        "Journey execution data is stored in AEP's Data Lake in standardised datasets (Journey Step Events, Message Feedback Events, Email Tracking Experience Events) that can be queried via Query Service, exported, or connected to Customer Journey Analytics",
+        "Journey reports are computed in real-time by AJO's streaming engine and are not persisted to the Data Lake",
+        "Journey metrics are stored in Adobe Analytics report suites and accessed through Analysis Workspace"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Reporting Datasets in AEP Data Lake:**\n\n| Dataset | What it captures |\n|---|---|\n| **Journey Step Events** | Every profile's movement through journey nodes (entered, exited, waited, branched) |\n| **Message Feedback Events** | Send status for each message: sent, delivered, bounced, suppressed |\n| **Email Tracking Experience Events** | Email opens, clicks, unsubscribes with timestamp and link data |\n| **Push Tracking Experience Events** | Push opens, dismissals, button clicks |\n| **Offer Proposition Interact Dataset** | Offer impressions and interactions (clicks) |\n\n**Why this matters:**\n1. **Query Service:** Write SQL to analyse journey performance beyond the standard UI reports\n2. **Customer Journey Analytics (CJA):** Connect these datasets in CJA for deep cross-channel attribution and journey analysis\n3. **Business Intelligence:** Export to Power BI, Tableau, or other BI tools via CJA's BI extension\n4. **Data Science:** Use Python/R notebooks on journey data to build predictive models\n\n**Example Query Service query:**\n```sql\nSELECT \n  journeyVersionName,\n  COUNT(DISTINCT _experience.journeyOrchestration.stepEvents.profileID) as profiles_entered\nFROM journey_step_events\nWHERE _experience.journeyOrchestration.stepEvents.stepStatus = 'entered'\nGROUP BY journeyVersionName\n```\n\n**Exam tip:** AJO's built-in reports have a **3-hour data lag** — they're computed from the datasets above. For real-time send monitoring, use the Journey Live view dashboard, which shows activity from the past 24 hours with near-real-time updates."
+    },
+    {
+      "id": 340,
+      "type": "multi",
+      "question": "Which of the following are valid Journey entry event types in AJO? (Select all that apply)",
+      "options": [
+        "Unitary event — a real-time XDM Experience Event streamed to AEP (e.g., purchase, app open)",
+        "Audience qualification event — profile enters or exits an AEP audience/segment",
+        "Scheduled entry — profiles enter the journey at a configured date/time (for batch journeys)",
+        "API call entry — an external system triggers journey entry via the Journey API",
+        "Database change event — a change to a PostgreSQL table triggers journey entry via a CDC connector"
+      ],
+      "correct": [0, 1, 2, 3],
+      "explanation": "**AJO Journey Entry Types:**\n\n| Entry Type | Description | Use case |\n|---|---|---|\n| **Unitary Event** | Real-time XDM event streamed to AEP Edge | Purchase, login, app open, page view |\n| **Audience Qualification** | Profile enters/exits an audience | New Gold tier member, churn risk flag |\n| **Read Audience (Scheduled)** | Batch reads all members of an audience at a scheduled time | Weekly newsletter journey, birthday campaign |\n| **API-triggered (Business Events)** | External system POSTs to AJO API | Order shipped, appointment reminder from CRM |\n\n**Database change events (CDC):**\nNot a native AJO journey entry type — CDC events would need to be processed through a source connector into AEP as XDM events, and then trigger a Unitary Event journey entry. The journey doesn't directly consume CDC streams.\n\n**Audience Qualification nuance:**\n- Fires when a profile **transitions** into or out of an audience\n- Event = 'realised' (just entered segment) or 'exited'\n- Profile that was already in the segment before the journey was published does NOT get a qualification event retroactively (unless using Read Audience entry)\n\n**Exam tip:** Unitary event journeys fire in **real-time** (seconds latency). Audience qualification journeys fire within **minutes** (segment evaluation latency). Read Audience (scheduled) journeys run at the configured schedule time."
+    },
+    {
+      "id": 341,
+      "question": "What is AJO's 'Wait' activity and what are the two types of wait conditions it supports?",
+      "options": [
+        "Wait pauses profile progression for a fixed time; two types: duration wait (e.g., wait 2 hours) and condition wait (e.g., wait until a specific event occurs)",
+        "Wait pauses profile progression; two types: fixed duration (wait X minutes/hours/days) and a fixed date/time (wait until a specific calendar date)",
+        "Wait is a hold mechanism for profiles pending manager approval; two types: time-based and approval-based",
+        "Wait delays message delivery; two types: send-time optimisation wait and timezone-adjusted wait"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Journey Wait Activity:**\n\n**Two types:**\n\n**1. Duration Wait:**\n- Pause the profile for a specified period\n- Options: minutes, hours, days\n- Maximum: 29 days\n- Example: `Wait 3 days` after welcome email before sending follow-up\n\n**2. Fixed Date/Time Wait:**\n- Wait until a specific calendar date and time\n- Example: `Wait until December 25, 2024 at 09:00 UTC`\n- Use case: Holiday campaign — profile enters journey now, waits until campaign day to receive message\n- The profile 'parks' in the Wait node until the target datetime arrives\n\n**Third option — Custom Wait (Expression-based):**\n- Wait duration calculated from a profile attribute\n- Example: Wait until `profile.nextAppointmentDate` (3 days before the appointment)\n- Maximum is still 29 days from current time\n\n**Important behaviour:**\n- Profiles in a Wait node are **counted against the concurrent journey limit**\n- If a journey is **stopped** while profiles are in Wait, they are immediately exited\n- **Re-entry settings** matter: if a profile exits while in Wait and then re-qualifies, they may re-enter from the start\n\n**Exam tip:** A common interview question is how to build a 'send a birthday email on the user's birthday'. Answer: Use an Audience-based journey (audience = 'birthday is within 1 day') + Read Audience scheduled to run daily at midnight. Don't use a fixed-date Wait — that would require knowing each customer's birthday in advance."
+    },
+    {
+      "id": 342,
+      "question": "In AJO, what is the 'Update Profile' action and what are its limitations?",
+      "options": [
+        "Update Profile is an action that writes a calculated value back to the Real-Time Customer Profile during journey execution; limited to 10 profile attribute updates per journey",
+        "Update Profile is a journey action that writes a value to a specific XDM profile attribute in the Real-Time Customer Profile; limitations include: only profile schema attributes (not ExperienceEvent), only scalar values, and updates are applied with streaming ingestion latency",
+        "Update Profile sends a partial XDM record to the batch ingestion pipeline; limitations include 24-hour processing delay and no real-time availability",
+        "Update Profile allows writing to any AEP dataset including ExperienceEvents; limited to 50KB payload per update"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Update Profile Action:**\n\n**What it does:**\nWrites a value to a **Profile schema** attribute during journey execution without needing an external API call.\n\n**Example use cases:**\n- Set `profile.loyalty.lastEngagementDate = today()` after a message is opened\n- Increment `profile.loyalty.journeyCompletedCount` when journey finishes\n- Set `profile.marketingPreferences.welcomeJourneyCompleted = true` to prevent re-entry\n- Update `profile.segments.winbackAttempted = true` for suppression logic\n\n**Limitations:**\n1. **Profile schema only** — cannot write to ExperienceEvent schema\n2. **Scalar values only** — strings, integers, booleans, dates. Cannot update arrays or complex objects.\n3. **Streaming ingestion** — updates go through the streaming pipeline (~few seconds latency before the new value is available for decisions)\n4. **No computed fields** — the new value must be a literal or simple expression, not an aggregate calculation\n5. **Merge policy** — the update must respect the profile's merge policy (can be overridden by a higher-priority dataset)\n\n**Why this matters for journey design:**\nUpdate Profile is key for **stateful journey design** — setting flags on profiles that control re-entry, prevent duplicate communications, or pass context between journeys.\n\n**Exam tip:** A common pattern is setting a boolean flag in Update Profile at journey end, then using that flag as an **entry condition exclusion** in other journeys — preventing the same profile from entering a conflicting journey."
+    },
+    {
+      "id": 343,
+      "question": "What is the 'Condition' activity in AJO journeys and what are the three types of conditions?",
+      "options": [
+        "Condition splits the journey into Yes/No branches based on a single boolean rule; three types: profile-based, event-based, time-based",
+        "Condition creates multi-path branches in the journey; three condition types are: Profile Condition (uses profile attributes), Event Condition (evaluates the triggering event's data), and Time Condition (routes based on time of day/week/date)",
+        "Condition is a decision node that calls the Offer Decisioning engine; three types correspond to the three offer ranking strategies",
+        "Condition is an audience membership check; three types: in-segment, not-in-segment, and entering-segment"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Journey Condition Activity:**\n\n**Three condition types:**\n\n**1. Profile Condition:**\n- Evaluates profile attributes at the time the profile reaches the condition node\n- Example: `IF profile.loyaltyTier = 'Gold' THEN → VIP path ELSE → Standard path`\n- Supports complex AND/OR logic with multiple attributes\n- Can check audience membership (is the profile in segment X?)\n\n**2. Event Condition:**\n- Evaluates data from the event that triggered the journey (only available in event-triggered journeys)\n- Example: `IF triggeringEvent.productCategory = 'Electronics' THEN → Electronics nurture path`\n- Only accesses the specific event that caused journey entry — not historical events\n\n**3. Time Condition:**\n- Routes based on the time the profile reaches the condition\n- Options: Time of day (08:00–20:00 → send push; 20:00–08:00 → queue for morning), Day of week, Specific date range\n- Example: Route to 'weekend promo' branch if the profile reaches this node on Saturday/Sunday\n\n**Best practice — Path naming:**\nAlways name condition paths meaningfully ('Gold Tier', 'Silver Tier', 'Other') not just 'Path1/Path2' — this affects readability in journey reports.\n\n**Exam tip:** The **'Otherwise' path** (default/else path) in a Condition node is where profiles go if no defined condition matches. Forgetting to handle the Otherwise path is a common mistake — profiles on the Otherwise path with no subsequent action will simply exit the journey."
+    },
+    {
+      "id": 344,
+      "question": "In AJO, what is the 'Audience Split' activity and how is it different from the 'Condition' activity?",
+      "options": [
+        "Audience Split and Condition are identical — Audience Split is just the updated name for the Condition activity",
+        "Audience Split randomly divides the journey audience into percentage-based groups (e.g., 50%/50% or 33%/33%/34%) for content experiments; Condition routes based on profile attributes or event data — it's deterministic, not random",
+        "Audience Split creates a new AEP audience/segment for each branch; Condition only routes within the journey without creating new audiences",
+        "Audience Split is for splitting by channel (email vs push); Condition is for splitting by profile attributes"
+      ],
+      "correct": 1,
+      "explanation": "**Audience Split vs Condition — Key Difference:**\n\n**Condition (Deterministic routing):**\n- Routes profiles based on **specific attributes or logic**\n- Same profile will ALWAYS take the same path (given the same attribute values)\n- Example: Gold members → Path A, Silver → Path B\n- Used for: personalisation, channel preference routing, segment-based messaging\n\n**Audience Split (Random/Percentage routing):**\n- Routes profiles **randomly** into defined percentage groups\n- Same profile could land in different groups on different journey entries (it's probabilistic)\n- Example: 50% → Version A, 50% → Version B\n- Used for: **A/B testing content/journeys**, control group creation, traffic allocation\n\n**Visual example:**\n```\n[Journey Entry]\n     ↓\n[Audience Split]\n├── 50% → Email Version A\n└── 50% → Email Version B\n\nvs.\n\n[Journey Entry]\n     ↓\n[Condition: loyalty = 'Gold'?]\n├── YES → Premium messaging\n└── NO → Standard messaging\n```\n\n**Exam tip:** Audience Split is the correct tool for **holdout control groups** in journeys (e.g., 10% receive no message, 90% receive the campaign). The 10% holdout group can be directed to an **End** node — they qualify for the journey but receive nothing, enabling true incrementality measurement."
+    },
+    {
+      "id": 345,
+      "question": "What is the AJO 'End' activity in journeys and what happens to a profile when it reaches an End node?",
+      "options": [
+        "The End activity marks the journey as complete and triggers a system event that can be used to start another journey",
+        "When a profile reaches an End node, it exits the journey. Depending on re-entry settings, it may be eligible to re-enter the journey. The profile's data is unchanged; a journey end event is logged for reporting",
+        "The End activity sends a final message (configured in End node settings) before removing the profile from the journey",
+        "The End activity archives the profile's journey state data to the Data Lake and removes it from the active journey processing queue"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Journey End Activity:**\n\n**What happens at End:**\n1. Profile is **removed from the active journey** counter\n2. A `journeyStep.end` event is written to the Journey Step Events dataset\n3. Profile's AEP data is **unchanged** (no automatic profile writes)\n4. Profile becomes eligible for **re-entry** if the journey's re-entry settings allow it\n\n**End vs Exit:**\n- **End node:** Profile reaches a planned terminal node in the journey flow\n- **Journey timeout exit:** Profile has been in the journey longer than the configured maximum duration\n- **Error exit:** An unrecoverable error occurred during a journey action\n- **Manual exit:** Admin forcibly removed the profile\n\nAll of these are different exit reasons recorded in Journey Step Events.\n\n**Re-entry settings (configured at journey level):**\n| Setting | Behaviour |\n|---|---|\n| No re-entry | Profile can only enter once, ever |\n| Re-entry after completion | Profile can re-enter after reaching End |\n| Re-entry with time window | Profile can re-enter N days after last entry |\n\n**Multiple End nodes:**\nA journey can have multiple End nodes — each branch can lead to its own End. This is normal and has no negative effect on functionality. All End nodes behave identically.\n\n**Exam tip:** Adding an **Update Profile** action just before an End node to set a flag (e.g., `welcomeJourneyCompleted = true`) is a common pattern to prevent re-entry and track journey completion in downstream systems."
+    },
+    {
+      "id": 346,
+      "question": "In AJO, what is the 'React to an Event' (Event Reaction) activity and how does it differ from a standard event-triggered journey?",
+      "options": [
+        "React to an Event is a journey entry type; it starts a new journey when the profile takes a specific action",
+        "React to an Event is a **within-journey** activity that pauses the profile at that step and waits for a specific event to occur (e.g., an email click or push open) within a defined timeout period — allowing different paths based on whether the event occurs or not",
+        "React to an Event is a journey exit trigger — the journey ends if the profile performs a specified action",
+        "React to an Event is the same as an Audience Qualification entry — it detects when a profile enters or exits a segment"
+      ],
+      "correct": 1,
+      "explanation": "**AJO 'React to an Event' Activity (Event Reaction / Wait for Event):**\n\n**How it works:**\n```\n[Send Email]\n    ↓\n[React to Event: Wait for 'email opened' for up to 3 days]\n├── Event occurred (opened) → [Send personalised follow-up push]\n└── Timeout (no open in 3 days) → [Send re-engagement SMS]\n```\n\n**Supported reaction events (from AJO channels):**\n- Email: opened, clicked, bounced, unsubscribed\n- Push: opened, clicked, dismissed\n- SMS: replied (inbound message)\n- In-App: dismissed, interacted\n\n**Timeout configuration:**\n- Define a maximum wait period (minutes to days)\n- The 'Timeout path' is what happens if the event does NOT occur within the window\n\n**Key difference from journey entry events:**\n- Journey entry events = external triggers from AEP data streams\n- React to Event = listens for AJO **channel interaction events** generated by messages sent within the same journey\n\n**Use cases:**\n- 'If they clicked the CTA in the email, send a push 1 hour later with a reminder'\n- 'If they didn't open the email in 48 hours, send an SMS'\n- 'If the push was dismissed, wait 7 days before trying again'\n\n**Exam tip:** React to Event can only listen for events **generated by actions in the same journey**. You cannot use it to listen for external XDM events — for that, use the 'Wait for Event' activity with an external event source."
+    },
+    {
+      "id": 347,
+      "question": "What is the difference between AJO 'Campaigns' and 'Journeys', and when should each be used?",
+      "options": [
+        "Campaigns are for email only; Journeys support all channels — the difference is purely channel-based",
+        "Campaigns are one-time or recurring messages sent to a static audience snapshot at a scheduled time or via API trigger (no multi-step logic); Journeys are real-time, event-driven, multi-step orchestration flows with branching, waits, and conditions",
+        "Journeys are for B2B marketing; Campaigns are for B2C — the difference is audience type",
+        "Campaigns are for batch processing; Journeys are for streaming — the difference is the underlying AEP pipeline used"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Campaigns vs Journeys — Decision Guide:**\n\n**Campaigns:**\n| Attribute | Value |\n|---|---|\n| Audience | Static snapshot (evaluated at send time) |\n| Timing | Scheduled (one-time or recurring) or API-triggered |\n| Logic | Single action — no branching, waits, or conditions |\n| Best for | Newsletters, promotions, announcements, transactional API sends |\n| Channels | All AJO channels |\n\n**Journeys:**\n| Attribute | Value |\n|---|---|\n| Audience | Real-time event-triggered or audience qualification |\n| Timing | Continuous — profiles enter whenever they qualify |\n| Logic | Multi-step with conditions, waits, reactions, splits |\n| Best for | Welcome series, cart abandonment, loyalty milestone, re-engagement |\n| Channels | All AJO channels |\n\n**Decision framework:**\n```\nIs this a single message to many people at a specific time?\n→ Campaign\n\nIs this triggered by individual customer behaviour?\n→ Journey\n\nDoes it have multiple steps, wait periods, or branching?\n→ Journey\n\nDo you need to react to what the customer does after message 1?\n→ Journey\n```\n\n**Exam tip:** Both Campaigns and Journeys can use the same channel surfaces and content templates — the distinction is entirely about the **orchestration model**, not the channel or content."
+    },
+    {
+      "id": 348,
+      "question": "What is a 'Transactional Message' in AJO and how does it differ from a 'Marketing Message' in terms of consent requirements?",
+      "options": [
+        "Transactional messages use dedicated IPs; marketing messages use shared IPs — the difference is infrastructure, not consent",
+        "Transactional messages (order confirmations, password resets, account alerts) bypass marketing consent checks — they can be sent even if the profile has opted out of marketing communications. Marketing messages require affirmative marketing consent",
+        "Transactional messages are sent in real-time; marketing messages are batched — the difference is delivery latency",
+        "Both message types require the same consent — the distinction is only used for reporting categorisation"
+      ],
+      "correct": 1,
+      "explanation": "**Transactional vs Marketing Messages — Consent Logic:**\n\n**Marketing messages:**\n- Require `consents.marketing.email.val = 'y'` (or 'p' for pending)\n- If consent is 'n' (opted out) or absent → message is suppressed\n- Regulated by GDPR, CAN-SPAM, CASL\n\n**Transactional messages:**\n- Sent under 'legitimate interest' or 'contract performance' legal basis (GDPR Art. 6)\n- **Bypass marketing consent checks** — profile can have `consents.marketing.email.val = 'n'` but still receive transactional messages\n- Examples: password reset, order confirmation, shipping notification, security alert, bank statement\n\n**AJO configuration:**\nThe **channel surface** has a `Message Type` setting:\n- `Marketing` — checks marketing consent\n- `Transactional` — bypasses marketing consent (but still respects suppression list for hard bounces/spam complaints)\n\n**Critical exam point:**\nEven for transactional messages, **hard bounce and spam complaint suppression** still applies. A spam complaint means the user proactively marked your email as spam — most regulators and ISPs expect you to honour that even for transactional. There is a setting to override suppression for transactional messages, but it requires explicit configuration and should be used carefully.\n\n**Legal reminder:** Labelling a promotional message as 'transactional' to bypass consent is illegal. AJO doesn't enforce this distinction technically — compliance is the brand's responsibility."
+    },
+    {
+      "id": 349,
+      "question": "What is the AJO 'Subscription List' feature and how is it different from AEP consent attributes?",
+      "options": [
+        "Subscription Lists and consent attributes are identical; Subscription Lists are the UI for managing consent attributes",
+        "Subscription Lists are AJO-managed opt-in/opt-out lists for specific communication types (e.g., 'Weekly Newsletter', 'Product Updates') — more granular than channel-level consent. They are stored as AJO entities and can be checked in journey conditions. AEP consent attributes are profile-level channel consent ('email: yes/no')",
+        "Subscription Lists are imported from external CRM systems; AEP consent attributes are managed natively in AEP — the difference is the source of truth",
+        "Subscription Lists are used for SMS opt-in management only; AEP consent attributes handle email and push"
+      ],
+      "correct": 1,
+      "explanation": "**AJO Subscription Lists vs AEP Consent Attributes:**\n\n**AEP Consent Attributes (channel-level):**\n```\nconsents.marketing.email.val = 'y' / 'n' / 'p'\nconsents.marketing.sms.val = 'y' / 'n'\nconsents.marketing.push.val = 'y' / 'n'\n```\n- Stored in the Real-Time Customer Profile\n- Channel-wide: 'I consent/don't consent to email marketing'\n- Managed via XDM Profile schema\n\n**AJO Subscription Lists (topic-level):**\n```\nSubscription Lists:\n- 'Weekly Fashion Newsletter' → subscribed / not subscribed\n- 'Product Launch Alerts' → subscribed / not subscribed\n- 'VIP Member Updates' → subscribed / not subscribed\n```\n- More granular: consent per **topic/communication type**, not just per channel\n- Profile can subscribe to 'Product Alerts' but unsubscribe from 'Newsletter' — both on email\n- Backed by a dedicated AEP dataset (XDM Subscription List schema)\n\n**Journey integration:**\n```\n[Condition: Is subscribed to 'Weekly Newsletter' list?]\n├── YES → Send newsletter\n└── NO → Skip\n```\n\n**Preference centre:**\nSubscription Lists are the foundation of a granular preference centre. The marketer shows all subscription options; the customer picks which topics they want.\n\n**Exam tip:** Subscription Lists require a separate **Subscription List dataset** to be created and configured. They're more complex to implement than channel consent attributes but offer much more flexibility for brands with diverse communication types."
+    },
+    {
+      "id": 350,
+      "question": "In AJO, what is the 'Accelerated Delivery' (IP Warmup Campaign) feature, and how does AJO select which profiles to include in each warmup phase?",
+      "options": [
+        "Accelerated delivery spreads a large campaign send across 24 hours to avoid ISP throttling; AJO randomly selects profiles from the audience for each send wave",
+        "IP Warmup Campaigns in AJO allow configuring phased send volumes across days; AJO prioritises profiles with the highest historical engagement (open/click rates) in early phases to build positive ISP reputation signals before sending to less-engaged subscribers",
+        "Accelerated delivery is a paid Adobe feature that uses dedicated Tier-1 ISP partnerships to bypass normal spam filters during warmup periods",
+        "IP Warmup Campaigns send test emails to seed accounts at major ISPs first; real customer emails only begin after ISP domain reputation scores exceed a threshold"
+      ],
+      "correct": 1,
+      "explanation": "**AJO IP Warmup Campaign:**\n\n**Why engage your best subscribers first:**\nISPs build reputation from signals:\n- ✅ Positive: opens, clicks, moves to inbox (from junk)\n- ❌ Negative: spam complaints, ignores, unsubscribes\n\nNew IPs need positive signals. Your most engaged subscribers (high open/click history) generate positive signals when they receive and interact with messages.\n\n**AJO Warmup Plan structure:**\n```\nPhase 1 (Day 1): 1,000 sends → Most engaged subscribers\nPhase 2 (Day 2-3): 5,000 sends → High engagement\nPhase 3 (Day 4-7): 20,000 sends → Medium engagement\nPhase 4 (Week 2): 100,000 sends → Full audience\n```\n\n**Profile selection mechanism:**\n- Define a primary audience (the full suppressed list you want to warm up)\n- AJO uses **engagement scoring** to rank profiles — open rate, click rate, recency\n- Early phases automatically select the highest-scored profiles\n- Later phases expand to include progressively less-engaged subscribers\n\n**Monitoring during warmup:**\n- AJO warmup dashboard shows deliverability metrics per phase\n- Key metrics to watch: delivery rate (>95% good), spam complaint rate (<0.1% good), open rate\n- Pause and investigate if complaint rates spike\n\n**Exam tip:** The IP Warmup Plan feature generates special campaigns under the hood — each phase is a separate campaign with volume cap, domain prioritisation (Gmail → Yahoo → Outlook in order of volume weight), and the engagement-based audience slice. You don't need to manually create these campaigns — the Warmup Plan UI handles the orchestration."
+    }
+  ]
+}

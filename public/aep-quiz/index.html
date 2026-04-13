@@ -19,6 +19,8 @@
       --correct-bg: #0d2b1b;
       --wrong: #ff4d4d;
       --wrong-bg: #2b0d0d;
+      --selected: #6eb4ff;
+      --selected-bg: rgba(110,180,255,0.08);
       --warning: #ffb347;
       --white: #ffffff;
     }
@@ -32,350 +34,191 @@
       min-height: 100vh;
     }
 
-    /* ── HOME SCREEN ─────────────────────────────────────────────── */
+    /* ── HOME ────────────────────────────────────────────────────── */
     #home {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 40px 20px;
-      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh; padding: 40px 20px; text-align: center;
     }
 
     .logo {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 16px;
+      font-size: 14px; font-weight: 700; letter-spacing: 3px;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 16px;
     }
 
     .home-title {
-      font-size: clamp(26px, 5vw, 42px);
-      font-weight: 800;
+      font-size: clamp(26px, 5vw, 42px); font-weight: 800;
       background: linear-gradient(135deg, #fff 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 12px;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 12px;
     }
 
     .home-subtitle {
-      font-size: 16px;
-      color: var(--text-muted);
-      margin-bottom: 40px;
-      max-width: 500px;
+      font-size: 16px; color: var(--text-muted);
+      margin-bottom: 40px; max-width: 500px;
     }
 
     .modules-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      width: 100%;
-      max-width: 900px;
-      margin-bottom: 32px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px; width: 100%; max-width: 900px; margin-bottom: 32px;
     }
 
     .module-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 22px 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px 20px; cursor: pointer;
+      transition: all 0.2s; text-align: left; position: relative; overflow: hidden;
     }
 
     .module-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transform: scaleX(0);
-      transition: transform 0.2s;
+      transform: scaleX(0); transition: transform 0.2s;
     }
 
-    .module-card:hover::before,
-    .module-card.loaded::before { transform: scaleX(1); }
+    .module-card:hover::before, .module-card.loaded::before { transform: scaleX(1); }
 
     .module-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
+      border-color: var(--accent); transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(235,16,0,0.15);
     }
 
-    .module-card.loading {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    .module-card.loaded {
-      border-color: var(--border);
-    }
-
-    .module-num {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .module-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-      line-height: 1.4;
-    }
-
-    .module-count {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .module-status {
-      display: inline-block;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 10px;
-      margin-top: 8px;
-    }
-
-    .status-loading { background: rgba(255,179,71,0.15); color: var(--warning); }
-    .status-ready   { background: rgba(38,217,107,0.12); color: var(--correct); }
-    .status-error   { background: rgba(255,77,77,0.12); color: var(--wrong); }
+    .module-num { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+    .module-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+    .module-count { font-size: 13px; color: var(--text-muted); }
+    .module-status { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-top: 8px; }
+    .status-ready { background: rgba(38,217,107,0.12); color: var(--correct); }
+    .status-error { background: rgba(255,77,77,0.12); color: var(--wrong); }
 
     .start-all-btn {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-      border: none;
-      padding: 14px 40px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.5px;
+      color: white; border: none; padding: 14px 40px; border-radius: 10px;
+      font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;
     }
 
-    .start-all-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(235,16,0,0.3);
-    }
+    .start-all-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(235,16,0,0.3); }
+    .start-all-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    .start-all-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* ── QUIZ SCREEN ─────────────────────────────────────────────── */
+    /* ── QUIZ ────────────────────────────────────────────────────── */
     #quiz { display: none; min-height: 100vh; }
 
     .quiz-header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 16px 24px; display: flex; align-items: center;
+      justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 100;
     }
 
-    .quiz-title-bar {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
+    .quiz-title-bar { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+    .quiz-title-bar span { color: var(--text); }
 
-    .quiz-title-bar span {
-      color: var(--text);
-    }
-
-    .progress-wrap {
-      flex: 1;
-      min-width: 120px;
-      max-width: 300px;
-    }
-
-    .progress-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .progress-bar {
-      height: 4px;
-      background: var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 4px;
-      transition: width 0.3s ease;
-    }
+    .progress-wrap { flex: 1; min-width: 120px; max-width: 300px; }
+    .progress-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .progress-bar { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; transition: width 0.3s ease; }
 
     .score-badge {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; white-space: nowrap;
     }
-
     .score-badge .correct-count { color: var(--correct); }
     .score-badge .wrong-count   { color: var(--wrong); }
 
     .back-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.15s;
+      background: none; border: 1px solid var(--border); color: var(--text-muted);
+      padding: 7px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; transition: all 0.15s;
     }
+    .back-btn:hover { border-color: var(--text-muted); color: var(--text); }
 
-    .back-btn:hover {
-      border-color: var(--text-muted);
-      color: var(--text);
-    }
-
-    /* ── QUESTION ─────────────────────────────────────────────────── */
-    .quiz-body {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 40px 20px 80px;
-    }
+    /* ── QUESTION ────────────────────────────────────────────────── */
+    .quiz-body { max-width: 780px; margin: 0 auto; padding: 40px 20px 80px; }
 
     .question-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
+      font-size: 12px; color: var(--text-muted); font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
     }
 
-    .question-text {
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 1.5;
-      color: var(--white);
-      margin-bottom: 28px;
+    .multi-badge {
+      background: rgba(110,180,255,0.15); color: var(--selected);
+      border: 1px solid rgba(110,180,255,0.3);
+      border-radius: 6px; padding: 2px 8px; font-size: 10px;
+      font-weight: 700; letter-spacing: 0.5px;
     }
 
-    .options-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+    .question-text { font-size: 20px; font-weight: 700; line-height: 1.5; color: var(--white); margin-bottom: 28px; }
 
+    .options-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+
+    /* ── OPTION BUTTON ───────────────────────────────────────────── */
     .option-btn {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      text-align: left;
-      cursor: pointer;
-      color: var(--text);
-      font-size: 15px;
-      line-height: 1.5;
-      transition: all 0.15s;
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 16px 20px; text-align: left;
+      cursor: pointer; color: var(--text); font-size: 15px; line-height: 1.5;
+      transition: all 0.15s; display: flex; align-items: flex-start; gap: 14px; width: 100%;
     }
 
-    .option-btn:hover:not(:disabled) {
-      border-color: var(--accent);
-      background: var(--surface2);
-    }
-
+    .option-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--surface2); }
     .option-btn:disabled { cursor: default; }
 
+    /* Single choice indicator (letter badge) */
     .option-letter {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-top: 1px;
-      flex-shrink: 0;
-      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+      min-width: 28px; height: 28px; border-radius: 6px;
+      background: var(--surface2); border: 1px solid var(--border);
+      font-size: 13px; font-weight: 700; color: var(--text-muted);
+      margin-top: 1px; flex-shrink: 0; transition: all 0.15s;
     }
 
-    .option-btn.correct {
-      border-color: var(--correct);
-      background: var(--correct-bg);
-      color: var(--correct);
+    /* Multi-choice checkbox indicator */
+    .option-checkbox {
+      display: flex; align-items: center; justify-content: center;
+      min-width: 22px; height: 22px; border-radius: 5px;
+      border: 1.5px solid var(--border); font-size: 13px;
+      color: transparent; margin-top: 3px; flex-shrink: 0; transition: all 0.15s;
     }
 
-    .option-btn.correct .option-letter {
-      background: var(--correct);
-      border-color: var(--correct);
-      color: #000;
+    /* Multi selected (pending, not yet submitted) */
+    .option-btn.selected {
+      border-color: var(--selected);
+      background: var(--selected-bg);
+    }
+    .option-btn.selected .option-checkbox {
+      background: var(--selected); border-color: var(--selected); color: #000;
     }
 
-    .option-btn.wrong {
-      border-color: var(--wrong);
-      background: var(--wrong-bg);
-      color: var(--wrong);
+    /* Correct */
+    .option-btn.correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+    .option-btn.correct .option-letter,
+    .option-btn.correct .option-checkbox { background: var(--correct); border-color: var(--correct); color: #000; }
+
+    /* Wrong */
+    .option-btn.wrong { border-color: var(--wrong); background: var(--wrong-bg); color: var(--wrong); }
+    .option-btn.wrong .option-letter,
+    .option-btn.wrong .option-checkbox { background: var(--wrong); border-color: var(--wrong); color: #fff; }
+
+    /* Reveal correct (missed) */
+    .option-btn.reveal-correct { border-color: var(--correct); background: rgba(38,217,107,0.05); }
+    .option-btn.reveal-correct .option-letter,
+    .option-btn.reveal-correct .option-checkbox { border-color: var(--correct); color: var(--correct); }
+
+    /* ── CHECK ANSWER BUTTON (multi) ─────────────────────────────── */
+    .check-btn-wrap { margin-bottom: 8px; }
+
+    .check-btn {
+      width: 100%; padding: 13px 24px; border-radius: 10px; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s; background: linear-gradient(135deg, var(--selected), #4a90e2);
+      border: none; color: white;
     }
 
-    .option-btn.wrong .option-letter {
-      background: var(--wrong);
-      border-color: var(--wrong);
-      color: #fff;
-    }
+    .check-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .check-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
-    .option-btn.reveal-correct {
-      border-color: var(--correct);
-      background: rgba(38,217,107,0.05);
-    }
-
-    .option-btn.reveal-correct .option-letter {
-      border-color: var(--correct);
-      color: var(--correct);
-    }
-
-    /* ── EXPLANATION ──────────────────────────────────────────────── */
+    /* ── EXPLANATION ─────────────────────────────────────────────── */
     .explanation-box {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 22px;
-      margin-top: 8px;
-      display: none;
-      animation: fadeSlide 0.25s ease;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 22px; margin-top: 8px;
+      display: none; animation: fadeSlide 0.25s ease;
     }
-
     .explanation-box.show { display: block; }
 
     @keyframes fadeSlide {
@@ -384,303 +227,92 @@
     }
 
     .explanation-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 12px;
     }
-
     .explanation-header.correct-header { color: var(--correct); }
     .explanation-header.wrong-header   { color: var(--wrong); }
-
     .explanation-icon { font-size: 16px; }
 
-    /* ── MARKDOWN STYLES ──────────────────────────────────────────── */
-    .md {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--text);
-    }
-
+    /* ── MARKDOWN ────────────────────────────────────────────────── */
+    .md { font-size: 14px; line-height: 1.7; color: var(--text); }
     .md p { margin-bottom: 10px; }
     .md p:last-child { margin-bottom: 0; }
-
     .md strong { color: var(--white); font-weight: 600; }
     .md em { color: var(--text-muted); font-style: italic; }
-
     .md code {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1px 6px;
-      font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 12px;
-      color: var(--accent2);
+      background: rgba(255,255,255,0.07); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 6px;
+      font-family: 'SF Mono','JetBrains Mono','Fira Code',monospace;
+      font-size: 12px; color: var(--accent2);
     }
-
     .md pre {
-      background: #0d0f18;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      overflow-x: auto;
-      margin: 10px 0;
+      background: #0d0f18; border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: 10px 0;
     }
-
-    .md pre code {
-      background: none;
-      border: none;
-      padding: 0;
-      color: #a8d8a8;
-      font-size: 13px;
-    }
-
-    .md table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 12px 0;
-      font-size: 13px;
-    }
-
-    .md th {
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 600;
-      padding: 8px 12px;
-      border: 1px solid var(--border);
-      text-align: left;
-    }
-
-    .md td {
-      padding: 7px 12px;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-
+    .md pre code { background: none; border: none; padding: 0; color: #a8d8a8; font-size: 13px; }
+    .md table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+    .md th { background: var(--surface); color: var(--text); font-weight: 600; padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+    .md td { padding: 7px 12px; border: 1px solid var(--border); color: var(--text-muted); }
     .md tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-
-    .md ul, .md ol {
-      padding-left: 22px;
-      margin: 8px 0;
-    }
-
+    .md ul, .md ol { padding-left: 22px; margin: 8px 0; }
     .md li { margin-bottom: 5px; }
     .md li::marker { color: var(--accent2); }
-
-    .md blockquote {
-      border-left: 3px solid var(--accent);
-      padding: 4px 14px;
-      margin: 10px 0;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    .md h1, .md h2, .md h3, .md h4 {
-      color: var(--white);
-      margin: 14px 0 8px;
-      font-weight: 600;
-    }
-
+    .md blockquote { border-left: 3px solid var(--accent); padding: 4px 14px; margin: 10px 0; color: var(--text-muted); font-style: italic; }
+    .md h1,.md h2,.md h3,.md h4 { color: var(--white); margin: 14px 0 8px; font-weight: 600; }
     .md h4 { font-size: 13px; color: var(--text); }
     .md h3 { font-size: 14px; }
 
-    /* ── NAVIGATION ───────────────────────────────────────────────── */
-    .nav-bar {
-      display: flex;
-      gap: 12px;
-      justify-content: space-between;
-      margin-top: 32px;
-    }
+    /* ── NAVIGATION ──────────────────────────────────────────────── */
+    .nav-bar { display: flex; gap: 12px; justify-content: space-between; margin-top: 32px; }
 
     .nav-btn {
-      padding: 11px 24px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
+      padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border);
+      background: var(--surface); color: var(--text);
     }
+    .nav-btn:hover:not(:disabled) { border-color: var(--text-muted); background: var(--surface2); }
+    .nav-btn:disabled { opacity: 0.4; cursor: default; }
+    .nav-btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-color: transparent; color: white; }
+    .nav-btn.primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
 
-    .nav-btn:hover:not(:disabled) {
-      border-color: var(--text-muted);
-      background: var(--surface2);
-    }
-
-    .nav-btn:disabled {
-      opacity: 0.4;
-      cursor: default;
-    }
-
-    .nav-btn.primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-color: transparent;
-      color: white;
-    }
-
-    .nav-btn.primary:hover:not(:disabled) {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-
-    /* ── RESULTS SCREEN ──────────────────────────────────────────── */
+    /* ── RESULTS ─────────────────────────────────────────────────── */
     #results { display: none; min-height: 100vh; }
 
-    .results-body {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 60px 20px 80px;
-      text-align: center;
-    }
-
+    .results-body { max-width: 700px; margin: 0 auto; padding: 60px 20px 80px; text-align: center; }
     .results-badge { font-size: 72px; margin-bottom: 24px; }
-
-    .results-title {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-
+    .results-title { font-size: 32px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
     .results-score {
-      font-size: 64px;
-      font-weight: 900;
+      font-size: 64px; font-weight: 900;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 16px 0;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 16px 0;
     }
-
-    .results-sub {
-      font-size: 16px;
-      color: var(--text-muted);
-      margin-bottom: 40px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 16px;
-    }
-
-    .stat-value {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
+    .results-sub { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 16px; }
+    .stat-value { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
     .stat-value.green { color: var(--correct); }
     .stat-value.red   { color: var(--wrong); }
     .stat-value.blue  { color: #6eb4ff; }
-
     .stat-label { font-size: 12px; color: var(--text-muted); }
-
-    .results-grade {
-      font-size: 15px;
-      padding: 12px 24px;
-      border-radius: 10px;
-      margin-bottom: 32px;
-      display: inline-block;
-      font-weight: 600;
-    }
-
-    .grade-pass {
-      background: rgba(38,217,107,0.12);
-      color: var(--correct);
-      border: 1px solid var(--correct);
-    }
-
-    .grade-fail {
-      background: rgba(255,77,77,0.08);
-      color: var(--wrong);
-      border: 1px solid var(--wrong);
-    }
-
-    .results-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .results-btn {
-      padding: 12px 28px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border: none;
-      color: white;
-    }
-
+    .results-grade { font-size: 15px; padding: 12px 24px; border-radius: 10px; margin-bottom: 32px; display: inline-block; font-weight: 600; }
+    .grade-pass { background: rgba(38,217,107,0.12); color: var(--correct); border: 1px solid var(--correct); }
+    .grade-fail { background: rgba(255,77,77,0.08); color: var(--wrong); border: 1px solid var(--wrong); }
+    .results-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .results-btn { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; color: white; }
     .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-
-    .btn-secondary {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      color: var(--text);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--text-muted);
-      background: var(--surface2);
-    }
+    .btn-secondary { background: var(--surface); border: 1.5px solid var(--border); color: var(--text); }
+    .btn-secondary:hover { border-color: var(--text-muted); background: var(--surface2); }
 
     /* ── REVIEW MODE ─────────────────────────────────────────────── */
-    .review-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-
-    .review-status {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 6px;
-      margin-bottom: 8px;
-    }
-
+    .review-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+    .review-status { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-bottom: 8px; }
     .review-correct { background: rgba(38,217,107,0.12); color: var(--correct); }
     .review-wrong   { background: rgba(255,77,77,0.1); color: var(--wrong); }
-
-    .review-explanation {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-top: 8px;
-    }
-
-    .review-explanation-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-    }
+    .review-explanation { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-top: 8px; }
+    .review-explanation-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
 
     /* ── RESPONSIVE ──────────────────────────────────────────────── */
     @media (max-width: 600px) {
@@ -697,18 +329,12 @@
 <div id="home">
   <div class="logo">Adobe Journey Optimizer</div>
   <h1 class="home-title">AJO Certification Practice Test</h1>
-  <p class="home-subtitle">300 questions across 6 modules covering AEP, Segmentation, Journeys, Decisioning, Governance, and Reporting.</p>
+  <p class="home-subtitle">300 questions across 6 modules. Questions and answer options are randomized on every attempt.</p>
 
-  <div class="modules-grid" id="modulesGrid">
-    <div class="module-card loading" id="card-0">
-      <div class="module-num">Module 1</div>
-      <div class="module-title">Loading…</div>
-      <span class="module-status status-loading">Loading</span>
-    </div>
-  </div>
+  <div class="modules-grid" id="modulesGrid"></div>
 
   <button class="start-all-btn" id="startAllBtn" disabled onclick="startQuiz('all')">
-    Start Full Exam (All 300 Questions)
+    Start Full Exam
   </button>
 </div>
 
@@ -722,13 +348,11 @@
         <span id="progressLabel">Question 1 of 50</span>
         <span id="progressPct">0%</span>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill" style="width:0%"></div>
-      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
     </div>
     <div class="score-badge">
       <span class="correct-count" id="correctCount">0</span> ✓ &nbsp;
-      <span class="wrong-count" id="wrongCount">0</span> ✗
+      <span class="wrong-count"   id="wrongCount">0</span> ✗
     </div>
   </div>
 
@@ -736,10 +360,14 @@
     <div class="question-meta" id="questionMeta"></div>
     <div class="question-text" id="questionText"></div>
     <div class="options-list" id="optionsList"></div>
+    <div class="check-btn-wrap" id="checkBtnWrap" style="display:none">
+      <button class="check-btn" id="checkBtn" onclick="submitMultiAnswer()">
+        ✓ Check Answer
+      </button>
+    </div>
     <div class="explanation-box" id="explanationBox">
       <div class="explanation-header" id="explanationHeader">
-        <span class="explanation-icon"></span>
-        <span></span>
+        <span class="explanation-icon"></span><span></span>
       </div>
       <div class="md" id="explanationText"></div>
     </div>
@@ -762,25 +390,16 @@
     <h2 class="results-title" id="resultsTitle"></h2>
     <div class="results-score" id="resultsScore"></div>
     <p class="results-sub" id="resultsSub"></p>
-    <div class="grade-pass" id="resultsGrade" style="display:none"></div>
+    <div id="resultsGrade" style="display:none"></div>
 
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value green" id="statCorrect">0</div>
-        <div class="stat-label">Correct Answers</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value red" id="statWrong">0</div>
-        <div class="stat-label">Wrong Answers</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value blue" id="statSkipped">0</div>
-        <div class="stat-label">Unanswered</div>
-      </div>
+      <div class="stat-card"><div class="stat-value green" id="statCorrect">0</div><div class="stat-label">Correct Answers</div></div>
+      <div class="stat-card"><div class="stat-value red"   id="statWrong">0</div><div class="stat-label">Wrong Answers</div></div>
+      <div class="stat-card"><div class="stat-value blue"  id="statSkipped">0</div><div class="stat-label">Unanswered</div></div>
     </div>
 
     <div class="results-actions">
-      <button class="results-btn btn-primary" onclick="reviewAnswers()">Review All Answers</button>
+      <button class="results-btn btn-primary"   onclick="reviewAnswers()">Review All Answers</button>
       <button class="results-btn btn-secondary" onclick="restartQuiz()">Retake This Test</button>
       <button class="results-btn btn-secondary" onclick="goHome()">Choose Module</button>
     </div>
@@ -791,25 +410,93 @@
 </div>
 
 <script>
-// ── MARKED CONFIG ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  MARKED CONFIG
+// ══════════════════════════════════════════════════════════════════════
 marked.setOptions({ breaks: true, gfm: true });
+const renderMd = text => marked.parse(text || '');
 
-function renderMd(text) {
-  return marked.parse(text || '');
-}
-
-// ── STATE ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════════════════
 const state = {
   modules: [],
-  current: [],
+  current: [],          // shuffled question array for active session
   idx: 0,
-  answers: {},
+  answers: {},          // idx → number (single) | number[] (multi, submitted)
+  questionLayouts: {},  // idx → { displayedOptions, correctDisplayIndices, isMulti }
+  pendingMulti: {},     // idx → Set<number>  (in-progress multi selections, not yet submitted)
   correctScore: 0,
   wrongScore: 0,
   activeModule: null,
 };
 
-// ── LOADER ────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════════════════════════════
+
+/** Fisher-Yates shuffle — returns a new shuffled array */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/** Pick a random element from an array */
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  QUESTION LAYOUT  (built once per question index, then cached)
+//
+//  For each question we:
+//   1. Optionally replace the correct option text with a random variant
+//      (if `correctVariants` is present — single-choice only)
+//   2. Shuffle the option order (Fisher-Yates on indices)
+//   3. Map original correct index/indices → new display positions
+// ══════════════════════════════════════════════════════════════════════
+function buildLayout(q) {
+  const options = [...q.options];
+  const isMulti = Array.isArray(q.correct);
+
+  // Normalise correct indices to array
+  const correctOriginal = isMulti ? q.correct : [q.correct];
+
+  // Apply a random paraphrase variant for single-choice questions
+  if (!isMulti && q.correctVariants && q.correctVariants.length > 0) {
+    const allVariants = [options[q.correct], ...q.correctVariants];
+    options[q.correct] = pickRandom(allVariants);
+  }
+
+  // Create a shuffled index map: shuffledMap[newDisplayPos] = originalIndex
+  const shuffledMap = shuffle([...Array(options.length).keys()]);
+
+  // Build the displayed option texts using the shuffled map
+  const displayedOptions = shuffledMap.map(origIdx => options[origIdx]);
+
+  // Translate original correct indices into new display positions
+  const correctDisplayIndices = correctOriginal.map(
+    origIdx => shuffledMap.indexOf(origIdx)
+  );
+
+  return { displayedOptions, correctDisplayIndices, isMulti };
+}
+
+/** Get (or lazily create) the stable layout for question at index idx */
+function getLayout(idx) {
+  if (!state.questionLayouts[idx]) {
+    state.questionLayouts[idx] = buildLayout(state.current[idx]);
+  }
+  return state.questionLayouts[idx];
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  LOADER
+// ══════════════════════════════════════════════════════════════════════
 async function loadModules() {
   const grid = document.getElementById('modulesGrid');
   grid.innerHTML = '';
@@ -817,19 +504,15 @@ async function loadModules() {
   let loadedAny = false;
 
   while (true) {
-    const filename = `questions/questions_0${i}.json`;
     try {
-      const res = await fetch(filename);
+      const res = await fetch(`questions/questions_0${i}.json`);
       if (!res.ok) break;
       const data = await res.json();
       state.modules.push(data);
-      const card = createModuleCard(state.modules.length - 1, data);
-      grid.appendChild(card);
+      grid.appendChild(createModuleCard(state.modules.length - 1, data));
       loadedAny = true;
       i++;
-    } catch (e) {
-      break;
-    }
+    } catch { break; }
   }
 
   if (!loadedAny) {
@@ -837,15 +520,14 @@ async function loadModules() {
     return;
   }
 
+  const total = state.modules.reduce((s, m) => s + m.questions.length, 0);
   document.getElementById('startAllBtn').disabled = false;
-  document.getElementById('startAllBtn').textContent =
-    `Start Full Exam (All ${state.modules.reduce((s, m) => s + m.questions.length, 0)} Questions)`;
+  document.getElementById('startAllBtn').textContent = `Start Full Exam (All ${total} Questions)`;
 }
 
 function createModuleCard(idx, data) {
   const card = document.createElement('div');
   card.className = 'module-card loaded';
-  card.id = `card-${idx}`;
   card.innerHTML = `
     <div class="module-num">Module ${idx + 1}</div>
     <div class="module-title">${data.title}</div>
@@ -856,23 +538,28 @@ function createModuleCard(idx, data) {
   return card;
 }
 
-// ── START / NAVIGATE ──────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  SESSION CONTROL
+// ══════════════════════════════════════════════════════════════════════
 function startQuiz(moduleIdx) {
   state.activeModule = moduleIdx;
   state.answers = {};
+  state.questionLayouts = {};
+  state.pendingMulti = {};
   state.correctScore = 0;
   state.wrongScore = 0;
   state.idx = 0;
 
-  if (moduleIdx === 'all') {
-    state.current = state.modules.flatMap(m => m.questions);
-    document.getElementById('quizTitleBar').innerHTML = '<span>Full Exam</span>';
-  } else {
-    const mod = state.modules[moduleIdx];
-    state.current = mod.questions;
-    document.getElementById('quizTitleBar').innerHTML =
-      `Module ${moduleIdx + 1} — <span>${mod.title}</span>`;
-  }
+  const pool = moduleIdx === 'all'
+    ? state.modules.flatMap(m => m.questions)
+    : state.modules[moduleIdx].questions;
+
+  // Shuffle the question order for every new session
+  state.current = shuffle(pool);
+
+  document.getElementById('quizTitleBar').innerHTML = moduleIdx === 'all'
+    ? '<span>Full Exam</span>'
+    : `Module ${moduleIdx + 1} — <span>${state.modules[moduleIdx].title}</span>`;
 
   show('quiz');
   renderQuestion();
@@ -883,52 +570,109 @@ function navigate(dir) {
   renderQuestion();
 }
 
-function goHome() { show('home'); }
-function restartQuiz() { startQuiz(state.activeModule); }
+function goHome()     { show('home'); }
+function restartQuiz(){ startQuiz(state.activeModule); }
 
-// ── RENDER ────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  RENDER QUESTION
+// ══════════════════════════════════════════════════════════════════════
 function renderQuestion() {
   const q = state.current[state.idx];
   const total = state.current.length;
-  const answered = state.idx in state.answers;
-  const chosen = state.answers[state.idx];
+  const layout = getLayout(state.idx);
+  const { displayedOptions, correctDisplayIndices, isMulti } = layout;
 
+  const answered = state.idx in state.answers;
+  const pending  = state.pendingMulti[state.idx] || new Set();
+
+  // ── header ──────────────────────────────────────────────────────
   document.getElementById('progressLabel').textContent = `Question ${state.idx + 1} of ${total}`;
   const pct = Math.round((state.idx / total) * 100);
   document.getElementById('progressPct').textContent = pct + '%';
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('correctCount').textContent = state.correctScore;
-  document.getElementById('wrongCount').textContent = state.wrongScore;
+  document.getElementById('wrongCount').textContent   = state.wrongScore;
 
-  document.getElementById('questionMeta').textContent = `Question ${state.idx + 1} of ${total}`;
+  // ── question meta & text ─────────────────────────────────────────
+  const metaEl = document.getElementById('questionMeta');
+  metaEl.innerHTML = `Question ${state.idx + 1} of ${total}`;
+  if (isMulti) {
+    metaEl.innerHTML += ' <span class="multi-badge">SELECT ALL THAT APPLY</span>';
+  }
+
   document.getElementById('questionText').textContent = q.question;
 
-  const letters = ['A', 'B', 'C', 'D'];
+  // ── options ──────────────────────────────────────────────────────
   const ol = document.getElementById('optionsList');
   ol.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-  q.options.forEach((opt, i) => {
+  displayedOptions.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
+
     if (answered) {
+      // ── post-answer display ──
       btn.disabled = true;
-      if (i === q.correct) btn.classList.add(chosen === i ? 'correct' : 'reveal-correct');
-      if (i === chosen && i !== q.correct) btn.classList.add('wrong');
+      const isCorrectOption = correctDisplayIndices.includes(i);
+
+      if (isMulti) {
+        const chosen = state.answers[state.idx]; // number[]
+        const wasChosen = chosen.includes(i);
+        if (wasChosen && isCorrectOption)  btn.classList.add('correct');
+        else if (wasChosen && !isCorrectOption) btn.classList.add('wrong');
+        else if (!wasChosen && isCorrectOption) btn.classList.add('reveal-correct');
+      } else {
+        const chosen = state.answers[state.idx]; // number
+        if (i === chosen && isCorrectOption)  btn.classList.add('correct');
+        else if (i === chosen && !isCorrectOption) btn.classList.add('wrong');
+        else if (isCorrectOption) btn.classList.add('reveal-correct');
+      }
+
+      btn.innerHTML = isMulti
+        ? `<div class="option-checkbox">${btn.classList.contains('correct') ? '✓' : btn.classList.contains('wrong') ? '✗' : ''}</div><span>${opt}</span>`
+        : `<div class="option-letter">${letters[i]}</div><span>${opt}</span>`;
+
+    } else {
+      // ── pre-answer display ──
+      if (isMulti) {
+        const isSelected = pending.has(i);
+        if (isSelected) btn.classList.add('selected');
+        btn.innerHTML = `<div class="option-checkbox">${isSelected ? '✓' : ''}</div><span>${opt}</span>`;
+        btn.onclick = () => toggleMultiPending(i);
+      } else {
+        btn.innerHTML = `<div class="option-letter">${letters[i]}</div><span>${opt}</span>`;
+        btn.onclick = () => submitSingleAnswer(i);
+      }
     }
-    btn.innerHTML = `<div class="option-letter">${letters[i]}</div><span>${opt}</span>`;
-    if (!answered) btn.onclick = () => selectAnswer(i);
+
     ol.appendChild(btn);
   });
 
-  const box = document.getElementById('explanationBox');
+  // ── check button (multi only) ────────────────────────────────────
+  const checkWrap = document.getElementById('checkBtnWrap');
+  const checkBtn  = document.getElementById('checkBtn');
+  if (isMulti && !answered) {
+    checkWrap.style.display = 'block';
+    checkBtn.disabled = pending.size === 0;
+  } else {
+    checkWrap.style.display = 'none';
+  }
+
+  // ── explanation ──────────────────────────────────────────────────
+  const box    = document.getElementById('explanationBox');
   const header = document.getElementById('explanationHeader');
-  const text = document.getElementById('explanationText');
+  const text   = document.getElementById('explanationText');
 
   if (answered) {
-    const isCorrect = chosen === q.correct;
+    const isCorrect = checkIsCorrect(state.idx);
     box.classList.add('show');
-    const icon = isCorrect ? '✅' : '❌';
-    const label = isCorrect ? 'Correct!' : `Wrong — correct answer: ${letters[q.correct]}`;
+    const icon  = isCorrect ? '✅' : '❌';
+    const label = isCorrect
+      ? 'Correct!'
+      : isMulti
+        ? `Wrong — correct: ${correctDisplayIndices.map(i => letters[i]).join(', ')}`
+        : `Wrong — correct answer: ${letters[correctDisplayIndices[0]]}`;
     header.className = `explanation-header ${isCorrect ? 'correct-header' : 'wrong-header'}`;
     header.innerHTML = `<span class="explanation-icon">${icon}</span><span>${label}</span>`;
     text.innerHTML = renderMd(q.explanation);
@@ -936,6 +680,7 @@ function renderQuestion() {
     box.classList.remove('show');
   }
 
+  // ── navigation buttons ───────────────────────────────────────────
   document.getElementById('prevBtn').disabled = state.idx === 0;
 
   const nextBtn = document.getElementById('nextBtn');
@@ -947,74 +692,127 @@ function renderQuestion() {
     nextBtn.textContent = 'Next →';
     nextBtn.onclick = () => navigate(1);
     nextBtn.disabled = !answered;
-    if (answered && state.idx < total - 1) nextBtn.disabled = false;
   }
 }
 
-function selectAnswer(optionIdx) {
+// ══════════════════════════════════════════════════════════════════════
+//  ANSWER SUBMISSION
+// ══════════════════════════════════════════════════════════════════════
+
+/** Single-choice: clicked an option → immediately submit */
+function submitSingleAnswer(displayIdx) {
   if (state.idx in state.answers) return;
-  const q = state.current[state.idx];
-  const isCorrect = optionIdx === q.correct;
-  state.answers[state.idx] = optionIdx;
-  if (isCorrect) state.correctScore++;
+  state.answers[state.idx] = displayIdx;
+  if (checkIsCorrect(state.idx)) state.correctScore++;
   else state.wrongScore++;
   renderQuestion();
 }
 
-// ── RESULTS ──────────────────────────────────────────────────────────
-function showResults() {
-  const total = state.current.length;
-  const correct = state.correctScore;
-  const wrong = state.wrongScore;
-  const skipped = total - Object.keys(state.answers).length;
-  const pct = Math.round((correct / total) * 100);
-  const pass = pct >= 68;
+/** Multi-choice: toggle an option in the pending set */
+function toggleMultiPending(displayIdx) {
+  if (state.idx in state.answers) return;
+  if (!state.pendingMulti[state.idx]) state.pendingMulti[state.idx] = new Set();
+  const pending = state.pendingMulti[state.idx];
+  pending.has(displayIdx) ? pending.delete(displayIdx) : pending.add(displayIdx);
+  renderQuestion();
+}
 
-  document.getElementById('resultsBadge').textContent = pct >= 90 ? '🏆' : pct >= 68 ? '🎓' : '📚';
-  document.getElementById('resultsTitle').textContent =
-    pct >= 90 ? 'Outstanding!' : pct >= 68 ? 'You Passed!' : 'Keep Studying';
-  document.getElementById('resultsScore').textContent = `${pct}%`;
-  document.getElementById('resultsSub').textContent = `${correct} correct out of ${total} questions`;
+/** Multi-choice: submit the pending selections */
+function submitMultiAnswer() {
+  if (state.idx in state.answers) return;
+  const pending = state.pendingMulti[state.idx] || new Set();
+  if (pending.size === 0) return;
+  state.answers[state.idx] = [...pending].sort();
+  if (checkIsCorrect(state.idx)) state.correctScore++;
+  else state.wrongScore++;
+  renderQuestion();
+}
+
+/** Returns true if the submitted answer for idx is fully correct */
+function checkIsCorrect(idx) {
+  const layout  = getLayout(idx);
+  const chosen  = state.answers[idx];
+  const correct = layout.correctDisplayIndices;
+
+  if (layout.isMulti) {
+    if (!Array.isArray(chosen) || chosen.length !== correct.length) return false;
+    return correct.every(c => chosen.includes(c));
+  }
+  return chosen === correct[0];
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  RESULTS
+// ══════════════════════════════════════════════════════════════════════
+function showResults() {
+  const total   = state.current.length;
+  const correct = state.correctScore;
+  const wrong   = state.wrongScore;
+  const skipped = total - Object.keys(state.answers).length;
+  const pct     = Math.round((correct / total) * 100);
+  const pass    = pct >= 68;
+
+  document.getElementById('resultsBadge').textContent  = pct >= 90 ? '🏆' : pct >= 68 ? '🎓' : '📚';
+  document.getElementById('resultsTitle').textContent  = pct >= 90 ? 'Outstanding!' : pct >= 68 ? 'You Passed!' : 'Keep Studying';
+  document.getElementById('resultsScore').textContent  = `${pct}%`;
+  document.getElementById('resultsSub').textContent    = `${correct} correct out of ${total} questions`;
 
   const gradeEl = document.getElementById('resultsGrade');
   gradeEl.style.display = 'inline-block';
   gradeEl.className = `results-grade ${pass ? 'grade-pass' : 'grade-fail'}`;
   gradeEl.textContent = pass
-    ? `✓ Passing Score — Adobe AJO Certification threshold is ~68%`
-    : `✗ Below passing score — Adobe AJO Certification requires ~68%`;
+    ? '✓ Passing Score — Adobe AJO Certification threshold is ~68%'
+    : '✗ Below passing score — Adobe AJO Certification requires ~68%';
 
   document.getElementById('statCorrect').textContent = correct;
-  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('statWrong').textContent   = wrong;
   document.getElementById('statSkipped').textContent = skipped;
   document.getElementById('reviewList').innerHTML = '';
   show('results');
 }
 
 function reviewAnswers() {
-  const letters = ['A', 'B', 'C', 'D'];
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
   const container = document.getElementById('reviewList');
   container.innerHTML = '';
 
   state.current.forEach((q, i) => {
-    const chosen = state.answers[i];
+    const layout   = getLayout(i);
     const answered = i in state.answers;
-    const isCorrect = answered && chosen === q.correct;
+    const isCorrect = answered && checkIsCorrect(i);
+    const chosen   = state.answers[i];
+
+    let statusText;
+    if (!answered) {
+      statusText = '— Unanswered';
+    } else if (isCorrect) {
+      statusText = '✓ Correct';
+    } else if (layout.isMulti) {
+      const chosenLetters  = (Array.isArray(chosen) ? chosen : []).map(idx => letters[idx]).join(', ');
+      const correctLetters = layout.correctDisplayIndices.map(idx => letters[idx]).join(', ');
+      statusText = `✗ Wrong (you chose ${chosenLetters || '—'}, correct: ${correctLetters})`;
+    } else {
+      const chosenLetter  = letters[chosen];
+      const correctLetter = letters[layout.correctDisplayIndices[0]];
+      statusText = `✗ Wrong (you chose ${chosenLetter}, correct: ${correctLetter})`;
+    }
+
+    const optionsHtml = layout.displayedOptions.map((opt, oi) => {
+      const isCorrectOpt = layout.correctDisplayIndices.includes(oi);
+      const wasChosen    = Array.isArray(chosen) ? chosen.includes(oi) : chosen === oi;
+      let style = 'display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:8px;margin-bottom:6px;font-size:14px;border:1px solid var(--border);';
+      if (isCorrectOpt)       style += 'border-color:var(--correct);background:var(--correct-bg);color:var(--correct);';
+      else if (answered && wasChosen && !isCorrectOpt) style += 'border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);';
+      const indicator = layout.isMulti ? `<b style="min-width:18px">☐</b>` : `<b style="min-width:18px">${letters[oi]}.</b>`;
+      return `<div style="${style}">${indicator} ${opt}</div>`;
+    }).join('');
 
     const div = document.createElement('div');
     div.style.cssText = 'text-align:left;margin-bottom:32px;';
-
-    const optionsHtml = q.options.map((opt, oi) => {
-      let style = 'display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:8px;margin-bottom:6px;font-size:14px;border:1px solid var(--border);';
-      if (oi === q.correct) style += 'border-color:var(--correct);background:var(--correct-bg);color:var(--correct);';
-      else if (oi === chosen && !isCorrect) style += 'border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);';
-      return `<div style="${style}"><b style="min-width:18px">${letters[oi]}.</b> ${opt}</div>`;
-    }).join('');
-
     div.innerHTML = `
-      <span class="review-status ${isCorrect ? 'review-correct' : 'review-wrong'}">
-        ${isCorrect ? '✓ Correct' : answered ? `✗ Wrong (you chose ${letters[chosen]}, correct: ${letters[q.correct]})` : '— Unanswered'}
-      </span>
-      <p style="font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.4">${i + 1}. ${q.question}</p>
+      <span class="review-status ${isCorrect ? 'review-correct' : 'review-wrong'}">${statusText}</span>
+      ${layout.isMulti ? '<span class="multi-badge" style="margin-left:8px">MULTI</span>' : ''}
+      <p style="font-weight:600;color:var(--white);margin-bottom:10px;margin-top:6px;line-height:1.4">${i + 1}. ${q.question}</p>
       ${optionsHtml}
       <div class="review-explanation">
         <div class="review-explanation-label">Explanation</div>
@@ -1027,16 +825,20 @@ function reviewAnswers() {
   container.scrollIntoView({ behavior: 'smooth' });
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  SCREEN SWITCHER
+// ══════════════════════════════════════════════════════════════════════
 function show(screen) {
-  ['home', 'quiz', 'results'].forEach(id => {
+  ['home','quiz','results'].forEach(id => {
     document.getElementById(id).style.display = id === screen ? 'block' : 'none';
   });
   if (screen === 'home') document.getElementById('home').style.display = 'flex';
   window.scrollTo(0, 0);
 }
 
-// ── BOOT ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════════════════════════════════════
 loadModules();
 </script>
 </body>

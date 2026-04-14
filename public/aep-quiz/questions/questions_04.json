@@ -167,7 +167,7 @@
         "Placements define eligibility criteria; Representations define the offer reward/value"
       ],
       "correct": 1,
-      "explanation": "A Placement defines WHERE an offer can appear (channel + location, e.g., 'Email → Hero Banner'). A Representation is an offer's actual content configured for a specific Placement - since one offer can appear in multiple places, you add multiple Representations (one per Placement). Each Representation contains the appropriately sized/formatted content for that channel and location."
+      "explanation": "A Placement defines WHERE an offer can appear (channel + location, e.g., 'Email -> Hero Banner'). A Representation is an offer's actual content configured for a specific Placement - since one offer can appear in multiple places, you add multiple Representations (one per Placement). Each Representation contains the appropriately sized/formatted content for that channel and location."
     },
     {
       "id": 165,

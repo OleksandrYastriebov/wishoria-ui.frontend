@@ -83,7 +83,7 @@
         "A drag-and-drop interface for configuring data flows between AEP datasets"
       ],
       "correct": 1,
-      "explanation": "The AEP Query Editor is an interactive SQL tool within the Experience Platform UI that allows users to write, validate, and execute queries against customer experience data stored in AEP. It supports both interactive (ad-hoc) queries for exploration and analysis, and non-interactive queries that populate output datasets. It's accessed via Queries → Create Query in the AEP UI."
+      "explanation": "The AEP Query Editor is an interactive SQL tool within the Experience Platform UI that allows users to write, validate, and execute queries against customer experience data stored in AEP. It supports both interactive (ad-hoc) queries for exploration and analysis, and non-interactive queries that populate output datasets. It's accessed via Queries -> Create Query in the AEP UI."
     },
     {
       "id": 258,
@@ -395,7 +395,7 @@
         "Setting up integration with Customer Journey Analytics for cross-channel reporting"
       ],
       "correct": 1,
-      "explanation": "AJO's Reporting Configuration (under Administration → Configurations → Reporting tile) is where you configure which AEP datasets are used for AJO's built-in reporting. For each dataset, you select the Profile ID (either a specific identity field or Identity Map with a namespace choice) that AJO uses to join reporting events to customer profiles."
+      "explanation": "AJO's Reporting Configuration (under Administration -> Configurations -> Reporting tile) is where you configure which AEP datasets are used for AJO's built-in reporting. For each dataset, you select the Profile ID (either a specific identity field or Identity Map with a namespace choice) that AJO uses to join reporting events to customer profiles."
     },
     {
       "id": 284,
@@ -485,13 +485,13 @@
       "id": 291,
       "question": "In AJO, where is the Reporting Configuration accessed in the Administration panel?",
       "options": [
-        "Administration → Channel Settings → Reporting Configuration",
-        "Administration → Configurations → Reporting tile → Manage",
-        "Administration → Data Management → Reporting Datasets",
-        "Administration → Journey Settings → Analytics Configuration"
+        "Administration -> Channel Settings -> Reporting Configuration",
+        "Administration -> Configurations -> Reporting tile -> Manage",
+        "Administration -> Data Management -> Reporting Datasets",
+        "Administration -> Journey Settings -> Analytics Configuration"
       ],
       "correct": 1,
-      "explanation": "Reporting Configuration is found in AJO's Administration panel under: Administration → Configurations → Reporting tile → click 'Manage.' This is where you add datasets for AJO reporting purposes and configure how each dataset is joined to profiles (via Profile ID selection or Identity Map with namespace choice)."
+      "explanation": "Reporting Configuration is found in AJO's Administration panel under: Administration -> Configurations -> Reporting tile -> click 'Manage.' This is where you add datasets for AJO reporting purposes and configure how each dataset is joined to profiles (via Profile ID selection or Identity Map with namespace choice)."
     },
     {
       "id": 292,
@@ -599,7 +599,7 @@
         "Configure the audience targeting rules associated with the template"
       ],
       "correct": 1,
-      "explanation": "The AJO Content Template workflow: browse Saved Templates → select the desired template → preview it using left/right arrows to compare options → click 'Use this template' (top right corner) → the template loads in the Email Designer → edit and customize the content as needed for your specific campaign or journey message."
+      "explanation": "The AJO Content Template workflow: browse Saved Templates -> select the desired template -> preview it using left/right arrows to compare options -> click 'Use this template' (top right corner) -> the template loads in the Email Designer -> edit and customize the content as needed for your specific campaign or journey message."
     }
   ]
 }

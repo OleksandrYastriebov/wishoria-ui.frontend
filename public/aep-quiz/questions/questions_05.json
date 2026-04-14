@@ -126,7 +126,7 @@
       "question": "In AEP, where can you view existing governance policies and their associated labels and marketing actions?",
       "options": [
         "In the Schema Editor under each field's governance properties",
-        "In the Policies workspace under the Experience Platform UI → Policies → Browse tab",
+        "In the Policies workspace under the Experience Platform UI -> Policies -> Browse tab",
         "In the Identity Service dashboard under the Governance section",
         "In the Destinations catalog under each destination's data governance settings"
       ],

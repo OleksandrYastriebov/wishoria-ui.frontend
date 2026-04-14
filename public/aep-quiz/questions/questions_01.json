@@ -299,7 +299,7 @@
         "B2B class schemas can be shared across multiple sandboxes simultaneously"
       ],
       "correct": 1,
-      "explanation": "AEP's standard B2B classes (XDM Business Account, XDM Business Opportunity, XDM B2B Person, etc.) are natively understood by the Identity Graph. AEP automatically understands hierarchies like Person → Works at Account → Linked to Opportunity, eliminating the manual schema relationship configuration required for custom Ad-hoc dimensional schemas."
+      "explanation": "AEP's standard B2B classes (XDM Business Account, XDM Business Opportunity, XDM B2B Person, etc.) are natively understood by the Identity Graph. AEP automatically understands hierarchies like Person -> Works at Account -> Linked to Opportunity, eliminating the manual schema relationship configuration required for custom Ad-hoc dimensional schemas."
     },
     {
       "id": 26,
@@ -599,7 +599,7 @@
         "A B2B class upgrade that enables hierarchical entity relationship support"
       ],
       "correct": 1,
-      "explanation": "In a schema lookup relationship: the Source (Experience Event) schema gets a foreign key field (e.g., `transactionStoreId`) that references the Destination schema. This field is configured via Field Properties → 'Add relationship,' specifying the Reference Schema and Reference Identity Namespace. AEP uses this to join event data with dimensional data during segmentation."
+      "explanation": "In a schema lookup relationship: the Source (Experience Event) schema gets a foreign key field (e.g., `transactionStoreId`) that references the Destination schema. This field is configured via Field Properties -> 'Add relationship,' specifying the Reference Schema and Reference Identity Namespace. AEP uses this to join event data with dimensional data during segmentation."
     }
   ]
 }
